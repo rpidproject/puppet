@@ -47,6 +47,7 @@ The solution should meet the following requirements.
         * Location of the Handle Server 
         * Handle Prefix
         * Database configuration (host, port, credentials)
+        * JSON Schemas
       * For the PIT component
         * Location of the Handle Server 
       * For all components
