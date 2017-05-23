@@ -5,16 +5,16 @@
       uid: '1010'
       sshkeys:
         - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA3ATqENg+GWACa2BzeqTdGnJhNoBer8x6pfWkzNzeM8Zx7/2Tf2pl7kHdbsiTXEUawqzXZQtZzt/j3Oya+PZjcRpWNRzprSmd2UxEEPTqDw9LqY5S2B8og/NyzWaIYPsKoatcgC7VgYHplcTbzEhGu8BsoEVBGYu3IRy5RkAcZik= john@susie'
-    'bridget':
-      comment: 'Bridget X. Zample'
+    'balmas':
+      comment: 'Bridget Almas'
       uid: '1011'
       sshkeys:
-        - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiTvHgzkf9TGBIpnIUBRbsWaRNBqzrLY/OoQpzqprGFLuTzzb8MaGI9Q6GPIhil5HyXE7PWPyuwcBA4mJhIHBXWqQC5o59cdtrkgJwAybSK7z5oVt67B0qieDG/cbasxr52nMAJC3dBEF4W1s69VSq5+wLFD01iW= bridget'
+        - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiTvHgzkf9TGBIpnIUBRbsWaRNBqzrLY/OoQpzqprGFLuTzzb8MaGI9Q6GPIhil5HyXE7PWPyuwcBA4mJhIHBXWqQC5o59cdtrkgJwAybSK7z5oVt67B0qieDG/cbasxr52nMAJC3dBEF4W1s69VSq5+wLFD01iWRqpy5La1DCuN0iNRzaGHao7sCuJ04V426SptWJ2Z/9XwfSBt0NzkwX7c9kC8Bp3PVFkbC1Yw+RFLiK5h45i9cT1AklkakLR58u9E2aLtGfncOdjYL+1hvNF5qHs/D0JCgSbqK++tlQevziLkUJb7KmQ25QKC9LYjuQOZIdfV3F8tp+mQcfBGwBgGtnOmm/IB6bvNvc8RihZqudoNPLwNiRsdNx7A6WEXBTRqXFFaxQZozPslbF0TvkuwgQDKhjo/g8dYhpfMNOy5R/BX5toLziwH0aI+vF7zrGCFX+O4uZ3jJumXTO7tO1yc4y1YmQaPpQHLNciydUfMIs59pkGSvvKlQwmE4uCic+K3NeOY/wNkpezx1fafGLmklQ7EZtBM/We7ZQQSy1oQYEL3ZNmfDjk2VlyRdIlGiL3/kOXF3BXb1FE9jZpgpRAVZZdxD7ysZsSnMY0wT+c6WTq/CMZRh6PTR4iIXHq00wpeWNmoJnldezPc1ZTkZpyqVARau5CnEW2IivoMe1CQ== balmas@gmail.com'
   allow_users:
     - 'john'
-    - 'bridget'
+    - 'balmas'
     - 'vagrant'
   sudoers:
     - 'john'
-    - 'bridget'
+    - 'balmas'
     - 'vagrant'
