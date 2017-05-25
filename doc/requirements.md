@@ -6,20 +6,20 @@
   * as a single primary server (accepts administrative requests to register new handles, and resolves handles)
   * as a mirror server (which does not accept administrative requests for new handles, but mirrors and resolves handles managed by the primary server)
   * as a primary in a multiple primary setup (accepts administrative requests to register new handles, and mirrors and resolves handles managed by itself and one or more other primary servers)
-3. May optionally be configured as a HTTP to Handle Proxy, resolving local handles vi HTTP requests.
+3. May optionally be configured as a HTTP to Handle Proxy, resolving local handles via HTTP requests.
 
 For a detailed discussion of the Handle Server architecture, see the [Technical Manual](http://hdl.handle.net/20.1000/105)
 
 ## Data Types Registry (Cordra Implementation)
 1. Manages and resolves machine-actionable data type records 
-2. Delegates to  a Handle Server to register PIDs for the data type records
+2. Delegates to a Handle Server to register PIDs for the data type records
    * Handle Server may be the global handle server or a local handle server  
 
 See also the [Cordra Technical Manual](https://cordra.org/TechnicalManual-1.0.7.pdf)
 
 ## PIT Registry/API Service
 1. Provides a uniform machine-actionable API for Creating and Reading PID records
-2. Sits in front of the Handle Server to provide a non-Handle specific way for clients to request and read PID records
+2. Interfaces to the Handle Server to provide a non-Handle specific way for clients to request and read PID records
 
 See the [RDA PIT Recommentation](https://dx.doi.org/10.15497/FDAA09D5-5ED0-403D-B97A-2675E1EBE786)
 
