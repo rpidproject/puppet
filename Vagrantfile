@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
   # SHELL
   config.vm.provision "trigger" do |trigger|
     trigger.fire do
-      run "gpg --export-secret-subkeys --export-options export-reset-subkey-passwd -a 0DBB3AFE |vagrant ssh -c 'HOME=/root sudo gpg --import'"
+      run "gpg --export-secret-subkeys --export-options export-reset-subkey-passwd -a ${KEYID} |vagrant ssh -c 'HOME=/root sudo gpg --import'"
     end
   end
 

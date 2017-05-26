@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo Enter text to be encrypted, followed by Ctrl-D
+eyaml encrypt -n gpg --gpg-recipients=4FC0755D --gpg-always-trust --stdin

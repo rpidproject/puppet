@@ -1,6 +1,7 @@
 #!/bin/bash
 PUPPET_REPO=https://github.com/bitfield/control-repo.git
 IDENTITY="-i /Users/john/.ssh/pbg.pem"
+KEYID="4FC0755D"
 if [ "$#" -lt 2 ]; then
   cat <<USAGE
 Usage: $0 TARGET HOSTNAME [BRANCH]
@@ -17,6 +18,9 @@ OPTIONS="-oStrictHostKeyChecking=no"
 echo -n "Copying bootstrap script... "
 scp ${IDENTITY} ${OPTIONS} $(dirname $0)/bootstrap.sh ubuntu@${TARGET}:/tmp
 echo "done."
+echo -n "Copying decryption key..."
+gpg --export-secret-subkeys --export-options export-reset-subkey-passwd -a #{KEYID} | ssh #{IDENTITY} ${OPTIONS} ubuntu@${TARGET} 'HOME=/root sudo gpg --import'
+echo -n "done."
 echo -n "Bootstrapping... "
 ssh ${IDENTITY} ${OPTIONS} ubuntu@${TARGET} "sudo bash /tmp/bootstrap.sh ${PUPPET_REPO} ${HOSTNAME} ${BRANCH}"
 echo "done."
