@@ -1,0 +1,79 @@
+handle setup interactive questions
+
+  Will this be a "primary" server (ie, not a mirror of another server)?(y/n) [y]: 
+
+  Will this be a dual-stack server (accessible on both IPv6 and IPv4)?(y/n) [n]: 
+
+  Through what network-accessible IP address should clients connect to this server? [172.17.0.8]: 
+
+  If different, enter the IP address to which the server should bind. [172.17.0.8]: 
+
+  Enter the (TCP/UDP) port number this server will listen to [2641]: 
+
+  What port number will the HTTP interface be listening to? [8000]: 
+
+  Would you like to log all accesses to this server?(y/n) [y]: 
+
+  Please indicate whether log files should be automatically
+  rotated, and if so, how often.
+
+  ("N" (Never), "M" (Monthly), "W" (Weekly), or "D" (Daily))? [Monthly] : 
+
+  NOTE: Log rotation will be done on the first of each month.
+
+  Each handle site has a version/serial number assigned
+  to it.  This is so that a client can tell if a particular
+  site's configuration has changed since the last time it
+  accessed a server in the site.  Every time you modify a site
+  (by changing an IP address, port, or adding a server, etc), 
+  you should increment the version/serial number for that site.
+
+  Enter the version/serial number of this site [1]: 
+
+  Please enter a short description of this server/site: foo
+
+  Please enter the name of your organization: foo
+
+  Please enter the name of a contact person
+  for foo (optional) [(none)]: bar
+
+  Please enter the telephone number of bar or of foo (optional) [(none)]: 555 DONT-CALL
+
+  Telephone number contains illegal character 'D', please try again.
+
+
+  Please enter the telephone number of bar or of foo (optional) [(none)]: 555 555-5555
+
+  Please enter the email address of bar or of foo: foo@bar.com
+
+  The handle server can communicate via UDP and/or TCP sockets.
+  Since UDP messages are blocked by many network firewalls, you may
+  want to disable UDP services if you are behind such a firewall.
+
+    Do you need to disable UDP services?(y/n) [n]: 
+
+    Server keys already exist, do you want to create new ones? (y/n) [n]: 
+
+    Administrator keys already exist, do you want to create new ones? (y/n) [n]: 
+    Generating site info record...
+
+    -------------------------------------------------------
+
+    You have finished configuring your (primary) Handle service.
+
+    This service now needs to be registered with your prefix 
+    administrator.  Organizations credentialed by DONA to 
+    register prefixes are listed at the dona.net website. 
+
+    If your prefix administrator is CNRI, go to 
+    http://hdl.handle.net/20.1000/111 to register to 
+    become a resolution service provider and then upload 
+    your newly created sitebndl.zip file. Please read the 
+    instructions on this page carefully. When the handle 
+    administrator receives your file, a prefix will be 
+    created and you will receive notification via email.
+
+    Please send all questions to your prefix administrator, 
+    if CNRI at hdladmin@cnri.reston.va.us.
+
+ 
