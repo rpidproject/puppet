@@ -1,5 +1,5 @@
 #!/bin/bash
-PUPPET_REPO=https://github.com/bitfield/control-repo.git
+PUPPET_REPO="https://github.com/rpidproject/puppet.git"
 IDENTITY="-i ../rpid.pem"
 KEYID="AD9793634FC0755D"
 if [ "$#" -lt 2 ]; then
