@@ -19,7 +19,7 @@ echo -n "Copying bootstrap script... "
 scp ${IDENTITY} ${OPTIONS} $(dirname $0)/bootstrap.sh ubuntu@${TARGET}:/tmp
 echo "done."
 echo -n "Copying decryption key..."
-gpg --export-secret-subkeys --export-options export-reset-subkey-passwd -a #{KEYID} | ssh #{IDENTITY} ${OPTIONS} ubuntu@${TARGET} 'HOME=/root sudo gpg --import'
+gpg --export-secret-subkeys --export-options export-reset-subkey-passwd -a ${KEYID} | ssh ${IDENTITY} ${OPTIONS} ubuntu@${TARGET} 'HOME=/root sudo gpg --import'
 echo -n "done."
 echo -n "Bootstrapping... "
 ssh ${IDENTITY} ${OPTIONS} ubuntu@${TARGET} "sudo bash /tmp/bootstrap.sh ${PUPPET_REPO} ${HOSTNAME} ${BRANCH}"
