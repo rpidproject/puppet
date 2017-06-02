@@ -1,7 +1,7 @@
 #!/bin/bash
 PUPPET_REPO=https://github.com/bitfield/control-repo.git
-IDENTITY="-i /Users/john/.ssh/pbg.pem"
-KEYID="2530753C"
+IDENTITY="-i ../rpid.pem"
+KEYID="AD9793634FC0755D"
 if [ "$#" -lt 2 ]; then
   cat <<USAGE
 Usage: $0 TARGET HOSTNAME [BRANCH]
