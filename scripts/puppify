@@ -13,7 +13,7 @@ USAGE
 fi
 TARGET=$1
 HOSTNAME=${2}
-BRANCH=${3:-production}
+BRANCH=${3:-master}
 OPTIONS="-oStrictHostKeyChecking=no"
 echo -n "Copying bootstrap script... "
 scp ${IDENTITY} ${OPTIONS} $(dirname $0)/bootstrap.sh ubuntu@${TARGET}:/tmp
