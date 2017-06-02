@@ -12,14 +12,18 @@ class profile::puppet {
     hour    => '*',
   }
 
-  file { '/usr/local/bin/run-puppet':
-    source => 'puppet:///modules/profile/puppet/run-puppet.sh',
-    mode   => '0755',
-  }
+  $scripts = [
+    'papply',
+    'plock',
+    'punlock',
+    'run-puppet',
+  ]
 
-  file { '/usr/local/bin/papply':
-    source => 'puppet:///modules/profile/puppet/papply.sh',
-    mode   => '0755',
+  $scripts.each | $script | {
+    file { "/usr/local/bin/${script}":
+      source => "puppet:///modules/profile/puppet/${script}.sh",
+      mode   => '0755',
+    }
   }
 
   file { '/tmp/puppet.lastrun':
