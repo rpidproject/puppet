@@ -6,4 +6,5 @@ class profile::common {
   include profile::sudoers
   include profile::timezone
   include profile::users
+  include profile::vim
 }
