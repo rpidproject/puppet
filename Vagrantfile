@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   config.vm.synced_folder ".", "/etc/puppetlabs/code/environments/production"
 
-  config.vm.hostname = "demo"
+  config.vm.hostname = "vagrant"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
