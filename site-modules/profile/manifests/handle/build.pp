@@ -2,7 +2,7 @@
 class profile::handle::build {
   file { '/tmp/Dockerfile.handle':
     source => 'puppet:///modules/profile/handle/Dockerfile.handle',
-    notify => Docker::Image['pbg-nginx'],
+    notify => Docker::Image['rpid-handle'],
   }
 
   docker::image { 'rpid-handle':

@@ -18,3 +18,4 @@
     - 'john'
     - 'balmas'
     - 'vagrant'
+  docker::manage_kernel: false
