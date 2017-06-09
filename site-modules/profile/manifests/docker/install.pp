@@ -1,4 +1,4 @@
 # Install Docker
-class profile::docker {
+class profile::docker::install {
   include docker
 }

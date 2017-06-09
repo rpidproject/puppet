@@ -1,5 +1,5 @@
 FROM library/alpine:3.1
-CMD /bin/sh -c "while true; do echo Hello, world; sleep 1; done"
+CMD /bin/sh -c "cat /srv/hs1/svr1/config.dct >/srv/hs1/svr1/cxrtest.txt"
 
 LABEL org.label-schema.vendor="RPID" \
   org.label-schema.url="http://www.handle.net/download_hnr.html" \
