@@ -23,5 +23,10 @@
   cordra::admin_password: 'dummy'
   cordra::zookeeper_host: 'zookeeper'
   cordra::mongodb_host: 'mongo'
-
-
+  handle::config:
+    node_ip_address: '127.0.0.1' 
+    http_port: 80
+    tcp_port: 8000
+    udp_port: 8000
+    log_rotation_frequency: 7
+    assigned_prefix: 'foo'

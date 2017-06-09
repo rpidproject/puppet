@@ -4,6 +4,6 @@ class profile::docker::runner {
 
   # Container support files, etc, will live under here
   file { '/docker':
-	  ensure => directory,
+    ensure => directory,
   }
 }
