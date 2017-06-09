@@ -19,3 +19,9 @@
     - 'balmas'
     - 'vagrant'
   docker::manage_kernel: false
+  site::handle_prefix: 'xxxxxx'
+  cordra::admin_password: 'dummy'
+  cordra::zookeeper_host: 'localhost'
+  cordra::mongodb_host: 'localhost'
+
+
