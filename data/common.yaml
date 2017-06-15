@@ -21,7 +21,7 @@
   docker::manage_kernel: false
   site::handle_prefix: 'xxxxxx'
   cordra::admin_password: 'dummy'
-  cordra::zookeeper_host: 'localhost'
-  cordra::mongodb_host: 'localhost'
+  cordra::zookeeper_host: 'zookeeper'
+  cordra::mongodb_host: 'mongo'
 
 

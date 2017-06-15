@@ -1,6 +1,7 @@
 # Build the Handle Server Docker image
 class profile::cordra::build {
-  include 'Docker'
+  include 'docker'
+  include 'docker::compose'
 
   file { '/docker': 
     ensure => directory,
@@ -17,6 +18,14 @@ class profile::cordra::build {
   file { '/docker/cordra/Dockerfile':
     source => 'puppet:///modules/profile/cordra/Dockerfile.cordra',
     notify => Docker::Image['rpid-cordra'],
+  }
+
+  file { '/docker/cordra/docker-compose.yml':
+    content => epp('profile/cordra/docker-compose.yml.epp', {
+      'zookeeper_host' => hiera('cordra::zookeeper_host'),
+      'mongodb_host'   => hiera('cordra::mongodb_host'),
+    }),
+    notify => Docker_compose['/docker/cordra/docker-compose.yml']
   }
 
   file { '/docker/cordra/config/config.json':
@@ -45,5 +54,17 @@ class profile::cordra::build {
   docker::image { 'rpid-cordra':
     ensure      => latest,
     docker_dir => '/docker/cordra',
+  }
+
+  docker::image {'zookeeper':
+    ensure => latest
+  }
+
+  docker::image {'mongo':
+    ensure => latest
+  }
+
+  docker_compose { '/docker/cordra/docker-compose.yml':
+    ensure => present,
   }
 }
