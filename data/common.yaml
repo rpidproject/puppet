@@ -25,6 +25,10 @@
   cordra::admin_password: 'dummy'
   cordra::zookeeper_host: 'zookeeper'
   cordra::mongodb_host: 'mongo'
+  cordra::cordra_tag: 'latest'
+  cordra::mongodb_tag: 'latest'
+  cordra::zookeeper_tag: '3.4.10'
+  handle::handle_tag: 'latest'
   handle::config:
     node_ip_address: '127.0.0.1' 
     http_port: 80

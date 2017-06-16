@@ -16,6 +16,9 @@ class cordra::server {
         'zookeeper_host' => lookup('cordra::zookeeper_host', String),
         'mongodb_host'   => lookup('cordra::mongodb_host', String),
         'config_dir'     => "${cordra_run_dir}/config",
+        'cordra_tag'     => lookup('cordra::cordra_tag', String),
+        'mongodb_tag'    => lookup('cordra::mongodb_tag', String),
+        'zookeeper_tag'  => lookup('cordra::zookeeper_tag', String),
       }
     ),
     notify  => Docker_compose["${cordra_run_dir}/docker-compose.yml"]
