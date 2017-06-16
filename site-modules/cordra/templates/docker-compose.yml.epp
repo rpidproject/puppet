@@ -1,6 +1,5 @@
 <%- | String[1] $zookeeper_host,
       String[1] $mongodb_host,
-      String[1] $config_dir,
       String[1] $cordra_tag,
       String[1] $mongodb_tag,
       String[1] $zookeeper_tag,
@@ -13,8 +12,6 @@ tomcat:
   links:
     - zoo1:<%= $zookeeper_host %>
     - mongodb:<%= $mongodb_host %>
-  volumes:
-     - <%= $config_dir %>:/config
 mongodb:
   image: mongodb/mongodb:<%= $mongodb_tag %>
   ports: 
