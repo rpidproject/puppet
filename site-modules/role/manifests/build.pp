@@ -1,5 +1,6 @@
 # Be the build node
 class role::build {
   include profile::common
-  include profile::build
+  include profile::handle::build
+  include profile::cordra::build
 }

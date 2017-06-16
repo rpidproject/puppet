@@ -24,4 +24,5 @@ node 'build' {
 
   # For testing -JA
   include role::handle
+  include role::cordra
 }

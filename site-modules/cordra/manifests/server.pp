@@ -1,52 +1,56 @@
 # Run the Cordra container
 class cordra::server {
+  $docker_run_dir = lookup('docker_run_dir', String)
+  $cordra_run_dir = "${docker_run_dir}/cordra"
+
   file { [
-    '/docker/cordra',
-    '/docker/cordra/config/'
+    $cordra_run_dir,
+    "${cordra_run_dir}/config"
   ]:
     ensure => directory,
   }
 
-  file { '/docker/cordra/docker-compose.yml':
-    content => epp('profile/cordra/docker-compose.yml.epp',
+  file { "${cordra_run_dir}/docker-compose.yml":
+    content => epp('cordra/docker-compose.yml.epp',
       {
-        'zookeeper_host' => hiera('cordra::zookeeper_host'),
-        'mongodb_host'   => hiera('cordra::mongodb_host'),
+        'zookeeper_host' => lookup('cordra::zookeeper_host', String),
+        'mongodb_host'   => lookup('cordra::mongodb_host', String),
+        'config_dir'     => "${cordra_run_dir}/config",
       }
     ),
-    notify  => Docker_compose['/docker/cordra/docker-compose.yml']
+    notify  => Docker_compose["${cordra_run_dir}/docker-compose.yml"]
   }
 
-  file { '/docker/cordra/config/config.json':
-    content => epp('profile/cordra/config.json.epp',
+  file { "${cordra_run_dir}/config/config.json":
+    content => epp('cordra/config.json.epp',
       {
-        'zookeeper_host' => hiera('cordra::zookeeper_host'),
-        'mongodb_host'   => hiera('cordra::mongodb_host'),
+        'zookeeper_host' => lookup('cordra::zookeeper_host', String),
+        'mongodb_host'   => lookup('cordra::mongodb_host', String),
       }
     ),
-    notify  => Docker_compose['/docker/cordra/docker-compose.yml']
+    notify  => Docker_compose["${cordra_run_dir}/docker-compose.yml"]
   }
 
-  file { '/docker/cordra/config/repoInit.json':
-    content => epp('profile/cordra/repoInit.json.epp',
+  file { "${cordra_run_dir}/config/repoInit.json":
+    content => epp('cordra/repoInit.json.epp',
       {
-        'admin_password' => hiera('cordra::admin_password'),
-        'handle_prefix'  => hiera('site::handle_prefix'),
+        'admin_password' => lookup('cordra::admin_password', String),
+        'handle_prefix'  => lookup('site::handle_prefix', String),
       }
     ),
-    notify  => Docker_compose['/docker/cordra/docker-compose.yml']
+    notify  => Docker_compose["${cordra_run_dir}/docker-compose.yml"]
   }
 
-  file { '/docker/cordra/config/web.xml':
-    content => epp('profile/cordra/web.xml.epp',
+  file { "${cordra_run_dir}/config/web.xml":
+    content => epp('cordra/web.xml.epp',
       {
-        'zookeeper_host' => hiera('cordra::zookeeper_host'),
+        'zookeeper_host' => lookup('cordra::zookeeper_host', String),
       }
     ),
-    notify  => Docker_compose['/docker/cordra/docker-compose.yml']
+    notify  => Docker_compose["${cordra_run_dir}/docker-compose.yml"]
   }
 
-  docker_compose { '/docker/cordra/docker-compose.yml':
+  docker_compose { "${cordra_run_dir}/docker-compose.yml":
     ensure => present,
   }
 }

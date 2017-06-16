@@ -19,6 +19,8 @@
     - 'balmas'
     - 'vagrant'
   docker::manage_kernel: false
+  docker_run_dir: '/docker/run'
+  docker_build_dir: '/docker/build'
   site::handle_prefix: 'xxxxxx'
   cordra::admin_password: 'dummy'
   cordra::zookeeper_host: 'zookeeper'

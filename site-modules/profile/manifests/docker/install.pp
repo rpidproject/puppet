@@ -3,7 +3,7 @@ class profile::docker::install {
   include docker
   include docker::compose
 
-  # Container build dirs, support files, etc, will live under here
+  # Container build/run dirs will live under here
   file { '/docker':
     ensure => directory,
   }

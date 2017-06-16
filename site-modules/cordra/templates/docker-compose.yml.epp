@@ -1,17 +1,19 @@
 <%- | String[1] $zookeeper_host,
       String[1] $mongodb_host,
+      String[1] $config_dir,
 | -%>
 tomcat:
   image: rpid-cordra
   restart: always
-  ports: 80:8080
+  ports:
+    - 80:8080
   links:
     - zoo1:<%= $zookeeper_host %>
     - mongodb:<%= $mongodb_host %>
   volumes:
-     - /docker/cordra/config:/config
+     - <%= $config_dir %>:/config
 mongodb:
-  image: mongodb
+  image: mongodb/mongodb
   ports: 
     - 27017:27017
 zoo1:
