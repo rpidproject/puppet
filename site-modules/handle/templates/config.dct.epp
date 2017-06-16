@@ -1,9 +1,9 @@
 <%- | Type::IPAddress $node_ip_address,
-     Type::PortNumber $http_port,
-     Type::PortNumber $udp_port,
-     Type::PortNumber $tcp_port,
-     Integer $log_rotation_frequency,
-     String[1] $assigned_prefix,
+      Type::PortNumber $http_port,
+      Type::PortNumber $udp_port,
+      Type::PortNumber $tcp_port,
+      Integer $log_rotation_frequency,
+      String[1] $assigned_prefix,
 | -%>
 {
   "hdl_http_config" = {

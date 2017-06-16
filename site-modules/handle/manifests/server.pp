@@ -8,7 +8,7 @@ class handle::server {
   }
 
   file { "${handle_run_dir}/config.dct":
-    content => epp('handle/config.dct.epp', hiera('handle::config')),
+    content => epp('handle/config.dct.epp', lookup('handle::config', Hash, 'hash')),
   }
 
   $handle_tag = lookup('handle::handle_tag')
