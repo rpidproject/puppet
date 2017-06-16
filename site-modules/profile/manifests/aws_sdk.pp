@@ -1,5 +1,5 @@
 # Install the AWS Ruby SDK
-class site::profiles::aws_sdk {
+class profile::aws_sdk {
   # We need aws-sdk-core in the Puppet context,
   # for AWS orchestration to work
   ensure_packages(['aws-sdk-core', 'retries'],
