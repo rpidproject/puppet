@@ -29,4 +29,4 @@
     tcp_port: 8000
     udp_port: 8000
     log_rotation_frequency: 7
-    assigned_prefix: 'foo'
+    assigned_prefix: "%{alias('site::handle_prefix')}"

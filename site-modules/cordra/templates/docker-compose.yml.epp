@@ -1,6 +1,5 @@
-<%- | 
-  String[1] $zookeeper_host,
-  String[1] $mongodb_host,
+<%- | String[1] $zookeeper_host,
+      String[1] $mongodb_host,
 | -%>
 tomcat:
   image: rpid-cordra
@@ -9,6 +8,8 @@ tomcat:
   links:
     - zoo1:<%= $zookeeper_host %>
     - mongodb:<%= $mongodb_host %>
+  volumes:
+     - /docker/cordra/config:/config
 mongodb:
   image: mongodb
   ports: 

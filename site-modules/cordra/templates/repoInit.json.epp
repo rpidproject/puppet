@@ -1,6 +1,5 @@
-<%- | 
-  String[1] $admin_password,
-  String[1] $handle_prefix,
+<%- | String[1] $admin_password,
+      String[1] $handle_prefix,
 | -%>
 {
   "adminPassword":"<%= $admin_password %>",

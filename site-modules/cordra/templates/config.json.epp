@@ -1,6 +1,5 @@
-<%- | 
-  String[1] $zookeeper_host,
-  String[1] $mongodb_host,
+<%- | String[1] $zookeeper_host,
+      String[1] $mongodb_host,
 | -%>
 
 {

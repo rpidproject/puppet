@@ -11,6 +11,4 @@ RUN apt-get update && apt-get install -y \
 
 RUN curl -o /tmp/cordra.zip https://www.cordra.org/unconfiguredInstanceDownload
 
-ADD config /config
-
 CMD ["catalina.sh", "run"]
