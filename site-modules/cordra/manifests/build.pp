@@ -11,15 +11,12 @@ class cordra::build {
   }
 
   file { "${cordra_build_dir}/Dockerfile":
-    source => 'puppet:///modules/cordra/Dockerfile.cordra',
-    notify => Docker::Image['rpid-cordra'],
-  }
-
-  file { "${cordra_build_dir}/config/config.json":
-    content => epp('cordra/config.json.epp',
+    content => epp('cordra/Dockerfile.cordra.epp',
       {
-        'zookeeper_host' => lookup('cordra::zookeeper_host', String),
-        'mongodb_host'   => lookup('cordra::mongodb_host', String),
+        'http_port'  => '8080',
+        'https_port' => '8443',
+        'port'       => '9000',
+        'ssl_port'   => '0',
       }
     ),
     notify => Docker::Image['rpid-cordra'],
@@ -30,15 +27,6 @@ class cordra::build {
       {
         'admin_password' => lookup('cordra::admin_password', String),
         'handle_prefix'  => lookup('site::handle_prefix', String),
-      }
-    ),
-    notify => Docker::Image['rpid-cordra'],
-  }
-
-  file { "${cordra_build_dir}/config/web.xml":
-    content => epp('cordra/web.xml.epp',
-      {
-        'zookeeper_host' => lookup('cordra::zookeeper_host', String),
       }
     ),
     notify => Docker::Image['rpid-cordra'],

@@ -1,0 +1,28 @@
+<%- | 
+  String[1] $https_port,
+  String[1] $http_port,
+  String[1] $port,
+  String[1] $ssl_port,
+| -%>
+FROM openjdk:8u131-jdk
+
+LABEL org.label-schema.vendor="RPID" \
+  org.label-schema.url="https://www.cordra.org/unconfiguredInstanceDownload" \
+  org.label-schema.name="Cordra Server" \
+  org.label-schema.version="1.0.7" \
+  org.label-schema.docker.schema-version="1.0"
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    unzip
+
+RUN curl -o /tmp/cordra.zip https://www.cordra.org/unconfiguredInstanceDownload  && unzip /tmp/cordra.zip && rm /tmp/cordra.zip
+
+VOLUME  /data
+
+EXPOSE <%= $https_port %> <%= $http_port %> <%= $ssl_port %> <%= $port %>
+
+WORKDIR /cordra-1.0.7
+
+CMD ["sh", "-c", "/cordra-1.0.7/sw/bin/do-server /data"]
+

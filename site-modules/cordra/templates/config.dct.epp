@@ -1,0 +1,24 @@
+<%- | 
+  String[1] $port,
+  String[1] $http_port,
+  String[1] $https_port,
+  String[1] $ssl_port,
+  String[1] $redirect_stderr,
+  String[1] $enable_pull_replication,
+  String[1] $serverid,
+  String[1] $log_save_internal,
+  String[1] $log_accesses,
+| -%>
+{
+  "serviceid" = "{prefix}/repo"
+  "port" = "<%= $port %>"
+  "ssl_port" = "<%= $ssl_port %>"
+  "http_port" = "<%= $http_port %>"
+  "https_port" = "<%= $https_port %>"
+  "redirect_stderr" = "<%= $redirect_stderr %>"
+  "enable_pull_replication" = "<%= $enable_pull_replication %>"
+  "serverid" = "<%= $serverid %>"
+  "log_save_interval" = "<%= $log_save_internal %>"
+  "log_accesses" = "<%= $log_access %>"
+}
+
