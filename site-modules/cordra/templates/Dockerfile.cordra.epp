@@ -1,8 +1,8 @@
 <%- | 
-  String[1] $https_port,
-  String[1] $http_port,
-  String[1] $port,
-  String[1] $ssl_port,
+  Type::PortNumber $https_port,
+  Type::PortNumber $http_port,
+  Type::PortNumber $port,
+  Type::PortNumber $ssl_port,
 | -%>
 FROM openjdk:8u131-jdk
 
