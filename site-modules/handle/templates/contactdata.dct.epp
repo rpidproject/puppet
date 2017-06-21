@@ -1,0 +1,7 @@
+<%- | String[1] $admin_email,
+      String[1] $admin_org_name,
+| -%>
+{
+  "contact_email" = "<%= $admin_email %>"
+  "org_name" = "<%= $admin_org_name %>"
+}

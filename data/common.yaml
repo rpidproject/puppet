@@ -32,3 +32,5 @@
     udp_port: 8000
     log_rotation_frequency: 7
     assigned_prefix: "%{alias('site::handle_prefix')}"
+  handle::admin_email: 'bridget.almas@tufts.edu'
+  handle::admin_org_name: 'RPID'
