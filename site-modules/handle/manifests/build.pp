@@ -10,7 +10,9 @@ class handle::build {
   file { "${handle_build_dir}/Dockerfile":
     content => epp('handle/Dockerfile.handle.epp',
       {
+        'docker_base'         => lookup('handle::docker_base'),
         'handle_download_url' => lookup('handle::download_url'),
+        'handle_user'         => lookup('handle::user'),
       }
     ),
     notify  => Docker::Image['rpid-handle'],

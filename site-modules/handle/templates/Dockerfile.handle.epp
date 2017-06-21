@@ -1,5 +1,8 @@
-<%- | String[1] $handle_download_url | -%>
-FROM library/alpine:3.1
+<%- | String[1] $docker_base,
+      String[1] $handle_download_url,
+      String[1] $handle_user,
+| -%>
+FROM <%= $docker_base %>
 
 LABEL org.label-schema.vendor="RPID" \
   org.label-schema.url="http://www.handle.net/download_hnr.html" \
@@ -9,13 +12,20 @@ LABEL org.label-schema.vendor="RPID" \
 
 WORKDIR /handle
 
+# Install required packages
 RUN apk add --update \
   curl \
   tar \
   && rm -rf /var/cache/apk/*
 
+# Download and unpack Handle Server distribution
 RUN curl <%= $handle_download_url %> \
   | tar xz --strip-components=1
+
+# Add handle user and group and set ownership of server directory
+RUN addgroup -S <%= $handle_user %> \
+  && adduser -S -g <%= $handle_user %> <%= $handle_user %> \
+  && chown -R <%= $handle_user %>:<%= $handle_user %> .
 
 # For debugging
 CMD tail -f /dev/null
