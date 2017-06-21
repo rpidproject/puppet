@@ -23,6 +23,9 @@ class handle::server {
   $handle_tag = lookup('handle::handle_tag')
   docker::run { 'rpid-handle':
     image   => "rpid-handle:${handle_tag}",
-    volumes => ["${handle_run_dir}:/handle"],
+    volumes => [
+      "${handle_run_dir}/config.dct:/handle/config.dct",
+      "${handle_run_dir}/contactdata.dct:/handle/contactdata.dct",
+    ],
   }
 }
