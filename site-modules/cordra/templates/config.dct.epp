@@ -1,33 +1,20 @@
-<%- | 
-  Type::PortNumber $https_port,
-  Type::PortNumber $http_port,
-  Type::PortNumber $port,
-  Type::PortNumber $ssl_port,
-  Type::IPAddress $listen_address,
-  Type::IPAddress $public_address,
-  String[1] $redirect_stderr,
-  String[1] $enable_pull_replication,
-  String[1] $serverid,
-  String[1] $log_save_internal,
-  String[1] $log_accesses,
-  String[1] $admin_handle,
-  String[1] $assigned_prefix,
-  String[1] $dtr_prefix,
+<%- | Hash[String, Type::PortNumber] $ports,
+      Hash $server,
 | -%>
 {
-  "server_admin" = "<%= $admin_handle %>"
-  "port" = "<%= $port %>"
-  "redirect_stderr" = "<%= $redirect_stderr %>"
-  "enable_pull_replication" = "<%= $enable_pull_replication %>"
-  "http_port" = "<%= $http_port %>"
-  "listen_address = "<%= $listen_address %>"
-  "log_save_interval" = "<%= $log_save_internal %>"
-  "public_address" = <%= $public_address %>"
-  "serviceid" = "<%= $assigned_prefix %>/repo"
-  "ssl_port" = "<%= $ssl_port %>"
-  "https_port" = "<%= $https_port %>"
-  "serverid" = "<%= $serverid %>"
-  "log_accesses" = "<%= $log_access %>"
-  "handle_prefix" = "<%= $assigned_prefix %>.<%= $dtr_prefix %>-"
+  "server_admin" = "<%= $server['admin_handle'] %>"
+  "port" = "<%= $ports['server'] %>"
+  "redirect_stderr" = "<%= $server['redirect_stderr'] %>"
+  "enable_pull_replication" = "<%= $server['enable_pull_replication'] %>"
+  "http_port" = "<%= $ports['http'] %>"
+  "listen_address = "<%= $server['listen_address'] %>"
+  "log_save_interval" = "<%= $server['log_save_interval'] %>"
+  "public_address" = <%= $server['public_address'] %>"
+  "serviceid" = "<%= $server['assigned_prefix'] %>/repo"
+  "ssl_port" = "<%= $ports['ssl'] %>"
+  "https_port" = "<%= $ports['https'] %>"
+  "serverid" = "<%= $server['serverid'] %>"
+  "log_accesses" = "<%= $server['log_accesses'] %>"
+  "handle_prefix" = "<%= $server['assigned_prefix'] %>.<%= $server['dtr_prefix'] %>-"
 }
 

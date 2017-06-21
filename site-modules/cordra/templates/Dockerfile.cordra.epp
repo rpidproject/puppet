@@ -1,9 +1,4 @@
-<%- | 
-  Type::PortNumber $https_port,
-  Type::PortNumber $http_port,
-  Type::PortNumber $port,
-  Type::PortNumber $ssl_port,
-| -%>
+<%- | Hash[String, Type::PortNumber] $ports | -%>
 FROM openjdk:8u131-jdk
 
 LABEL org.label-schema.vendor="RPID" \
@@ -20,7 +15,7 @@ RUN curl -o /tmp/cordra.zip https://www.cordra.org/unconfiguredInstanceDownload 
 
 VOLUME  /data
 
-EXPOSE <%= $https_port %> <%= $http_port %> <%= $ssl_port %> <%= $port %>
+EXPOSE <%= $ports['https'] %> <%= $ports['http'] %> <%= $ports['server'] %> <%= $ports['ssl'] %>
 
 WORKDIR /cordra-1.0.7
 

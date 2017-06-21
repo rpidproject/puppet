@@ -17,13 +17,18 @@ class cordra::server {
     content => epp('cordra/repoInit.json.epp', 
       {
         'admin_password' => lookup('cordra::admin_password'),
-        'handle_prefix'   => lookup('site::handle_prefix'),
+        'handle_prefix'  => lookup('site::handle_prefix'),
       }
     ),
   }
 
   file { "${cordra_data_dir}/config.dct":
-    content => epp('cordra/config.dct.epp', lookup('cordra::config::ports', Hash, 'hash').merge(lookup('cordra::config::server',Hash, 'hash'))),
+    content => epp('cordra/config.dct.epp',
+      {
+        'ports'  => lookup('cordra::config.ports', Hash, 'hash'),
+        'server' => lookup('cordra::config.server', Hash, 'hash'),
+      }
+    ),
   }
 
   file { "${cordra_data_dir}/password.dct":
@@ -37,10 +42,10 @@ class cordra::server {
   file { "${cordra_data_dir}/serverinfo.xml":
     content => epp('cordra/serverinfo.xml.epp', 
       {
-        'serverid'       => lookup('cordra::config::server.serverid'),
-        'servername'     => "RPID Cordra Server",
-        'public_address' => lookup('cordra::config::server.public_address'),
-        'port'           => lookup('cordra::config::ports.port'),
+        'serverid'       => lookup('cordra::config.server.serverid'),
+        'servername'     => lookup('cordra::config.server.servername'),
+        'public_address' => lookup('cordra::config.server.public_address'),
+        'port'           => lookup('cordra::config.ports.server'),
       }
     )
   }
@@ -49,7 +54,7 @@ class cordra::server {
     content => epp('cordra/knowbots.config.dct.epp', 
       {
         'assigned_prefix' => lookup('site::handle_prefix'),
-        'admin_handle' => lookup('site::handle_prefix'),
+        'admin_handle'    => lookup('site::handle_prefix'),
       }
     )
   }

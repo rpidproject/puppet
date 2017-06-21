@@ -24,6 +24,24 @@
   site::handle_prefix: 'xxxxxx'
   cordra::admin_password: 'dummy'
   cordra::cordra_tag: 'latest'
+  cordra::config:
+    server:
+      serverid: 'TBD'
+      servername: 'RPID Cordra Server'
+      admin_handle: 'TBD'
+      listen_address: '127.0.0.1'
+      public_address: '127.0.0.1'
+      redirect_stderr: false
+      enable_pull_replication: false
+      log_accesses: 'No idea'
+      log_save_interval: 7
+      dtr_prefix: '???'
+      assigned_prefix: 'My hands are typing words'
+    ports:
+      https: 443
+      http: 80
+      server: 9000
+      ssl: 9001
   handle::handle_tag: 'latest'
   handle::config:
     node_ip_address: '127.0.0.1' 
