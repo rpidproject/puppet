@@ -1,8 +1,18 @@
+<%- | String[1] $handle_download_url | -%>
 FROM library/alpine:3.1
-CMD /bin/sh -c "cat /srv/hs1/svr1/config.dct >/srv/hs1/svr1/cxrtest.txt"
 
 LABEL org.label-schema.vendor="RPID" \
   org.label-schema.url="http://www.handle.net/download_hnr.html" \
   org.label-schema.name="Handle Server" \
   org.label-schema.version="0.0.1" \
   org.label-schema.docker.schema-version="1.0"
+
+WORKDIR /handle
+
+RUN apk add --update \
+  curl \
+  tar \
+  && rm -rf /var/cache/apk/*
+
+RUN curl <%= $handle_download_url %> \
+  | tar xz --strip-components=1

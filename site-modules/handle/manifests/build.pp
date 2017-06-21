@@ -7,9 +7,13 @@ class handle::build {
     ensure => directory,
   }
 
-  file { "${handle_build_dir}/Dockerfile.handle":
-    source => 'puppet:///modules/handle/Dockerfile.handle',
-    notify => Docker::Image['rpid-handle'],
+  file { "${handle_build_dir}/Dockerfile":
+    content => epp('handle/Dockerfile.handle.epp',
+      {
+        'handle_download_url' => lookup('handle::download_url'),
+      }
+    ),
+    notify  => Docker::Image['rpid-handle'],
   }
 
   docker::image { 'rpid-handle':
