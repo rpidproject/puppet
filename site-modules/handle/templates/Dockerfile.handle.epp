@@ -16,3 +16,6 @@ RUN apk add --update \
 
 RUN curl <%= $handle_download_url %> \
   | tar xz --strip-components=1
+
+# For debugging
+CMD tail -f /dev/null
