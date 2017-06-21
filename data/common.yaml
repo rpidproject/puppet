@@ -23,6 +23,8 @@
   docker_build_dir: '/docker/build'
   site::handle_prefix: 'xxxxxx'
   cordra::admin_password: 'dummy'
+  cordra::download_url: 'https://www.cordra.org/unconfiguredInstanceDownload'
+  cordra::docker_base: 'openjdk:8u131-jre-alpine'
   cordra::cordra_tag: 'latest'
   cordra::config:
     server:

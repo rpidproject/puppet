@@ -1,5 +1,8 @@
-<%- | Hash[String, Type::PortNumber] $ports | -%>
-FROM openjdk:8u131-jdk
+<%- | String[1] $docker_base,
+      String[1] $cordra_download_url,
+      Hash[String, Type::PortNumber] $ports 
+| -%>
+FROM <%= $docker_base %>
 
 LABEL org.label-schema.vendor="RPID" \
   org.label-schema.url="https://www.cordra.org/unconfiguredInstanceDownload" \
@@ -7,13 +10,17 @@ LABEL org.label-schema.vendor="RPID" \
   org.label-schema.version="1.0.7" \
   org.label-schema.docker.schema-version="1.0"
 
-RUN apt-get update && apt-get install -y \
-    curl \
-    unzip
+# Install required packages
+RUN apk add --update \
+  curl \
+  unzip \
+  && rm -rf /var/cache/apk/*
 
-RUN curl -o /tmp/cordra.zip https://www.cordra.org/unconfiguredInstanceDownload  && unzip /tmp/cordra.zip && rm /tmp/cordra.zip
+RUN curl -o /tmp/cordra.zip <%= $cordra_download_url %> \
+  && unzip /tmp/cordra.zip \
+  && rm /tmp/cordra.zip
 
-VOLUME  /data
+VOLUME /data
 
 EXPOSE <%= $ports['https'] %> <%= $ports['http'] %> <%= $ports['server'] %> <%= $ports['ssl'] %>
 

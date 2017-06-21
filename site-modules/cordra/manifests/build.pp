@@ -13,7 +13,9 @@ class cordra::build {
   file { "${cordra_build_dir}/Dockerfile":
     content => epp('cordra/Dockerfile.cordra.epp',
       {
-        'ports' => lookup('cordra::config.ports', Hash, 'hash'),
+        'docker_base'         => lookup('cordra::docker_base'),
+        'ports'               => lookup('cordra::config.ports', Hash, 'hash'),
+        'cordra_download_url' => lookup('cordra::download_url'),
       }
     ),
     notify => Docker::Image['rpid-cordra'],
