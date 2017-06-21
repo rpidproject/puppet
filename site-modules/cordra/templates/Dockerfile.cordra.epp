@@ -29,5 +29,4 @@ VOLUME /data
 
 EXPOSE <%= $ports['https'] %> <%= $ports['http'] %> <%= $ports['server'] %> <%= $ports['ssl'] %>
 
-CMD ["sh", "-c", "/cordra/sw/bin/do-server /data"]
-
+CMD ["/cordra/sw/bin/do-server", "/data"]
