@@ -28,17 +28,17 @@
   cordra::cordra_tag: 'latest'
   cordra::config:
     server:
-      serverid: 'TBD'
+      serverid: '1'
       servername: 'RPID Cordra Server'
-      admin_handle: 'TBD'
+      admin_handle: "%{alias('site::handle_prefix')}"
       listen_address: '127.0.0.1'
       public_address: '127.0.0.1'
-      redirect_stderr: false
-      enable_pull_replication: false
-      log_accesses: 'No idea'
-      log_save_interval: 7
-      dtr_prefix: '???'
-      assigned_prefix: 'My hands are typing words'
+      redirect_stderr: 'no'
+      enable_pull_replication: 'no'
+      log_accesses: 'yes'
+      log_save_interval: 'Monthly'
+      dtr_prefix: '1'
+      assigned_prefix: "%{alias('site::handle_prefix')}"
     ports:
       https: 443
       http: 80
