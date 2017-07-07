@@ -58,4 +58,6 @@ CMD if [[ -f sitebndl.zip ]]; then \
         siteinfo.json \
         ; \
       echo done.; \
-    fi
+    fi ;\
+    echo Starting server...; \
+    /handle/bin/hdl-server /handleserver
