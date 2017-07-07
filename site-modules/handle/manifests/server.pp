@@ -40,8 +40,11 @@ class handle::server {
   $handle_tag = lookup('handle::handle_tag')
   docker::run { 'rpid-handle':
     image   => "rpid-handle:${handle_tag}",
-    volumes => [
-      "${handle_run_dir}:/handleserver",
+    volumes => "${handle_run_dir}:/handleserver",
+    ports   => [
+      $ports['http'],
+      $ports['tcp'],
+      "${ports['udp']}/udp",
     ],
   }
 }
