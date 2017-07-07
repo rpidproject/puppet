@@ -47,6 +47,8 @@
   handle::handle_tag: 'latest'
   handle::config:
     server:
+      primarysite: true
+      multiprimary: false
       servername: 'RPID Handle Server'
       listen_address: '127.0.0.1' 
       public_address: '127.0.0.1' 

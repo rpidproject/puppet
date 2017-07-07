@@ -46,7 +46,6 @@ CMD if [[ -f sitebndl.zip ]]; then \
       /handle/bin/hdl-keygen -alg RSA -keysize 1024 admpriv.bin admpub.bin <passphrase.tmp; \
       /handle/bin/hdl-keygen -alg RSA -keysize 1024 privkey.bin pubkey.bin <passphrase.tmp; \
       chown handle:handle admpriv.bin admpub.bin privkey.bin pubkey.bin; \
-      rm passphrase.tmp; \
       PUBKEY=`/usr/bin/xxd -p pubkey.bin |tr -d \\\\n`; \
       sed -- "s/PUBKEY_PLACEHOLDER/${PUBKEY}/" siteinfo.json.tmp >siteinfo.json; \
       echo "300:0.NA/YOUR_PREFIX" >repl_admin; \
@@ -60,4 +59,4 @@ CMD if [[ -f sitebndl.zip ]]; then \
       echo done.; \
     fi ;\
     echo Starting server...; \
-    /handle/bin/hdl-server /handleserver
+    /handle/bin/hdl-server /handleserver <passphrase.tmp

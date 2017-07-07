@@ -30,6 +30,8 @@ class handle::server {
   file { "${handle_run_dir}/siteinfo.json.tmp":
     content => epp('handle/siteinfo.json.epp',
       {
+        'primarysite'    => $config['primarysite'],
+        'multiprimary'   => $config['multiprimary'],
         'servername'     => $config['servername'],
         'public_address' => $config['public_address'],
 				'ports'          => $ports,

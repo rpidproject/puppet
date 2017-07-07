@@ -1,4 +1,6 @@
-<%- | String $servername,
+<%- | Boolean $primarysite,
+      Boolean $multiprimary,
+      String $servername,
       Type::IPAddress $public_address,
       Hash[String, Type::PortNumber] $ports,
 | -%>
@@ -6,8 +8,8 @@
   "version": 1,
   "protocolVersion": "2.10",
   "serialNumber": 1,
-  "primarySite": true,
-  "multiPrimary": true,
+  "primarySite": <%= $primarysite %>,
+  "multiPrimary": <%= $multiprimary %>,
   "attributes": [
     {
       "name": "desc",
