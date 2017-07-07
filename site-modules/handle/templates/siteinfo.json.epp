@@ -1,0 +1,47 @@
+<%- | String $servername,
+      Type::IPAddress $public_address,
+      Hash[String, Type::PortNumber] $ports,
+| -%>
+{
+  "version": 1,
+  "protocolVersion": "2.10",
+  "serialNumber": 1,
+  "primarySite": true,
+  "multiPrimary": true,
+  "attributes": [
+    {
+      "name": "desc",
+      "value": "<%= $servername %>"
+    }
+  ],
+  "servers": [
+    {
+      "serverId": 1,
+      "address": "<%= $public_address %>",
+      "publicKey": {
+        "format": "hex",
+        "value": "PUBKEY_PLACEHOLDER"
+      },
+      "interfaces": [
+        {
+          "query": true,
+          "admin": true,
+          "protocol": "TCP",
+          "port": <%= $ports['tcp'] %>
+        },
+        {
+          "query": true,
+          "admin": false,
+          "protocol": "UDP",
+          "port": <%= $ports['udp'] %>
+        },
+        {
+          "query": true,
+          "admin": true,
+          "protocol": "HTTP",
+          "port": <%= $ports['http'] %>
+        }
+      ]
+    }
+  ]
+}

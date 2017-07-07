@@ -13,19 +13,44 @@ LABEL org.label-schema.vendor="RPID" \
 WORKDIR /handle
 
 # Install required packages
+# (vim is required for the xxd tool, which we use later)
 RUN apk add --update \
-  curl \
-  tar \
-  && rm -rf /var/cache/apk/*
+      curl \
+      tar \
+      vim \
+      zip \
+ && rm -rf /var/cache/apk/*
 
 # Download and unpack Handle Server distribution
 RUN curl <%= $handle_download_url %> \
-  | tar xz --strip-components=1
+      | tar xz --strip-components=1
 
 # Add handle user and group and set ownership of server directory
 RUN addgroup -S <%= $handle_user %> \
-  && adduser -S -g <%= $handle_user %> <%= $handle_user %> \
-  && chown -R <%= $handle_user %>:<%= $handle_user %> .
+ && adduser -S -g <%= $handle_user %> <%= $handle_user %> \
+ && chown -R <%= $handle_user %>:<%= $handle_user %> .
 
-# For debugging
-CMD tail -f /dev/null
+WORKDIR /handleserver
+
+CMD if [[ -f /sitebndl/sitebndl.zip ]]; then \
+      echo sitebndl.zip exists, skipping creation...; \
+    else \
+      echo No sitebndl.zip found, creating...; \
+      echo "" > passphrase.tmp; \
+      echo Generating keys...; \
+      /handle/bin/hdl-keygen -alg RSA -keysize 1024 admpriv.bin admpub.bin <passphrase.tmp; \
+      /handle/bin/hdl-keygen -alg RSA -keysize 1024 privkey.bin pubkey.bin <passphrase.tmp; \
+      chown handle:handle admpriv.bin admpub.bin privkey.bin pubkey.bin; \
+      rm passphrase.tmp; \
+      PUBKEY=`/usr/bin/xxd -p pubkey.bin |tr -d \\\\n`; \
+      sed -- "s/PUBKEY_PLACEHOLDER/${PUBKEY}/" siteinfo.json.tmp >siteinfo.json; \
+      echo "300:0.NA/YOUR_PREFIX" >repl_admin; \
+      echo Writing sitebndl.zip file...; \
+      zip /sitebndl/sitebndl.zip \
+        admpub.bin \
+        contactdata.dct \
+        repl_admin \
+        siteinfo.json \
+        ; \
+      echo done.; \
+    fi

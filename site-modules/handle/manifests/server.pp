@@ -2,20 +2,40 @@
 class handle::server {
   $docker_run_dir = lookup('docker_run_dir', String)
   $handle_run_dir = "${docker_run_dir}/handle"
+	$config = lookup('handle::config.server', Hash, 'hash')
+	$ports = lookup('handle::config.ports', Hash, 'hash')
 
-  file { $handle_run_dir:
+  file { [
+	  $handle_run_dir,
+		"${handle_run_dir}/sitebndl",
+	]:
     ensure => directory,
   }
 
   file { "${handle_run_dir}/config.dct":
-    content => epp('handle/config.dct.epp', lookup('handle::config', Hash, 'hash')),
+    content => epp('handle/config.dct.epp',
+		  {
+        'config' => $config,
+        'ports'  => $ports,
+			}
+		),
   }
 
   file { "${handle_run_dir}/contactdata.dct":
     content => epp('handle/contactdata.dct.epp',
       {
-        'admin_email'    => lookup('handle::admin_email'),
-        'admin_org_name' => lookup('handle::admin_org_name'),
+        'admin_email'    => $config['admin_email'],
+        'admin_org_name' => $config['admin_org_name'],
+      },
+    ),
+  }
+
+  file { "${handle_run_dir}/siteinfo.json.tmp":
+    content => epp('handle/siteinfo.json.epp',
+      {
+        'servername'     => $config['servername'],
+        'public_address' => $config['public_address'],
+				'ports'          => $ports,
       },
     ),
   }
@@ -24,8 +44,10 @@ class handle::server {
   docker::run { 'rpid-handle':
     image   => "rpid-handle:${handle_tag}",
     volumes => [
-      "${handle_run_dir}/config.dct:/handle/config.dct",
-      "${handle_run_dir}/contactdata.dct:/handle/contactdata.dct",
+      "${handle_run_dir}/config.dct:/handleserver/config.dct",
+      "${handle_run_dir}/contactdata.dct:/handleserver/contactdata.dct",
+      "${handle_run_dir}/siteinfo.json.tmp:/handleserver/siteinfo.json.tmp",
+      "${handle_run_dir}/sitebndl:/sitebndl",
     ],
   }
 }

@@ -1,36 +1,32 @@
-<%- | Type::IPAddress $node_ip_address,
-      Type::PortNumber $http_port,
-      Type::PortNumber $udp_port,
-      Type::PortNumber $tcp_port,
-      Integer $log_rotation_frequency,
-      String[1] $assigned_prefix,
+<%- | Hash $config,
+      Hash $ports,
 | -%>
 {
   "hdl_http_config" = {
-    "bind_address" = "<%= $node_ip_address %>"
+    "bind_address" = "<%= $config['listen_address'] %>"
     "num_threads" = "15"
-    "bind_port" = "<%= $http_port %>"
+    "bind_port" = "<%= $ports['http'] %>"
     "log_accesses" = "yes"
   }
 
   "server_type" = "server"
   "hdl_udp_config" = {
-    "bind_address" = "<%= $node_ip_address %>"
+    "bind_address" = "<%= $config['listen_address'] %>"
     "num_threads" = "15"
-    "bind_port" = "<%= $udp_port %>"
+    "bind_port" = "<%= $ports['udp'] %>"
     "log_accesses" = "yes"
   }
 
   "hdl_tcp_config" = {
-    "bind_address" = "<%= $node_ip_address %>"
+    "bind_address" = "<%= $config['listen_address'] %>"
     "num_threads" = "15"
-    "bind_port" = "<%= $tcp_port %>"
+    "bind_port" = "<%= $ports['tcp'] %>"
     "log_accesses" = "yes"
   }
 
   "log_save_config" = {
     "log_save_directory" = "logs"
-    "log_save_interval" = "<%= $log_rotation_frequency %>"
+    "log_save_interval" = "<%= $config['log_rotation_frequency'] %>"
   }
 
   "no_udp_resolution" = "no"
@@ -42,11 +38,11 @@
 
   "server_config" = {
     "server_admins" = (
-      "300:0.NA/<%= $assigned_prefix %>"
+      "300:0.NA/<%= $config['assigned_prefix'] %>"
     )
 
     "replication_admins" = (
-      "301:0.NA/<%= $assigned_prefix %>"
+      "301:0.NA/<%= $config['assigned_prefix'] %>"
     )
 
     "max_session_time" = "86400000"
@@ -55,9 +51,9 @@
     "server_admin_full_access" = "yes"
     "case_sensitive" = "no"
     "auto_homed_prefixes" = (
-      "0.NA/<%= $assigned_prefix %>"
+      "0.NA/<%= $config['assigned_prefix'] %>"
     )
-    "replication_sites_handle" = "0.NA/<%= $assigned_prefix %>"
-    "replication_authentication" = "privatekey:301:0.NA/<%= $assigned_prefix %>"
+    "replication_sites_handle" = "0.NA/<%= $config['assigned_prefix'] %>"
+    "replication_authentication" = "privatekey:301:0.NA/<%= $config['assigned_prefix'] %>"
   }
 }

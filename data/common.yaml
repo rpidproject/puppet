@@ -46,14 +46,18 @@
       ssl: 9001
   handle::handle_tag: 'latest'
   handle::config:
-    node_ip_address: '127.0.0.1' 
-    http_port: 80
-    tcp_port: 8000
-    udp_port: 8000
-    log_rotation_frequency: 7
-    assigned_prefix: "%{alias('site::handle_prefix')}"
-  handle::admin_email: 'bridget.almas@tufts.edu'
-  handle::admin_org_name: 'RPID'
+    server:
+      servername: 'RPID Handle Server'
+      listen_address: '127.0.0.1' 
+      public_address: '127.0.0.1' 
+      assigned_prefix: "%{alias('site::handle_prefix')}"
+      admin_email: 'bridget.almas@tufts.edu'
+      admin_org_name: 'RPID'
+      log_rotation_frequency: 7
+    ports:
+      http: 80
+      tcp: 8000
+      udp: 8000
   handle::download_url: 'http://www.handle.net/hnr-source/hsj-8.1.1.tar.gz'
   handle::user: 'handle'
   handle::docker_base: 'openjdk:8u131-jre-alpine'
