@@ -13,6 +13,7 @@ class handle::build {
         'docker_base'         => lookup('handle::docker_base'),
         'handle_download_url' => lookup('handle::download_url'),
         'handle_user'         => lookup('handle::user'),
+        'ports'               => lookup('handle::config.ports'),
       }
     ),
     notify  => Docker::Image['rpid-handle'],

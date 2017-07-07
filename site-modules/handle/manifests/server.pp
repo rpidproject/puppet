@@ -5,10 +5,7 @@ class handle::server {
 	$config = lookup('handle::config.server', Hash, 'hash')
 	$ports = lookup('handle::config.ports', Hash, 'hash')
 
-  file { [
-	  $handle_run_dir,
-		"${handle_run_dir}/sitebndl",
-	]:
+  file { $handle_run_dir:
     ensure => directory,
   }
 
@@ -44,10 +41,7 @@ class handle::server {
   docker::run { 'rpid-handle':
     image   => "rpid-handle:${handle_tag}",
     volumes => [
-      "${handle_run_dir}/config.dct:/handleserver/config.dct",
-      "${handle_run_dir}/contactdata.dct:/handleserver/contactdata.dct",
-      "${handle_run_dir}/siteinfo.json.tmp:/handleserver/siteinfo.json.tmp",
-      "${handle_run_dir}/sitebndl:/sitebndl",
+      "${handle_run_dir}:/handleserver",
     ],
   }
 }
