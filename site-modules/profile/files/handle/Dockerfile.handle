@@ -1,8 +1,0 @@
-FROM library/alpine:3.1
-CMD /bin/sh -c "while true; do echo Hello, world; sleep 1; done"
-
-LABEL org.label-schema.vendor="RPID" \
-  org.label-schema.url="http://www.handle.net/download_hnr.html" \
-  org.label-schema.name="Handle Server" \
-  org.label-schema.version="0.0.1" \
-  org.label-schema.docker.schema-version="1.0"

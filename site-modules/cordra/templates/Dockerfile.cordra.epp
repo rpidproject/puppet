@@ -1,0 +1,32 @@
+<%- | String[1] $docker_base,
+      String[1] $cordra_download_url,
+      Hash[String, Type::PortNumber] $ports 
+| -%>
+FROM <%= $docker_base %>
+
+LABEL org.label-schema.vendor="RPID" \
+  org.label-schema.url="https://www.cordra.org/unconfiguredInstanceDownload" \
+  org.label-schema.name="Cordra Server" \
+  org.label-schema.version="1.0.7" \
+  org.label-schema.docker.schema-version="1.0"
+
+WORKDIR /cordra
+
+# Install required packages
+RUN apk add --update \
+  curl \
+  unzip \
+  && rm -rf /var/cache/apk/*
+
+# Download and unpack Cordra distribution
+RUN curl -o /tmp/cordra.zip <%= $cordra_download_url %> \
+  && unzip -d /tmp/cordra /tmp/cordra.zip \
+  && mv /tmp/cordra/cordra-*/* /cordra \
+  && rm /tmp/cordra.zip \
+  && rm -r /tmp/cordra
+
+VOLUME /data
+
+EXPOSE <%= $ports['https'] %> <%= $ports['http'] %> <%= $ports['server'] %> <%= $ports['ssl'] %>
+
+CMD ["/cordra/sw/bin/do-server", "/data"]

@@ -21,4 +21,8 @@ node 'vagrant' {
 
 node 'build' {
   include role::build
+
+  # For testing -JA
+  include role::handle
+  include role::cordra
 }

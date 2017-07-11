@@ -19,3 +19,47 @@
     - 'balmas'
     - 'vagrant'
   docker::manage_kernel: false
+  docker_run_dir: '/docker/run'
+  docker_build_dir: '/docker/build'
+  site::handle_prefix: 'xxxxxx'
+  cordra::admin_password: 'dummy'
+  cordra::download_url: 'https://www.cordra.org/unconfiguredInstanceDownload'
+  cordra::docker_base: 'openjdk:8u131-jre-alpine'
+  cordra::cordra_tag: 'latest'
+  cordra::config:
+    server:
+      serverid: '1'
+      servername: 'RPID Cordra Server'
+      admin_handle: "%{alias('site::handle_prefix')}"
+      listen_address: '127.0.0.1'
+      public_address: '127.0.0.1'
+      redirect_stderr: 'no'
+      enable_pull_replication: 'no'
+      log_accesses: 'yes'
+      log_save_interval: 'Monthly'
+      dtr_prefix: '1'
+      assigned_prefix: "%{alias('site::handle_prefix')}"
+    ports:
+      https: 443
+      http: 80
+      server: 9000
+      ssl: 9001
+  handle::handle_tag: 'latest'
+  handle::config:
+    server:
+      primarysite: true
+      multiprimary: false
+      servername: 'RPID Handle Server'
+      listen_address: '127.0.0.1' 
+      public_address: '127.0.0.1' 
+      assigned_prefix: "%{alias('site::handle_prefix')}"
+      admin_email: 'bridget.almas@tufts.edu'
+      admin_org_name: 'RPID'
+      log_rotation_frequency: 'Monthly'
+    ports:
+      http: 8000
+      tcp: 2641
+      udp: 2641
+  handle::download_url: 'http://www.handle.net/hnr-source/hsj-8.1.1.tar.gz'
+  handle::user: 'handle'
+  handle::docker_base: 'openjdk:8u131-jre-alpine'

@@ -1,0 +1,11 @@
+<%- | 
+  String[1] $admin_handle,
+  String[1] $assigned_prefix,
+| -%>
+{
+  "station_uri" = "hdl:<%= $assigned_prefix %>"
+  "trusted_uris" = (
+    "hdl:<%= $admin_handle %>"
+  )
+
+}

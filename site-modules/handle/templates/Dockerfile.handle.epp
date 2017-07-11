@@ -1,0 +1,62 @@
+<%- | String[1] $docker_base,
+      String[1] $handle_download_url,
+      String[1] $handle_user,
+      Hash[String, Type::PortNumber] $ports,
+| -%>
+FROM <%= $docker_base %>
+
+LABEL org.label-schema.vendor="RPID" \
+  org.label-schema.url="http://www.handle.net/download_hnr.html" \
+  org.label-schema.name="Handle Server" \
+  org.label-schema.version="0.0.1" \
+  org.label-schema.docker.schema-version="1.0"
+
+WORKDIR /handle
+
+# Install required packages
+# (vim is required for the xxd tool, which we use later)
+RUN apk add --update \
+      curl \
+      tar \
+      vim \
+      zip \
+ && rm -rf /var/cache/apk/*
+
+# Download and unpack Handle Server distribution
+RUN curl <%= $handle_download_url %> \
+      | tar xz --strip-components=1
+
+# Add handle user and group and set ownership of server directory
+RUN addgroup -S <%= $handle_user %> \
+ && adduser -S -g <%= $handle_user %> <%= $handle_user %> \
+ && chown -R <%= $handle_user %>:<%= $handle_user %> .
+
+VOLUME /handleserver
+
+EXPOSE <%= $ports['http'] %> <%= $ports['tcp'] %> <%= $ports['udp'] %>/udp
+
+WORKDIR /handleserver
+
+CMD if [[ -f sitebndl.zip ]]; then \
+      echo sitebndl.zip exists, skipping handle server setup...; \
+    else \
+      echo No sitebndl.zip found, running handle server setup...; \
+      echo "" > passphrase.tmp; \
+      echo Generating keys...; \
+      /handle/bin/hdl-keygen -alg RSA -keysize 1024 admpriv.bin admpub.bin <passphrase.tmp; \
+      /handle/bin/hdl-keygen -alg RSA -keysize 1024 privkey.bin pubkey.bin <passphrase.tmp; \
+      chown handle:handle admpriv.bin admpub.bin privkey.bin pubkey.bin; \
+      PUBKEY=`/usr/bin/xxd -p pubkey.bin |tr -d \\\\n`; \
+      sed -- "s/PUBKEY_PLACEHOLDER/${PUBKEY}/" siteinfo.json.tmp >siteinfo.json; \
+      echo "300:0.NA/YOUR_PREFIX" >repl_admin; \
+      echo Writing sitebndl.zip file...; \
+      zip sitebndl.zip \
+        admpub.bin \
+        contactdata.dct \
+        repl_admin \
+        siteinfo.json \
+        ; \
+      echo done.; \
+    fi ;\
+    echo Starting server...; \
+    /handle/bin/hdl-server /handleserver <passphrase.tmp

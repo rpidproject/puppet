@@ -1,0 +1,20 @@
+<%- | Hash[String, Type::PortNumber] $ports,
+      Hash $server,
+| -%>
+{
+  "server_admin" = "<%= $server['admin_handle'] %>"
+  "port" = "<%= $ports['server'] %>"
+  "redirect_stderr" = "<%= $server['redirect_stderr'] %>"
+  "enable_pull_replication" = "<%= $server['enable_pull_replication'] %>"
+  "http_port" = "<%= $ports['http'] %>"
+  "listen_address = "<%= $server['listen_address'] %>"
+  "log_save_interval" = "<%= $server['log_save_interval'] %>"
+  "public_address" = <%= $server['public_address'] %>"
+  "serviceid" = "<%= $server['assigned_prefix'] %>/repo"
+  "ssl_port" = "<%= $ports['ssl'] %>"
+  "https_port" = "<%= $ports['https'] %>"
+  "serverid" = "<%= $server['serverid'] %>"
+  "log_accesses" = "<%= $server['log_accesses'] %>"
+  "handle_prefix" = "<%= $server['assigned_prefix'] %>.<%= $server['dtr_prefix'] %>-"
+}
+
