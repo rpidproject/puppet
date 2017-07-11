@@ -31,8 +31,7 @@
       serverid: '1'
       servername: 'RPID Cordra Server'
       admin_handle: "%{alias('site::handle_prefix')}"
-      listen_address: '127.0.0.1'
-      public_address: '127.0.0.1'
+      listen_address: '0.0.0.0'
       redirect_stderr: 'no'
       enable_pull_replication: 'no'
       log_accesses: 'yes'
