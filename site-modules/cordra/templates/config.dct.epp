@@ -11,7 +11,6 @@
   "listen_address" = "<%= $server['listen_address'] %>"
   "log_save_interval" = "<%= $server['log_save_interval'] %>"
   "serviceid" = "<%= $server['assigned_prefix'] %>/repo"
-  "public_address" = <%= $server['public_address'] %>"
   "register_handles" = "<%= $server['register_handles'] %>"
   "log_accesses" = "<%= $server['log_accesses'] %>"
   "ssl_port" = "<%= $ports['ssl'] %>"
