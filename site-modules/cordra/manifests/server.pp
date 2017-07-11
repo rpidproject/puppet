@@ -4,6 +4,7 @@ class cordra::server {
   $cordra_run_dir = "${docker_run_dir}/cordra"
   $cordra_data_dir = "${cordra_run_dir}/data"
   $cordra_tag = lookup('cordra::cordra_tag', String)
+	$ports = lookup('cordra::config.ports', Hash, 'hash')
 
   file { [
     $cordra_run_dir,
@@ -64,5 +65,11 @@ class cordra::server {
     ensure => present,
     image   => "rpid-cordra:${cordra_tag}",
     volumes => ["${cordra_data_dir}:/data"],
+    ports   => [ 
+      "${ports['https']}:${ports['https']}",
+      "${ports['http']}:${ports['http']}",
+      "${ports['server']}:${ports['server']}",
+      "${ports['ssl']}:${ports['ssl']}",
+    ],
   }
 }
