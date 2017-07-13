@@ -1,4 +1,12 @@
 ---
+  classes:
+    - profile::ntp
+    - profile::puppet
+    - profile::ssh
+    - profile::sudoers
+    - profile::timezone
+    - profile::users
+    - profile::vim
   users:
     'john':
       comment: 'John Arundel'
