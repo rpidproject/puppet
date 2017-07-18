@@ -4,6 +4,7 @@ class handle::server {
   $handle_run_dir = "${docker_run_dir}/handle"
 	$config = lookup('handle::config.server', Hash, 'hash')
 	$ports = lookup('handle::config.ports', Hash, 'hash')
+	$hostports = lookup('handle::config.host_ports', Hash, 'hash')
 
   file { $handle_run_dir:
     ensure => directory,
@@ -44,9 +45,9 @@ class handle::server {
     image   => "rpid-handle:${handle_tag}",
     volumes => "${handle_run_dir}:/handleserver",
     ports   => [
-      $ports['http'],
-      $ports['tcp'],
-      "${ports['udp']}/udp",
+      "${hostports['http']}:${ports['http']}",
+      "${hostports['tcp']}:${ports['tcp']}",
+      "${hostports['udp']}:${ports['udp']}/udp",
     ],
   }
 }

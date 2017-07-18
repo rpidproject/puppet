@@ -2,6 +2,7 @@
       String[1] $handle_download_url,
       String[1] $handle_user,
       Hash[String, Type::PortNumber] $ports,
+      String[1] $handle_prefix,
 | -%>
 FROM <%= $docker_base %>
 
@@ -48,7 +49,7 @@ CMD if [[ -f sitebndl.zip ]]; then \
       chown handle:handle admpriv.bin admpub.bin privkey.bin pubkey.bin; \
       PUBKEY=`/usr/bin/xxd -p pubkey.bin |tr -d \\\\n`; \
       sed -- "s/PUBKEY_PLACEHOLDER/${PUBKEY}/" siteinfo.json.tmp >siteinfo.json; \
-      echo "300:0.NA/YOUR_PREFIX" >repl_admin; \
+      echo "300:0.NA/<%= $handle_prefix %>" >repl_admin; \
       echo Writing sitebndl.zip file...; \
       zip sitebndl.zip \
         admpub.bin \
