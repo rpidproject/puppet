@@ -21,7 +21,7 @@
   docker::manage_kernel: false
   docker_run_dir: '/docker/run'
   docker_build_dir: '/docker/build'
-  site::handle_prefix: 'xxxxxx'
+  site::handle_prefix: '20.500.12042'
   cordra::admin_password: 'dummy'
   cordra::download_url: 'https://www.cordra.org/unconfiguredInstanceDownload'
   cordra::docker_base: 'openjdk:8u131-jre-alpine'
@@ -44,19 +44,28 @@
       http: 80
       server: 9000
       ssl: 9001
+    host_ports:
+      https: 443
+      http: 80
+      server: 9000
+      ssl: 9001
   handle::handle_tag: 'latest'
   handle::config:
     server:
       primarysite: true
       multiprimary: false
       servername: 'RPID Handle Server'
-      listen_address: '127.0.0.1' 
-      public_address: '127.0.0.1' 
+      listen_address: '0.0.0.0' 
+      public_address: '0.0.0.0'
       assigned_prefix: "%{alias('site::handle_prefix')}"
       admin_email: 'bridget.almas@tufts.edu'
       admin_org_name: 'RPID'
       log_rotation_frequency: 'Monthly'
     ports:
+      http: 8000
+      tcp: 2641
+      udp: 2641
+    host_ports:
       http: 8000
       tcp: 2641
       udp: 2641
