@@ -50,4 +50,23 @@ class handle::server {
       "${hostports['udp']}:${ports['udp']}/udp",
     ],
   }
+
+  firewall { '100 Allow web traffic for handle':
+    proto  => 'tcp',
+    dport  => $hostports['http'],
+    action => 'accept',
+  }
+
+  firewall { '100 Allow tcp traffic for handle':
+    proto  => 'tcp',
+    dport  => $hostports['tcp'],
+    action => 'accept',
+  }
+
+  firewall { '100 Allow udp traffic for handle':
+    proto  => 'udp',
+    dport  => $hostports['udp'],
+    action => 'accept',
+  }
+
 }
