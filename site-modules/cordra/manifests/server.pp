@@ -73,4 +73,28 @@ class cordra::server {
       "${hostports['ssl']}:${ports['ssl']}",
     ],
   }
+
+  firewall { '100 Allow https traffic for cordra':
+    proto  => 'tcp',
+    dport  => $hostports['https'],
+    action => 'accept',
+  }
+
+  firewall { '100 Allow http traffic for cordra':
+    proto  => 'tcp',
+    dport  => $hostports['http'],
+    action => 'accept',
+  }
+
+  firewall { '100 Allow server traffic for cordra':
+    proto  => 'tcp',
+    dport  => $hostports['server'],
+    action => 'accept',
+  }
+
+  firewall { '100 Allow ssl traffic for cordra':
+    proto  => 'tcp',
+    dport  => $hostports['ssl'],
+    action => 'accept',
+  }
 }

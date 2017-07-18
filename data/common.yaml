@@ -29,7 +29,7 @@
   cordra::config:
     server:
       serverid: '1'
-      servername: 'RPID Cordra Server'
+      servername: 'RPID AWS Cordra Server'
       admin_handle: "%{alias('site::handle_prefix')}"
       listen_address: '0.0.0.0'
       redirect_stderr: 'no'
@@ -54,9 +54,9 @@
     server:
       primarysite: true
       multiprimary: false
-      servername: 'RPID Handle Server'
+      servername: 'RPID AWS Handle Server'
       listen_address: '0.0.0.0' 
-      public_address: '0.0.0.0'
+      public_address: "%{alias('aws::ips.build')}"
       assigned_prefix: "%{alias('site::handle_prefix')}"
       admin_email: 'bridget.almas@tufts.edu'
       admin_org_name: 'RPID'
