@@ -1,6 +1,5 @@
 <%- | 
   Type::PortNumber $port,
-  Type::IPAddress $public_address,
   String[1] $serverid,
   String[1] $servername,
 | -%>
@@ -8,7 +7,6 @@
 <server>
 <id><%= $serverid %></id>
 <label><%= $servername %></label>
-<hostaddress><%= $public_address %></hostaddress>
 <port><%= $port %></port>
 <protocol>DOP</protocol>
 </server>

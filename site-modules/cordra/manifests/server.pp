@@ -5,6 +5,7 @@ class cordra::server {
   $cordra_data_dir = "${cordra_run_dir}/data"
   $cordra_tag = lookup('cordra::cordra_tag', String)
 	$ports = lookup('cordra::config.ports', Hash, 'hash')
+	$hostports = lookup('cordra::config.host_ports', Hash, 'hash')
 
   file { [
     $cordra_run_dir,
@@ -45,7 +46,7 @@ class cordra::server {
       {
         'serverid'       => lookup('cordra::config.server.serverid'),
         'servername'     => lookup('cordra::config.server.servername'),
-        'public_address' => lookup('cordra::config.server.public_address'),
+        #'public_address' => lookup('cordra::config.server.public_address'),
         'port'           => lookup('cordra::config.ports.server'),
       }
     )
@@ -66,10 +67,10 @@ class cordra::server {
     image   => "rpid-cordra:${cordra_tag}",
     volumes => ["${cordra_data_dir}:/data"],
     ports   => [ 
-      "${ports['https']}:${ports['https']}",
-      "${ports['http']}:${ports['http']}",
-      "${ports['server']}:${ports['server']}",
-      "${ports['ssl']}:${ports['ssl']}",
+      "${hostports['https']}:${ports['https']}",
+      "${hostports['http']}:${ports['http']}",
+      "${hostports['server']}:${ports['server']}",
+      "${hostports['ssl']}:${ports['ssl']}",
     ],
   }
 }
