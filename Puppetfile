@@ -4,6 +4,7 @@ forge "http://forge.puppetlabs.com"
 mod 'garethr/docker', '5.3.0'
 mod 'puppetlabs/accounts', '1.1.0'
 mod 'puppetlabs/apt', '3.0.0'
+mod 'puppet/archive', '1.3.0'
 mod 'puppetlabs/docker_platform', '2.2.1'
 mod 'puppetlabs/firewall', '1.9.0'
 mod 'puppetlabs/ntp', '6.2.0'
