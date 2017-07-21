@@ -59,15 +59,4 @@ class icinga::config {
     require => File['/usr/local/icinga/etc'],
     notify  => Exec['icinga-config-check'],
   }
-
-  file { '/etc/ssl/certs/wildcard.thirtythreebuild.co.uk.crt':
-    source => 'puppet:///modules/icinga/wildcard.thirtythreebuild.co.uk.crt',
-    mode   => '0777',
-  }
-
-  file { '/etc/ssl/certs/wildcard.thirtythreebuild.co.uk.key':
-    source => 'puppet:///modules/icinga/wildcard.thirtythreebuild.co.uk.key',
-    mode   => '0777',
-  }
-
 }
