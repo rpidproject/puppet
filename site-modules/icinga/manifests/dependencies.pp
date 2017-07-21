@@ -5,7 +5,7 @@ class icinga::dependencies {
   package {['libgd2-xpm-dev',
             'libdbi-dev',
             'libdbd-mysql',
-            'libssl0.9.8',
+            'libssl1.1',
             'nagios-nrpe-plugin']:
     ensure => installed,
   }
@@ -20,14 +20,7 @@ class icinga::dependencies {
 
   file { '/usr/lib/nagios/plugins/check_ping':
     mode    => '4755',
-    require => Package['nagios-plugins'],
-  }
-
-  package { [ 'php5-cli',
-              'php5-ldap',
-              'php5-mysql',
-              'php5-xsl' ]: # for icinga-web
-    ensure  => installed,
+    require => Package['monitoring-plugins'],
   }
 
   # For SSL expiry checker
