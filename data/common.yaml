@@ -84,6 +84,8 @@
   handle::docker_base: 'openjdk:8u131-jre-alpine'
   firewall_drop: false
   icinga::version: '1.14.0'
+  icinga::contact: 'sysadmin'
+  icinga::key_contact: 'emergency'
   monitor_ips:
     - 172.31.69.42
   pnp4nagios_url_base: 'http://downloads.sourceforge.net/project/pnp4nagios/PNP-0.6/'

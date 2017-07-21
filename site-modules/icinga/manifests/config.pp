@@ -1,7 +1,5 @@
 # Config files for Icinga
 class icinga::config {
-  notice("Icinga test mode: ${icinga_test_mode}")
-
   file { '/usr/local/icinga/etc':
     ensure  => directory,
     require => Exec['build-icinga-core'],
@@ -32,10 +30,7 @@ class icinga::config {
   }
 
   file { '/usr/local/icinga/etc/commands.cfg':
-    content => epp('icinga/commands.cfg.epp',
-      {
-        icinga_test_mode => lookup('icinga::test_mode', Boolean),
-      }),
+    content => epp('icinga/commands.cfg.epp'),
     require => File['/usr/local/icinga/etc'],
     notify  => Exec['icinga-config-check'],
   }
