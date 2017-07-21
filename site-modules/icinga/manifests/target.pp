@@ -29,7 +29,7 @@ class icinga::target {
   file { '/etc/nagios/nrpe.cfg':
     content => epp('icinga/nrpe.cfg.epp',
     {
-      monitor_ips       => hiera('monitor_ips'),
+      monitor_ips       => lookup('monitor_ips', Array[String]),
     }),
     require => Package['nagios-nrpe-server'],
     notify  => Service['nagios-nrpe-server'],

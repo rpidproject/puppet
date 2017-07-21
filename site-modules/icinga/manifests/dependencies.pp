@@ -25,7 +25,6 @@ class icinga::dependencies {
 
   package { [ 'php5-cli',
               'php5-ldap',
-              'php-pear',
               'php5-mysql',
               'php5-xsl' ]: # for icinga-web
     ensure  => installed,

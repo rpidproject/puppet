@@ -1,6 +1,6 @@
 # Install icinga-web
 class icinga::web_install {
-  $icinga_version = hiera('icinga::version')
+  $icinga_version = lookup('icinga::version', String)
 
   utils::remote_file { "/root/icinga-web-${icinga_version}.tar.gz":
     source  => "http://sourceforge.net/projects/icinga/files/icinga-web/${icinga_version}/icinga-web-${icinga_version}.tar.gz/download",

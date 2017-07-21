@@ -1,8 +1,5 @@
 # Config files for Icinga
 class icinga::config {
-  $monitor_password = hiera('monitor_password')
-  $icinga_contact = hiera('icinga::contact')
-  $icinga_test_mode = hiera('icinga::test_mode')
   notice("Icinga test mode: ${icinga_test_mode}")
 
   file { '/usr/local/icinga/etc':
@@ -37,7 +34,7 @@ class icinga::config {
   file { '/usr/local/icinga/etc/commands.cfg':
     content => epp('icinga/commands.cfg.epp',
       {
-        icinga_test_mode => hiera('icinga::test_mode'),
+        icinga_test_mode => lookup('icinga::test_mode', Boolean),
       }),
     require => File['/usr/local/icinga/etc'],
     notify  => Exec['icinga-config-check'],
@@ -46,7 +43,7 @@ class icinga::config {
   file { '/usr/local/icinga/etc/host_templates.cfg':
     content => epp('icinga/host_templates.cfg.epp',
       {
-        icinga_contact => hiera('icinga::contact'),
+        icinga_contact => lookup('icinga::contact', String),
       }),
     require => File['/usr/local/icinga/etc'],
     notify  => Exec['icinga-config-check'],
@@ -55,18 +52,15 @@ class icinga::config {
   file { '/usr/local/icinga/etc/service_templates.cfg':
     content => epp('icinga/service_templates.cfg.epp',
       {
-        icinga_contact     => hiera('icinga::contact'),
-        icinga_key_contact => hiera('icinga::key_contact'),
+        icinga_contact     => lookup('icinga::contact', String),
+        icinga_key_contact => lookup('icinga::key_contact', String),
       }),
     require => File['/usr/local/icinga/etc'],
     notify  => Exec['icinga-config-check'],
   }
 
   file { '/usr/local/icinga/etc/services.cfg':
-    content => epp('icinga/services.cfg.epp',
-      {
-        monitor_password => hiera('monitor_password'),
-      }),
+    content => epp('icinga/services.cfg.epp'),
     require => File['/usr/local/icinga/etc'],
     notify  => Exec['icinga-config-check'],
   }

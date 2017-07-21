@@ -3,6 +3,7 @@ class icinga::classic {
   class { 'apache':
     default_vhost   => false,
     service_restart => '/bin/systemctl reload httpd',
+    mpm_module      => 'prefork',
   }
   include apache::mod::php # for PNP4Nagios
 

@@ -1,7 +1,6 @@
 # Manage icinga-web
 class icinga::web {
   $icinga_version = lookup('icinga::version', String[1])
-  $php = lookup('php::version', String[1])
 
   archive { 'icinga-web':
     path         => "/root/icinga-web-${icinga_version}.tar.gz",
@@ -15,7 +14,7 @@ class icinga::web {
     cwd     => "/root/icinga-web-${icinga_version}",
     command => "/root/icinga-web-${icinga_version}/configure && /usr/bin/make install",
     creates => '/usr/local/icinga-web',
-    require => [Archive['icinga-web'], Package["${php}-cli"]],
+    require => [Archive['icinga-web'], Class['php']],
   }
 
   file { '/usr/local/icinga/etc/idomod.cfg':
