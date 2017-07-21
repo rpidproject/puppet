@@ -8,8 +8,6 @@ class icinga::server {
   include icinga::classic
   include icinga::config
 
-  user { 'icinga': ensure => present }
-
   archive { 'icinga-core':
     path         => "/root/icinga-core-${icinga_version}.tar.gz",
     source       => "https://codeload.github.com/Icinga/icinga-core/tar.gz/v${icinga_version}",
@@ -29,7 +27,6 @@ class icinga::server {
   service { 'icinga':
     ensure   => running,
     enable   => true,
-    provider => redhat,
     require  => Exec['icinga-config-check'],
   }
 
@@ -38,21 +35,7 @@ class icinga::server {
     require => Exec['build-icinga-core'],
   }
 
-  exec { 'download-nrpe':
-    cwd     => '/root',
-    command => '/usr/bin/wget http://prdownloads.sourceforge.net/sourceforge/nagios/nrpe-2.12.tar.gz && /bin/tar xvzf nrpe-2.12.tar.gz',
-    creates => '/root/nrpe-2.12',
-  }
-
-  exec { 'build-nrpe':
-    cwd     => '/root/nrpe-2.12',
-    command => '/root/nrpe-2.12/configure --with-nrpe-user=icinga --with-nrpe-group=icinga --with-nagios-user=icinga --with-nagios-group=icinga --libexecdir=/usr/lib64/nagios/plugins && make all && make install-plugin',
-    creates => '/usr/lib64/nagios/plugins/check_nrpe',
-    require => [Exec['download-nrpe'],
-                Package['nagios-common'],
-                Package['openssl'],
-                Class['admin::devtools']],
-  }
+  ensure_packages(['nagios-nrpe-plugin'])
 
   file { '/usr/local/icinga/var/rw/':
     ensure  => directory,
@@ -61,7 +44,7 @@ class icinga::server {
   }
 
   file { '/usr/local/icinga/var/rw/icinga.cmd':
-    group  => 'apache',
+    group  => 'www-data',
   }
 
   file { '/usr/local/icinga/var/icinga.log':
