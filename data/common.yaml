@@ -1,5 +1,6 @@
 ---
   classes:
+    - icinga::target
     - profile::firewall
     - profile::ntp
     - profile::puppet
