@@ -6,32 +6,21 @@ class icinga::classic {
     mpm_module      => 'prefork',
   }
   include apache::mod::php # for PNP4Nagios
+  include apache::mod::rewrite
 
   apache::namevirtualhost { '80': }
-  apache::namevirtualhost { '443': }
 
   apache::vhost { 'monitor':
     port            => 80,
-    docroot         => '/usr/local/icinga/share',
-    redirect_status => 'permanent',
-    redirect_dest   => 'https://monitor.thirtythreebuild.co.uk/',
-  }
-
-  apache::vhost { 'monitor-ssl':
     serveraliases     =>
       [
-        'monitor.thirtythreebuild.co.uk',
-        'monitor-staging.thirtythreebuild.co.uk',
+        'monitor.rpid.org',
+        'monitor-staging.rpid.org',
       ],
-    port              => 443,
     docroot           => '/usr/local/icinga/share',
     error_log_file    => 'icinga-error_log',
     access_log_file   => 'icinga-access_log',
     access_log_format => 'combined',
-    ssl               => true,
-    ssl_cert          => '/etc/ssl/certs/wildcard.thirtythreebuild.co.uk.crt',
-    ssl_key           => '/etc/ssl/certs/wildcard.thirtythreebuild.co.uk.key',
-    ssl_certs_dir     => '/etc/ssl/certs',
     aliases           => [
       {
         scriptalias => '/icinga/cgi-bin',
