@@ -61,6 +61,7 @@
       admin_email: 'bridget.almas@tufts.edu'
       admin_org_name: 'RPID'
       log_rotation_frequency: 'Monthly'
+      template_delimiter: '@'
     ports:
       http: 8000
       tcp: 2641

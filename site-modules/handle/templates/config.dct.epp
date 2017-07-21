@@ -55,5 +55,6 @@
     )
     "replication_sites_handle" = "0.NA/<%= $config['assigned_prefix'] %>"
     "replication_authentication" = "privatekey:301:0.NA/<%= $config['assigned_prefix'] %>"
+    "template_delimiter" = "<%= $config['template_delimiter'] %>"
   }
 }
