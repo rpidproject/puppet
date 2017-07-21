@@ -5,20 +5,17 @@ class icinga::pnp {
   $pnp_url_base = lookup('pnp4nagios_url_base', String[1])
   $pnp_version = lookup('pnp4nagios_version', String[1])
 
-  realize(Package['openssl-devel'])
+  ensure_packages([
+    'libssl1.1',
+    'libssl-dev',
+    'php-gd',
+    'rrdtool',
+  ])
 
-  package { [ 'rrdtool',
-              'perl-Time-HiRes']:
-    ensure => installed,
-    notify => Exec['build-pnp'],
-  }
-
-  ensure_packages(['php-gd'])
   exec { 'build-pnp':
     cwd       => '/root',
     command   => "/usr/bin/wget ${pnp_url_base}/pnp4nagios-${pnp_version}.tar.gz && /bin/tar xvzf pnp4nagios-${pnp_version}.tar.gz && cd pnp4nagios-${pnp_version} && ./configure --with-nagios-user=icinga --with-nagios-group=icinga && make all && make install",
     creates   => '/usr/local/pnp4nagios',
-    require   => Class['admin::devtools'],
     logoutput => on_failure,
   }
 
