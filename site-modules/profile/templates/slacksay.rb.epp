@@ -2,8 +2,8 @@
 #!/usr/bin/ruby
 require 'optparse'
 
-$channels = 'governator'
-$user = '33bot'
+$channels = 'monitoring'
+$user = 'icinga'
 
 OptionParser.new do |opts|
     opts.banner = "Usage: #{$0} [options] MESSAGE\n \
