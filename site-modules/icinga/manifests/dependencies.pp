@@ -2,7 +2,7 @@
 class icinga::dependencies {
   include icinga::target
 
-  package {['libgd2-xpm-dev',
+  package {['libgd-dev',
             'libdbi-dev',
             'libdbd-mysql',
             'libssl1.1',
