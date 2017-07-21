@@ -7,7 +7,6 @@ class icinga::server {
   include icinga::web
   include icinga::classic
   include icinga::config
-  include icinga::radiator
 
   user { 'icinga': ensure => present }
 
