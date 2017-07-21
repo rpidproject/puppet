@@ -1,8 +1,0 @@
-#!/usr/bin/ruby
-
-require File.dirname(__FILE__) + '/lib/shellshock_checker.rb'
-
-# Main script
-status = ShellshockChecker.new.check
-exit( status )
-
