@@ -1,0 +1,34 @@
+define service {
+    hostgroup_name        all, !virtual
+    service_description   Disk
+    check_command         check_nrpe!check_disk!1024M!512M
+    use                   every_hour
+}
+
+define service {
+    hostgroup_name        all, !virtual
+    service_description   Load
+    check_command         check_nrpe!check_load!20,20,20!25,25,25
+    use                   every_hour
+}
+
+define service {
+    hostgroup_name        all, !virtual
+    service_description   Puppet
+    check_command         check_nrpe!check_puppet_local!3600
+    use                   every_hour
+}
+
+define service {
+    hostgroup_name        all, !virtual
+    service_description   SSH
+    check_command         check_ssh!10
+    use                   every_hour
+}
+
+define service {
+    hostgroup_name        all, !virtual
+    service_description   Free memory
+    check_command         check_nrpe!check_free_memory!10!5
+    use                   every_5_mins
+}

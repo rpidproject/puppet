@@ -1,0 +1,8 @@
+#!/usr/bin/ruby -w
+require File.dirname(__FILE__) + '/lib/puppet_branch_checker.rb'
+
+# Main script
+
+expected_branch = ARGV[0] || "master"
+status = PuppetBranchChecker.new.check( expected_branch )
+exit( status )

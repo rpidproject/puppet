@@ -1,0 +1,5 @@
+---
+  classes:
+    - role::build
+    - role::handle
+    - role::cordra

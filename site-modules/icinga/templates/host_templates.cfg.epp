@@ -1,0 +1,17 @@
+<%- | String[1] $icinga_contact | %>
+define host{
+    name                         generic_host
+    action_url                   /pnp4nagios/index.php/graph?host=$HOSTNAME$&srv=_HOST_' class='tips' rel='/pnp4nagios/index.php/popup?host=$HOSTNAME$&srv=_HOST_
+    check_command                check-host-alive
+    max_check_attempts           3
+    checks_enabled               1
+    failure_prediction_enabled   1
+    retain_status_information    1
+    retain_nonstatus_information 1
+    notification_interval        0
+    notification_options         d,u,r
+    check_interval               300
+    contact_groups               <%= $icinga_contact %>
+    register                     0    
+}
+

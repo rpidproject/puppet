@@ -1,0 +1,58 @@
+#!/usr/bin/ruby -w
+
+require 'optparse'
+
+require File.dirname(__FILE__) + '/lib/smart_log_checker.rb'
+
+$filename, $queries, $ignores, $max_age, $age_since, $warn_only = nil, nil, nil, nil, nil, nil
+$warn_matches, $crit_matches = 0, 0
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options]\n \
+\n\
+Checks a log file for a specified regular expression (optionally ignoring lines matching another expression)"
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-F FILE", "File to check") do |filename|
+        $filename = filename
+    end
+
+    opts.on("-q QUERY", "Regular expression to match") do |query|
+        $queries = query.split( ',' )
+    end
+
+    opts.on("-i [IGNORE]", "Regular expression to ignore") do |ignore|
+        $ignores = ignore.split( ',' )
+    end
+
+    opts.on("-r [WARN_MATCHES]", "Warn if more than WARN_MATCHES matches (default 0)") do |warn_matches|
+        $warn_matches = warn_matches.to_i
+    end
+
+    opts.on("-c [CRIT_MATCHES]", "Critical if more than CRIT_MATCHES matches (default 0)") do |crit_matches|
+        $crit_matches = crit_matches.to_i
+    end
+
+    opts.on("-m [MIN]", "Maximum time in minutes since file was modified") do |mins|
+        $max_age = mins.to_i
+    end
+
+    opts.on("-s [AGE_SINCE]", "Time expression (eg '6am') at which file should be MIN minutes old (default: now)") do |age_since|
+        $age_since = age_since
+    end
+
+    opts.on("-w", "Warn only") do |warn_only|
+        $warn_only = warn_only
+    end
+
+    opts.on("-h", "Show usage") do 
+        puts opts
+        exit(0)
+    end
+
+end.parse!
+    
+status = SmartLogChecker.new( $filename, $queries, $ignores, $max_age, $age_since, $warn_only, $warn_matches, $crit_matches, STDOUT ).check
+exit( status )

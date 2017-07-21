@@ -1,0 +1,9 @@
+#!/usr/bin/ruby
+
+require File.dirname(__FILE__) + '/lib/cdorked_checker.rb'
+
+# Main script
+
+status = CdorkedChecker.new.check
+exit( status )
+

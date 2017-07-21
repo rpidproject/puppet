@@ -13,4 +13,12 @@ class profile::ssh {
     ensure => running,
     enable => true,
   }
+
+  firewall { '100 allow SSH':
+    chain  => 'INPUT',
+    state  => ['NEW'],
+    dport  => '22',
+    proto  => 'tcp',
+    action => 'accept',
+  }
 }

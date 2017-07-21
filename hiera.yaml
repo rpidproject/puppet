@@ -8,10 +8,12 @@ defaults:
 hierarchy:
   - name: "AWS resources"
     path: "aws.yaml"
-  - name: "Common defaults"
-    path: "common.yaml"
+  - name: 'Per-node data'
+    path: "nodes/%{facts.hostname}.yaml"
   - name: "Per-datacenter secret data (encrypted)"
     lookup_key: eyaml_lookup_key
     path: "secret.eyaml"
     options:
       gpg_gnupghome: '/root/.gnupg'
+  - name: "Common defaults"
+    path: "common.yaml"

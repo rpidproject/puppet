@@ -1,0 +1,36 @@
+#!/usr/bin/ruby
+
+require File.dirname(__FILE__) + '/lib/free_memory_checker.rb'
+require 'optparse'
+
+# Main script
+
+$warn = 10
+$crit = 5
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options]\n \
+\n\
+Checks free memory percentage, not counting OS buffers and cache."
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-w WARN", "Warn if free memory is less than WARN percent") do |warn|
+        $warn = warn.to_i
+    end
+
+    opts.on("-c CRIT", "Critical if free memory is less than CRIT percent") do |crit|
+        $crit = crit.to_i
+    end
+
+    opts.on("-h", "Show usage") do
+        puts opts
+        exit
+    end
+
+end.parse!
+
+status = FreeMemoryChecker.new.check( $warn, $crit )
+exit( status )
+

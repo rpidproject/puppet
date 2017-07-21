@@ -1,0 +1,38 @@
+<%- | String $slack_webhook_url | -%>
+#!/usr/bin/ruby
+require 'optparse'
+
+$channels = 'governator'
+$user = '33bot'
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options] MESSAGE\n \
+\n\
+Post a message to one or more Slack channels."
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-c CHANNEL[,CHANNEL2...]", "Channel(s) to post to") do |channels|
+        $channels = channels.split(',')
+    end
+
+    opts.on("-u USER", "User to post as") do |user|
+        $user = user
+    end
+
+    opts.on("-h", "Show usage") do
+        puts opts
+        exit
+    end
+
+end.parse!
+
+message = ARGV.join(' ')
+if message.empty?
+  message = ARGF.read()
+end
+$channels.each do |channel|
+  puts `curl -s -X POST --data-urlencode 'payload={"channel": "##{channel}", "username": "#{$user}", "text": "#{message}" }' <%= $slack_webhook_url %>`
+end
+exit $?.exitstatus

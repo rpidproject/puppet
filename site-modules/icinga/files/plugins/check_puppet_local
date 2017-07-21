@@ -1,0 +1,16 @@
+#!/usr/bin/ruby -w
+
+require File.dirname(__FILE__) + '/lib/puppet_local_checker.rb'
+
+# Check host argument
+max_age = ARGV[0]
+if max_age == nil
+  puts "Usage: $0 <max_age>"
+  puts "Checks whether Puppet ran locally on this server within the last <max_age> seconds."
+  exit(0)
+end
+
+# Main script
+
+status = PuppetLocalChecker.new.check( max_age.to_i )
+exit( status )
