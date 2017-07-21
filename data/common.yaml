@@ -26,6 +26,7 @@
     - 'john'
     - 'balmas'
     - 'vagrant'
+  slack_webhook_url: 'https://hooks.slack.com/services/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'
   docker::manage_kernel: false
   docker_run_dir: '/docker/run'
   docker_build_dir: '/docker/build'

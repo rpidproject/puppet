@@ -1,0 +1,5 @@
+#!/usr/bin/ruby -w
+require File.dirname(__FILE__) + '/lib/motherfsck_checker.rb'
+
+status = MotherfsckChecker.new.check()
+exit(status)

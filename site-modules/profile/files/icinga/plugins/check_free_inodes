@@ -1,0 +1,41 @@
+#!/usr/bin/ruby
+
+require File.dirname(__FILE__) + '/lib/free_inodes_checker.rb'
+require 'optparse'
+
+# Main script
+
+$warn = 10
+$crit = 5
+$fs = '/'
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options]\n \
+\n\
+Checks free inodes on disk."
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-w WARN", "Warn if free memory is less than WARN percent") do |warn|
+        $warn = warn.to_i
+    end
+
+    opts.on("-c CRIT", "Critical if free memory is less than CRIT percent") do |crit|
+        $crit = crit.to_i
+    end
+
+    opts.on("-f FS", "Filesystem to check") do |fs|
+        $fs = fs
+    end
+
+    opts.on("-h", "Show usage") do
+        puts opts
+        exit
+    end
+
+end.parse!
+
+status = FreeInodesChecker.new.check( $fs, $warn, $crit )
+exit( status )
+

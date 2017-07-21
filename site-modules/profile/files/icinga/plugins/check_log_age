@@ -1,0 +1,43 @@
+#!/usr/bin/ruby
+
+require File.dirname(__FILE__) + '/lib/log_age_checker.rb'
+require 'optparse'
+
+$warn = 60
+$crit = 600
+$file = nil
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options] -f filename\n \
+\n\
+Checks log file last modified time."
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-f FILE", "Full path of logfile to check") do |file|
+        $file = file
+    end
+
+    opts.on("-w WARN", "Warn if age is more than WARN seconds") do |warn|
+        $warn = warn.to_i
+    end
+
+    opts.on("-c CRIT", "Critical if age is more than CRIT seconds") do |crit|
+        $crit = crit.to_i
+    end
+
+    opts.on("-h", "Show usage") do
+        puts opts
+        exit
+    end
+
+end.parse!
+
+if $file.nil?
+    puts "Usage: #{$0} -f filename"
+    exit(1)
+end
+
+status = LogAgeChecker.new( $file ).check( $warn, $crit )
+exit( status )

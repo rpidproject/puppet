@@ -1,0 +1,133 @@
+###############################################################################
+# COMMANDS.CFG - SAMPLE COMMAND DEFINITIONS FOR NAGIOS
+###############################################################################
+
+define command{
+        command_name    check_nrpe_warn_only
+        command_line    $USER1$/negate -s -c WARNING $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2$ $ARG3$ $ARG4$ $ARG5$ $ARG6$
+}
+
+define command{
+        command_name    check_tcp_warn_only
+        command_line    $USER1$/negate -s -c WARNING $USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$
+}
+
+define command{
+        command_name    check_service_cluster
+        command_line    $USER1$/check_cluster --service -l $ARG1$ -w $ARG2$ -c $ARG3$ -d $ARG4$
+}
+
+define command{
+       command_name    check_host_cluster
+       command_line    $USER1$/check_cluster --host -l $ARG1$ -w $ARG2$ -c $ARG3$ -d $ARG4$
+       }
+
+define command{
+        command_name    check_web_response
+        command_line    $USER1$/check_http -H $ARG1$ -u $ARG2$ -a $ARG3$ -s $ARG4$ -w $ARG5$ -c $ARG6$ -t 30
+}
+
+define command{
+        command_name    check_web_response_xml
+        command_line    $USER1$/check_http -k 'Accept: text/xml' -H $ARG1$ -u $ARG2$ -s $ARG3$ -w $ARG4$ -c $ARG5$ -t 30
+}
+
+define command{
+        command_name    check_web_response_appxml
+        command_line    $USER1$/check_http -k 'Accept: application/xml' -H $ARG1$ -u $ARG2$ -s $ARG3$ -w $ARG4$ -c $ARG5$ -t 30
+}
+
+define command{
+        command_name    check_https_response
+        command_line    $USER1$/check_http -S -H $ARG1$ -u $ARG2$ -a $ARG3$ -s $ARG4$ -w $ARG5$ -c $ARG6$ -t 30
+}
+
+define command{
+        command_name    check_web_redirect
+        command_line    $USER1$/check_http -H $ARG1$ -u $ARG2$ -s $ARG3$ -w $ARG4$ -c $ARG5$ -t 30 --onredirect=follow
+}
+
+define command{
+        command_name    check_web_redirect_port
+        command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -u $ARG3$ -s $ARG4$ -w $ARG5$ -c $ARG6$ -t 30 --onredirect=follow
+}
+
+define command{
+        command_name    check_procs_name
+        command_line    $USER1$/check_procs -w $ARG1$ -c $ARG2$ -C $ARG3$
+}
+
+define command{
+        command_name    check_aws_resources
+        command_line    HOME=/home/icinga $USER1$/bitfield/check_aws_resources -e $ARG1$ -r $ARG2$
+}
+
+define command{
+       command_name    process-service-perfdata-file
+       command_line    /usr/local/pnp4nagios/libexec/process_perfdata.pl --bulk=/usr/local/pnp4nagios/var/service-perfdata
+}
+
+define command{
+       command_name    process-host-perfdata-file
+       command_line    /usr/local/pnp4nagios/libexec/process_perfdata.pl --bulk=/usr/local/pnp4nagios/var/host-perfdata
+}
+
+define command{
+       command_name    check_json
+       command_line    $USER1$/bitfield/check_json -u $ARG1$
+}
+
+
+################################################################################
+# NOTIFICATION COMMANDS
+################################################################################
+
+
+# 'notify-host-by-email' command definition
+define command{
+	command_name	notify-host-by-email
+	command_line	/usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n" | /usr/bin/mail -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **" $CONTACTEMAIL$
+	}
+
+# 'notify-service-by-email' command definition
+define command{
+	command_name	notify-service-by-email
+	command_line	/usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | /usr/bin/mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
+	}
+
+define command {
+      command_name     notify-service-by-slack
+      command_line     /usr/local/bin/slacksay -c monitoring -u Icinga "$HOSTNAME$/$SERVICEDESC$ is $SERVICESTATE$:\n$SERVICEOUTPUT$\n"
+}
+
+define command {
+      command_name     notify-host-by-slack
+      command_line     /usr/local/bin/slacksay -c monitoring -u Icinga "$HOSTNAME$ is $HOSTSTATE$:\n$HOSTOUTPUT$\n"
+}
+
+################################################################################
+# HOST CHECK COMMANDS
+################################################################################
+
+# On Debian, check-host-alive is being defined from within the
+# nagios-plugins-basic package
+
+################################################################################
+# PERFORMANCE DATA COMMANDS
+################################################################################
+
+
+# 'process-host-perfdata' command definition
+define command{
+	command_name	process-host-perfdata
+	command_line	/usr/bin/printf "%b" "$LASTHOSTCHECK$\t$HOSTNAME$\t$HOSTSTATE$\t$HOSTATTEMPT$\t$HOSTSTATETYPE$\t$HOSTEXECUTIONTIME$\t$HOSTOUTPUT$\t$HOSTPERFDATA$\n" >> /var/lib/nagios3/host-perfdata.out
+	}
+
+
+# 'process-service-perfdata' command definition
+define command{
+	command_name	process-service-perfdata
+	command_line	/usr/bin/printf "%b" "$LASTSERVICECHECK$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICESTATE$\t$SERVICEATTEMPT$\t$SERVICESTATETYPE$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$\n" >> /var/lib/nagios3/service-perfdata.out
+	}
+
+

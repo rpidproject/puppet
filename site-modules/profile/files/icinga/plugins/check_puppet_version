@@ -1,0 +1,8 @@
+#!/usr/bin/ruby -w
+require File.dirname(__FILE__) + '/lib/puppet_version_checker.rb'
+
+# Main script
+
+minimum_version = ARGV[0]
+status = PuppetVersionChecker.new.check(minimum_version)
+exit(status)

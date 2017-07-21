@@ -1,0 +1,21 @@
+#!/usr/bin/ruby -w
+require File.dirname(__FILE__) + '/lib/os_release_checker.rb'
+require 'optparse'
+
+$expect = "12.04"
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options]\n \
+\n\
+Checks installed OS version against expected version."
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-e EXPECT", "Version to expect") do |expect|
+        $expect = expect
+    end
+end.parse!
+
+status = OSReleaseChecker.new.check($expect)
+exit( status )
