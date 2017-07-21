@@ -71,4 +71,11 @@ class icinga::server {
     owner  => 'icinga',
     group  => 'icinga',
   }
+
+  firewall { '100 Allow NRPE out':
+    chain  => 'OUTPUT',
+    proto  => 'tcp',
+    dport  => '5666',
+    action => 'accept',
+  }
 }

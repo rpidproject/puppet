@@ -21,4 +21,10 @@ class icinga::web {
   file { '/usr/local/icinga/etc/idomod.cfg':
     source  => 'puppet:///modules/icinga/idomod.cfg',
   }
+
+  firewall { '100 Allow web traffic for Icinga':
+    proto  => 'tcp',
+    dport  => '80',
+    action => 'accept',
+  }
 }
