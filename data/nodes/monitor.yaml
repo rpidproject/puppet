@@ -1,3 +1,7 @@
 ---
   classes:
     - role::monitor
+  users:
+    'icinga':
+      comment: 'Icinga user'
+      uid: '1101'
