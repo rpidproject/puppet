@@ -86,3 +86,5 @@
   icinga::version: '1.14.0'
   monitor_ips:
     - 172.31.69.42
+  pnp4nagios_url_base: 'http://downloads.sourceforge.net/project/pnp4nagios/PNP-0.6/'
+  pnp4nagios_version: '0.6.25'
