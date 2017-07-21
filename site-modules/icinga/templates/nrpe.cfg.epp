@@ -76,7 +76,7 @@ nrpe_group=nagios
 #
 # NOTE: This option is ignored if NRPE is running under either inetd or xinetd
 
-allowed_hosts=<%= join($monitor_ips, ',') %>
+allowed_hosts=127.0.0.1,<%= join($monitor_ips, ',') %>
  
 
 

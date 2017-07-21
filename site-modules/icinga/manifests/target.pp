@@ -11,12 +11,9 @@ class icinga::target {
     source   => '/root/nagios-nrpe-server.deb',
   }
 
-  package { [ 'nagios-plugins',
-              'nagios-plugins-basic',
-              'nagios-plugins-standard',
-              'nagios-plugins-extra' ]:
-    ensure => installed,
-  }
+  ensure_packages([
+    'monitoring-plugins',
+  ])
 
   service { 'nagios-nrpe-server':
     ensure    => running,
@@ -36,11 +33,11 @@ class icinga::target {
   }
 
   file { '/usr/lib/nagios/plugins/bitfield':
-    source             => 'puppet:///modules/site/icinga/plugins',
+    source             => 'puppet:///modules/icinga/plugins',
     recurse            => remote,
     source_permissions => use,
     mode               => '0755',
-    require            => Package['nagios-plugins'],
+    require            => Package['monitoring-plugins'],
   }
 
   firewall { '000 NRPE':
