@@ -1,29 +1,24 @@
 # Manage icinga-web
 class icinga::web {
-  include icinga::web_install
+  $icinga_version = lookup('icinga::version', String[1])
+  $php = lookup('php::version', String[1])
 
-  $apache_pkg = hiera('apache_pkg')
-  $apache_service = hiera('apache_service')
-  $apache_path = hiera('apache_path')
-
-  file { "${apache_path}/conf-available/icinga-web.conf":
-    source  => 'puppet:///modules/site/icinga/icinga-web.conf.apache',
-    require => Package[$apache_pkg],
+  archive { 'icinga-web':
+    path         => "/root/icinga-web-${icinga_version}.tar.gz",
+    source       => "https://codeload.github.com/Icinga/icinga-web/tar.gz/v${icinga_version}",
+    extract      => true,
+    extract_path => '/root',
+    cleanup      => true,
   }
 
-  file { "${apache_path}/conf-enabled/icinga-web.conf":
-    ensure => symlink,
-    target => "${apache_path}/conf-available/icinga-web.conf",
+  exec { 'build-icinga-web':
+    cwd     => "/root/icinga-web-${icinga_version}",
+    command => "/root/icinga-web-${icinga_version}/configure && /usr/bin/make install",
+    creates => '/usr/local/icinga-web',
+    require => [Archive['icinga-web'], Package["${php}-cli"]],
   }
 
-  file { "${apache_path}/conf-enabled/nagios3.conf":
-    ensure => absent,
-    notify => Service[$apache_service],
-  }
-
-  firewall { '100 Allow web traffic for Icinga':
-    proto  => 'tcp',
-    dport  => '80',
-    action => 'accept',
+  file { '/usr/local/icinga/etc/idomod.cfg':
+    source  => 'puppet:///modules/icinga/idomod.cfg',
   }
 }

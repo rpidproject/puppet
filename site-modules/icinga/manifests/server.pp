@@ -1,40 +1,42 @@
 # Be the Icinga server
 class icinga::server {
-  $icinga_version = hiera('icinga::version')
+  $icinga_version = lookup('icinga::version', String)
 
-  include apache_bc
   include icinga::dependencies
   include icinga::pnp
   include icinga::web
   include icinga::classic
+  include icinga::config
+  include icinga::radiator
 
-  realize(User::Bundle['icinga'])
+  user { 'icinga': ensure => present }
 
-  utils::remote_file { "/root/icinga-${icinga_version}.tar.gz":
-    source  => "http://sourceforge.net/projects/icinga/files/icinga/${icinga_version}/icinga-${icinga_version}.tar.gz/download",
-    require => Class['icinga::dependencies'],
-  }
-
-  exec { 'unpack-icinga-core':
-    cwd       => '/root',
-    command   => "/bin/tar xvf icinga-${icinga_version}.tar.gz",
-    creates   => "/root/icinga-${icinga_version}",
-    require   => Utils::Remote_file["/root/icinga-${icinga_version}.tar.gz"],
-    logoutput => false,
+  archive { 'icinga-core':
+    path         => "/root/icinga-core-${icinga_version}.tar.gz",
+    source       => "https://codeload.github.com/Icinga/icinga-core/tar.gz/v${icinga_version}",
+    extract      => true,
+    extract_path => '/root',
+    cleanup      => true,
   }
 
   exec { 'build-icinga-core':
-    cwd       => "/root/icinga-${icinga_version}",
-    command   => "/root/icinga-${icinga_version}/configure --with-icinga-user=icinga --with-command-user=icinga --with-command-group=www-data --enable-idoutils --libexecdir=/usr/lib/nagios/plugins && /usr/bin/make all && /usr/bin/make fullinstall",
+    cwd       => "/root/icinga-core-${icinga_version}",
+    command   => "/root/icinga-core-${icinga_version}/configure --with-icinga-user=icinga --with-command-user=icinga --with-command-group=apache --enable-idoutils --libexecdir=/usr/lib64/nagios/plugins && /usr/bin/make all && /usr/bin/make fullinstall",
     creates   => '/usr/local/icinga',
-    require   => Exec['unpack-icinga-core'],
+    require   => Archive['icinga-core'],
     logoutput => on_failure,
   }
 
   service { 'icinga':
-    ensure  => running,
-    enable  => true,
-    require => Exec['icinga-config-check'],
+    ensure   => running,
+    enable   => true,
+    provider => redhat,
+    require  => Exec['icinga-config-check'],
+  }
+
+  file { '/usr/local/icinga/etc/htpasswd.users':
+    source  => 'puppet:///modules/icinga/htpasswd.icinga',
+    require => Exec['build-icinga-core'],
   }
 
   exec { 'download-nrpe':
@@ -45,26 +47,28 @@ class icinga::server {
 
   exec { 'build-nrpe':
     cwd     => '/root/nrpe-2.12',
-    command => '/root/nrpe-2.12/configure --with-nrpe-user=icinga --with-nrpe-group=icinga --with-nagios-user=icinga --with-nagios-group=icinga --libexecdir=/usr/lib/nagios/plugins && make all && make install-plugin',
-    creates => '/usr/lib/nagios/plugins/check_nrpe',
-    require => [Exec['download-nrpe'], Package['nagios-plugins'], Package['libssl0.9.8']],
+    command => '/root/nrpe-2.12/configure --with-nrpe-user=icinga --with-nrpe-group=icinga --with-nagios-user=icinga --with-nagios-group=icinga --libexecdir=/usr/lib64/nagios/plugins && make all && make install-plugin',
+    creates => '/usr/lib64/nagios/plugins/check_nrpe',
+    require => [Exec['download-nrpe'],
+                Package['nagios-common'],
+                Package['openssl'],
+                Class['admin::devtools']],
   }
 
-  file { '/usr/local/icinga/var/rw/icinga.cmd':
-    owner   => 'www-data',
-    group   => 'www-data',
+  file { '/usr/local/icinga/var/rw/':
+    ensure  => directory,
+    owner   => 'icinga',
     require => Exec['build-icinga-core'],
   }
 
-  exec { 'icinga-config-check':
-    command     => '/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg && /usr/sbin/service icinga reload',
-    refreshonly => true,
+  file { '/usr/local/icinga/var/rw/icinga.cmd':
+    group  => 'apache',
   }
 
-  firewall { '100 Allow NRPE out':
-    chain  => 'OUTPUT',
-    proto  => 'tcp',
-    dport  => '5666',
-    action => 'accept',
+  file { '/usr/local/icinga/var/icinga.log':
+    ensure => present,
+    mode   => '0644',
+    owner  => 'icinga',
+    group  => 'icinga',
   }
 }
