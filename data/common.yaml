@@ -1,4 +1,14 @@
 ---
+  classes:
+    - icinga::target
+    - profile::firewall
+    - profile::ntp
+    - profile::puppet
+    - profile::ssh
+    - profile::sudoers
+    - profile::timezone
+    - profile::users
+    - profile::vim
   users:
     'john':
       comment: 'John Arundel'
@@ -18,6 +28,7 @@
     - 'john'
     - 'balmas'
     - 'vagrant'
+  slack_webhook_url: 'https://hooks.slack.com/services/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'
   docker::manage_kernel: false
   docker_run_dir: '/docker/run'
   docker_build_dir: '/docker/build'
@@ -72,3 +83,11 @@
   handle::download_url: 'http://www.handle.net/hnr-source/hsj-8.1.1.tar.gz'
   handle::user: 'handle'
   handle::docker_base: 'openjdk:8u131-jre-alpine'
+  firewall_drop: false
+  icinga::version: '1.14.0'
+  icinga::contact: 'sysadmin'
+  icinga::key_contact: 'emergency'
+  monitor_ips:
+    - 172.31.69.42
+  pnp4nagios_url_base: 'http://downloads.sourceforge.net/project/pnp4nagios/PNP-0.6/'
+  pnp4nagios_version: '0.6.25'

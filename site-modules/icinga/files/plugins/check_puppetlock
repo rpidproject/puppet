@@ -1,0 +1,6 @@
+#!/usr/bin/ruby -w
+require File.dirname(__FILE__) + '/lib/puppetlock_checker.rb'
+
+warn_age = 3 * 60 * 60
+status = PuppetlockChecker.new.check(warn_age)
+exit(status)

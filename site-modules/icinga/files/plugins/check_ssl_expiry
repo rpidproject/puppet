@@ -1,0 +1,40 @@
+#!/usr/bin/ruby
+
+require File.dirname(__FILE__) + '/lib/ssl_expiry_checker.rb'
+require 'optparse'
+
+# Main script
+
+$warn = 30
+$crit = 10
+$url = ""
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options]\n \
+\n\
+Checks SSL certificate expiry date."
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-u URL", "URL to check") do |url|
+        $url = url
+    end
+
+    opts.on("-w WARN", "Warn if cert expires in less than WARN days") do |warn|
+        $warn = warn.to_i
+    end
+
+    opts.on("-c CRIT", "Critical if cert expires in less than CRIT days") do |crit|
+        $crit = crit.to_i
+    end
+
+    opts.on("-h", "Show usage") do
+        puts opts
+        exit
+    end
+
+end.parse!
+
+status = SSLExpiryChecker.new.check( $url, $warn, $crit )
+exit( status )

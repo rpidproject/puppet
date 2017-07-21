@@ -1,0 +1,32 @@
+#!/usr/bin/ruby
+
+require File.dirname(__FILE__) + '/lib/aws_resources_checker.rb'
+require 'optparse'
+
+# Main script
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options]\n \
+\n\
+Checks the number of AWS resources present."
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-e EC2_INSTANCES", "Expect this many EC2 instances") do |ec2|
+        $ec2 = ec2.to_i
+    end
+
+    opts.on("-r RDS_INSTANCES", "Expect this many RDS instances") do |rds|
+        $rds = rds.to_i
+    end
+
+    opts.on("-h", "Show usage") do
+        puts opts
+        exit
+    end
+
+end.parse!
+
+status = AWSResourcesChecker.new.check($ec2, $rds)
+exit(status)

@@ -1,0 +1,6 @@
+#!/usr/bin/ruby -w
+
+require File.dirname(__FILE__) + '/lib/time_sync_checker.rb'
+
+status = TimeSyncChecker.new.check(1,5)
+exit(status)

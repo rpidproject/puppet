@@ -1,0 +1,28 @@
+#!/usr/bin/ruby
+
+require File.dirname(__FILE__) + '/lib/json_checker.rb'
+require 'optparse'
+
+# Main script
+
+OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options]\n \
+\n\
+Checks to be sure the requested URI returns valid JSON."
+
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-u URL", "URL to retrieve") do |u|
+        $uri = u
+    end
+
+    opts.on("-h", "Show usage") do
+        puts opts
+        exit
+    end
+
+end.parse!
+
+status = JSONChecker.new.check($uri)
+exit(status)

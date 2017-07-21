@@ -1,0 +1,6 @@
+#!/usr/bin/ruby -w
+
+require File.dirname(__FILE__) + '/lib/swapping_checker.rb'
+
+status = SwappingChecker.new.check()
+exit(status)

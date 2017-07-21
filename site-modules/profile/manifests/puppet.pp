@@ -30,4 +30,12 @@ class profile::puppet {
     content => strftime('%F %T'),
     backup  => false,
   }
+
+  firewall { '100 allow SSH (for Git)':
+    chain  => 'OUTPUT',
+    state  => ['NEW'],
+    dport  => '22',
+    proto  => 'tcp',
+    action => 'accept',
+  }
 }
