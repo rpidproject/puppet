@@ -1,16 +1,27 @@
-web:
+<%- | Type::PortNumber[1] $marmotta_host_port,
+      Type::PortNumber[1] $marmotta_container_port,
+      Type::PortNumber[1] $collections_host_port,
+      Type::PortNumber[1] $collections_container_port,
+      Type::PortNumber[1] $postgres_host_port,
+      Type::PortNumber[1] $postgres_container_port,
+      String[1] $postgres_user,
+      String[1] $postgres_password,
+| -%>
+collections:
   image "rpid-collections:latest"
+  environment:
+   - COLLECTIONS_API_ENV=docker-compose
   links:
    - "marmotta"
   ports:
-    - "5000:5000"
+   - "<%= $collections_host_port %>:<%= $collections_container_port %>"
 
 marmotta:
   image: "rpid-marmotta:latest"
   links: 
    - "postgres" 
   ports:
-   - "8080:8080"
+   - "<%= $marmotta_host_port %>:<%= $marmotta_container_port %>"
 
 postgres:
   image: "postgres:alpine"
@@ -18,5 +29,7 @@ postgres:
     POSTGRES_PASSWORD: <%= $postgres_password %> 
     POSTGRES_USER: <%= $postgres_user %>
     PGDATA: <%= $postgres_data %>
+  ports:
+   - "<%= $postgres_host_port %>:<%= $postgres_container_port %>"
 
 
