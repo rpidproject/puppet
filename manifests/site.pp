@@ -1,6 +1,6 @@
 # Manage puppetlabs-firewall global setup
 resources { 'firewall':
-    purge => true,
+    purge => false,
 }
 
 Firewall {
