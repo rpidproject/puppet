@@ -1,0 +1,22 @@
+web:
+  image "rpid-collections:latest"
+  links:
+   - "marmotta"
+  ports:
+    - "5000:5000"
+
+marmotta:
+  image: "rpid-marmotta:latest"
+  links: 
+   - "postgres" 
+  ports:
+   - "8080:8080"
+
+postgres:
+  image: "postgres:alpine"
+  environment:
+    POSTGRES_PASSWORD: <%= $postgres_password %> 
+    POSTGRES_USER: <%= $postgres_user %>
+    PGDATA: <%= $postgres_data %>
+
+
