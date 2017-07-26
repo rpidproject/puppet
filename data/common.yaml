@@ -90,14 +90,12 @@
   collections::manifold::host_port: 5000
   collections::manifold::container_port: 5000
   collections::manifold::tag: 'latest'
+  collections::manifold::startup_timeout: 60
   collections::marmotta::host_port: 8080
-  collections::marmotta::container_port: 8080
-  collections::manifold::docker_base: 'debian:jessie-backports'
-  collections::marmotta::repos: 'https://github.com/apache/marmotta' 
-  collections::marmotta::revision: '3.3.0'
+  collections::marmotta::docker_base: 'tomcat:7.0.79-jre8-alpine'
+  collections::marmotta::download_url: 'http://mirrors.gigenet.com/apache/marmotta/3.3.0/apache-marmotta-3.3.0-webapp.zip'
   collections::marmotta::tag: 'latest'
-  collections::postgres::host_port: 5423
-  collections::postgres::container_port: 5423
+  collections::postgres::host_port: 5432
   collections::postgres::db: 'marmotta'
   collections::postgres::user: 'marmotta'
   collections::postgres::password: 'postgreschangeme'

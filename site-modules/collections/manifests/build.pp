@@ -40,18 +40,11 @@ class collections::build {
     docker_dir => $manifold_build_dir,
   }
 
-  vcsrepo { $marmotta_build_dir:
-    ensure   => latest,
-    revision => lookup('collections::marmotta::revision'),
-    provider => git,
-    source   => lookup('collections::marmotta::repos'),
-  } 
-
   file { "${marmotta_build_dir}/Dockerfile":
     content => epp('collections/Dockerfile.marmotta.epp',
       {
         'docker_base'       => lookup('collections::marmotta::docker_base'),
-        'marmotta_port'     => lookup('collections::marmotta::container_port'),
+        'download_url'      => lookup('collections::marmotta::download_url'),
         'postgres_port'     => lookup('collections::postgres::host_port'),
         'postgres_user'     => lookup('collections::postgres::user'),
         'postgres_password' => lookup('collections::postgres::password'),

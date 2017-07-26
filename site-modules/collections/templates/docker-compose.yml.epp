@@ -1,9 +1,7 @@
-<%- | Type::PortNumber[1] $marmotta_host_port,
-      Type::PortNumber[1] $marmotta_container_port,
-      Type::PortNumber[1] $manifold_host_port,
-      Type::PortNumber[1] $manifold_container_port,
-      Type::PortNumber[1] $postgres_host_port,
-      Type::PortNumber[1] $postgres_container_port,
+<%- | Type::PortNumber $marmotta_host_port,
+      Type::PortNumber $manifold_host_port,
+      Type::PortNumber $manifold_container_port,
+      Type::PortNumber $postgres_host_port,
       String[1] $marmotta_image,
       String[1] $manifold_image,
       String[1] $postgres_image,
@@ -26,7 +24,7 @@ marmotta:
   links: 
    - "postgres" 
   ports:
-   - "<%= $marmotta_host_port %>:<%= $marmotta_container_port %>"
+   - "<%= $marmotta_host_port %>:8080
 
 postgres:
   image: "<%= $postgres_image %>"
@@ -38,6 +36,6 @@ postgres:
     PGDATA: /data
     POSTGRES_DB: <%= $postgres_db %>
   ports:
-   - "<%= $postgres_host_port %>:<%= $postgres_container_port %>"
+   - "<%= $postgres_host_port %>:5432
 
 

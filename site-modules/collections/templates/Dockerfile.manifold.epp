@@ -1,5 +1,5 @@
-<%- | String[1] $marmotta_host_port,
-      String[1] $startup_timeout,
+<%- | Type::PortNumber $marmotta_port,
+      Integer[1] $startup_timeout,
       String[1] $docker_base,
 | -%>
 FROM <%= $docker_base %>
@@ -15,4 +15,4 @@ WORKDIR /app
 RUN ls -la
 RUN pip3 install -r requirements.txt
 ENTRYPOINT ["python3"]
-CMD ["./wait-for-it.sh -h http://marmotta:<%= $marmotta_host_port %> -t <%= $startup_timeout %> -- python3 run.py"
+CMD ["./wait-for-it.sh -h http://marmotta:<%= $marmotta_port %> -t <%= $startup_timeout %> -- python3 run.py"
