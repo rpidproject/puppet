@@ -37,5 +37,7 @@ CMD if [[ -f /data/privatekey ]]; then \
       /cordra/sw/bin/do-keygen -alg RSA -keysize 2048 /data/privatekey /data/publickey <passphrase.tmp; \
       echo done.; \
     fi ;\
+    echo Copying webapp...; \
+    cp -r /cordra/data/webapps-priority /data; \
     echo Starting server...; \
     /cordra/sw/bin/do-server /data
