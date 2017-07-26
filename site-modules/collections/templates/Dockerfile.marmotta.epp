@@ -1,15 +1,19 @@
 <%- | Type::PortNumber[1] $marmotta_port,
       Type::PortNumber[1] $postgres_port, 
-      String[1] $postgres_host, 
       String[1] $postgres_db, 
       String[1] $postgres_user, 
       String[1] $postgres_password, 
-      String[1] $postgres_version,
+      String[1] $docker_base,
 | -%>
 # Dockerfile for Apache Marmotta
 
-FROM debian:jessie-backports
-MAINTAINER Sergio Fernández <wikier@apache.org>
+FROM <%= $docker_base %>
+LABEL org.label-schema.vendor="RPID" \
+  org.label-schema.url="https://github.com/apache/marmotta" \
+  org.label-schema.name="Marmotta" \
+  org.label-schema.version="1.0.0" \
+  org.label-schema.docker.schema-version="1.0"
+
 
 EXPOSE <%= $marmotta_port %>
 
@@ -48,7 +52,7 @@ RUN chown tomcat7:tomcat7 /var/lib/tomcat7/conf/Catalina/localhost/marmotta.xml
 RUN mkdir -p "$(dirname $CONF_PATH)"
 RUN echo "security.enabled = false" > $CONF_PATH
 RUN echo "database.type = postgres" >> $CONF_PATH
-RUN echo "database.url = jdbc:postgresql://<%= $postgres_host %>:<%= $postgres_port %>/$DB_NAME?prepareThreshold=3" >> $CONF_PATH
+RUN echo "database.url = jdbc:postgresql://postgres:<%= $postgres_port %>/$DB_NAME?prepareThreshold=3" >> $CONF_PATH
 RUN echo "database.user = $DB_USER" >> $CONF_PATH
 RUN echo "database.password = $DB_PASS" >> $CONF_PATH
 RUN chown -R tomcat7:tomcat7 "$(dirname $CONF_PATH)"

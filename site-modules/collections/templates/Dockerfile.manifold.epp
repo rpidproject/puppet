@@ -1,8 +1,8 @@
-<%- | String[1] $marmotta_url,
-      String[1] $timeout,
+<%- | String[1] $marmotta_host_port,
+      String[1] $startup_timeout,
       String[1] $docker_base,
 | -%>
-FROM $docker_base
+FROM <%= $docker_base %>
 LABEL org.label-schema.vendor="RPID" \
   org.label-schema.url="https://github.com/RDACollectionsWG/perseids-manifold/" \
   org.label-schema.name="Perseids Manifold Collections API" \
@@ -15,4 +15,4 @@ WORKDIR /app
 RUN ls -la
 RUN pip3 install -r requirements.txt
 ENTRYPOINT ["python3"]
-CMD ["./wait-for-it.sh -h <%= $marmotta_url %> -t <%= $timeout %> -- python3 run.py"
+CMD ["./wait-for-it.sh -h http://marmotta:<%= $marmotta_host_port %> -t <%= $startup_timeout %> -- python3 run.py"
