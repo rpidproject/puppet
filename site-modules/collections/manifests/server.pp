@@ -8,6 +8,12 @@ class collections::server {
   $marmotta_tag = lookup('collections::marmotta::tag')
   $postgres_tag = lookup('collections::postgres::tag')
   $manifold_host_port = lookup('collections::manifold::host_port')
+  $manifold_container_port = lookup('collections::manifold::container_port')
+  $marmotta_host_port = lookup('collections::marmotta::host_port')
+  $postgres_host_port = lookup('collections::postgres::host_port')
+  $postgres_user = lookup('collections::postgres::user')
+  $postgres_password = lookup('collections::postgres::password')
+  $postgres_db = lookup('collections::postgres::db')
 
   file { $collections_run_dir:
     ensure => directory,
@@ -17,27 +23,33 @@ class collections::server {
     ensure => directory,
   }
 
-  file { "${collections_run_dir}/docker-compose.yml":
-    content => epp('collections/docker-compose.yml.epp',
-      {
-        'manifold_image' => "rpid-manifold:${manifold_tag}",
-        'marmotta_image' => "rpid-marmotta:${marmotta_tag}",
-        'postgres_image' => "postgres:${postgres_tag}",
-        'manifold_host_port' => $manifold_host_port,
-        'manifold_container_port' => lookup('collections::manifold::container_port'),
-        'marmotta_host_port' => lookup('collections::marmotta::host_port'),
-        'postgres_host_port' => lookup('collections::postgres::host_port'),
-        'postgres_user' => lookup('collections::postgres::user'),
-        'postgres_password' => lookup('collections::postgres::password'),
-        'postgres_db' => lookup('collections::postgres::db'),
-        'postgres_data_dir' => $data_dir,
-      }
-    ),
-    notify => Docker_compose["${collections_run_dir}/docker-compose.yml"],
+  # this should all be handled via docker compose but puppet and docker compose
+  # are not playing well together. it was only starting the postgres container
+
+  docker::run { 'rpid-postgres':
+    image   => "postgres:${postgres_tag}",
+    ports   => "${postgres_host_port}:5432",
+    env     => [ "POSTGRES_PASSWORD=${postgres_password}",
+                 "POSTGRES_USER=$postgres_user",
+                 "PGDATA=/data",
+               ],
+    volumes => "${data_dir}:/data",
   }
 
-  docker_compose { "${collections_run_dir}/docker-compose.yml":
-    ensure => present,
+  docker::run { 'rpid-marmotta':
+    image => "rpid-marmotta:${marmotta_tag}",
+    ports => "${marmotta_host_port}:8080",
+    links => [ "rpid-postgres:postgres"],
+    require => [ Docker::Run['rpid-postgres'], Docker::Image['rpid-marmotta'] ],
+  }
+
+  docker::run { 'rpid-manifold':
+    image   => "rpid-manifold:${manifold_tag}",
+    ports   => "${manifold_host_port}:${manifold_container_port}",
+    env     => [ "COLLECTIONS_API_SETTINGS=compose.cfg"],
+    links   => [ "rpid-marmotta:marmotta" ] ,
+    require => [ Docker::Run['rpid-marmotta'], Docker::Image['rpid-manifold'] ],
+    command => "/app/wait-for-it.sh -h http://marmotta:${marmotta_host_port}/marmotta -t 60 -- python3 run.py" 
   }
 
   firewall { '100 Allow web traffic for collections':

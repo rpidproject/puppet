@@ -28,7 +28,7 @@ RUN apk add --update \
 # Download and unpack Marmotta distribution
 RUN curl -o /tmp/marmotta.zip <%= $download_url %> \
   && unzip -d /tmp/marmotta /tmp/marmotta.zip \
-  && mv /tmp/marmotta/apache-marmotta-3.3.0/marmotta.war /marmotta \
+  && mv /tmp/marmotta/apache-marmotta-3.3.0/marmotta.war /usr/local/tomcat/webapps \
   && rm /tmp/marmotta.zip \
   && rm -r /tmp/marmotta
 

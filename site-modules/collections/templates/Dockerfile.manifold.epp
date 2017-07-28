@@ -14,5 +14,4 @@ ADD ./ /app
 WORKDIR /app
 RUN ls -la
 RUN pip3 install -r requirements.txt
-ENTRYPOINT ["python3"]
-CMD ["./wait-for-it.sh -h http://marmotta:<%= $marmotta_port %> -t <%= $startup_timeout %> -- python3 run.py"
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
