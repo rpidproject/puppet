@@ -1,6 +1,6 @@
 <%- | String[1] $docker_base,
       String[1] $cordra_download_url,
-      Hash[String, Type::PortNumber] $ports 
+      Hash[String, Type::PortNumber] $ports,
 | -%>
 FROM <%= $docker_base %>
 
@@ -9,6 +9,8 @@ LABEL org.label-schema.vendor="RPID" \
   org.label-schema.name="Cordra Server" \
   org.label-schema.version="1.0.7" \
   org.label-schema.docker.schema-version="1.0"
+
+ADD ./ /cordra
 
 WORKDIR /cordra
 
@@ -23,21 +25,10 @@ RUN curl -o /tmp/cordra.zip <%= $cordra_download_url %> \
   && unzip -d /tmp/cordra /tmp/cordra.zip \
   && mv /tmp/cordra/cordra-*/* /cordra \
   && rm /tmp/cordra.zip \
-  && rm -r /tmp/cordra
+  && rm -r /tmp/cordra \
+  && cp -r /cordra/data/webapps-priority /data
 
 VOLUME /data
 
 EXPOSE <%= $ports['https'] %> <%= $ports['http'] %> <%= $ports['server'] %> <%= $ports['ssl'] %>
-
-CMD if [[ -f /data/privatekey ]]; then \
-      echo keys exist, skipping cordra server setup...; \
-    else \
-      echo No keys found, running cordra server setup...; \
-      echo "" > passphrase.tmp; \
-      /cordra/sw/bin/do-keygen -alg RSA -keysize 2048 /data/privatekey /data/publickey <passphrase.tmp; \
-      echo done.; \
-    fi ;\
-    echo Copying webapp...; \
-    cp -r /cordra/data/webapps-priority /data; \
-    echo Starting server...; \
-    /cordra/sw/bin/do-server /data
+ENTRYPOINT ["/cordra/docker-entrypoint.sh"]

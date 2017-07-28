@@ -15,6 +15,7 @@ class handle::build {
         'handle_user'         => lookup('handle::user'),
         'ports'               => lookup('handle::config.ports'),
         'handle_prefix'       => lookup('site::handle_prefix'),
+        'site_handles'        => lookup('site::handles')
       }
     ),
     notify  => Docker::Image['rpid-handle'],
