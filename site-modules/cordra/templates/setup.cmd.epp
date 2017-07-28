@@ -1,0 +1,10 @@
+<%- | String[1] $assigned_prefix,
+      String[1] $handle_admin_id,
+      String[1] $handle_admin_key,
+| -%>
+<%= $assigned_prefix %>
+<%= $handle_admin_id %>
+<%= $handle_admin_key %>
+
+
+
