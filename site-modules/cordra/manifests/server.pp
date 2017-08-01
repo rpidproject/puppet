@@ -6,8 +6,10 @@ class cordra::server {
   $cordra_tag = lookup('cordra::cordra_tag', String)
 	$ports = lookup('cordra::config.ports', Hash, 'hash')
 	$hostports = lookup('cordra::config.host_ports', Hash, 'hash')
-  $handle_admin_id = lookup('handle::config.server.admin_id',String)
   $assigned_prefix = lookup('cordra::config.server.assigned_prefix',String)
+  $admin_idx = lookup('handle::config.server.admin_idx')
+  $site_handle = lookup('site::handle_prefix')
+  $handle_admin_id = "${$admin_idx}/${site_handle}"
 
   file { [
     $cordra_run_dir,
@@ -75,22 +77,6 @@ class cordra::server {
       "${hostports['ssl']}:${ports['ssl']}",
     ],
     require   => Docker::Image['rpid-cordra'],
-  }
-
-  docker::exec {'configure-rpid-cordra':
-    detach    => false,
-    container => 'rpid-cordra'
-    command   => '/corda/sw/bin/configure-unconfigured-cordra /data /cordra/setup.cmd'
-    tty       => true,
-    require   => Docker::Run['rpid-cordra'],
-  }
-
-  docker::exec {'configure-rpid-cordra':
-    detach    => true,
-    container => 'rpid-cordra'
-    command   => '/corda/sw/bin/do-server /data'
-    tty       => true,
-    require   => Docker::Exec['configure-rpid-cordra'],
   }
 
   firewall { '100 Allow https traffic for cordra':

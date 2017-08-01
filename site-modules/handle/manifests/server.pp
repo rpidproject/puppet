@@ -43,6 +43,7 @@ class handle::server {
 
   $handle_tag = lookup('handle::handle_tag')
   docker::run { 'rpid-handle':
+    ensure  => present,
     image   => "rpid-handle:${handle_tag}",
     volumes => "${handle_run_dir}:/handleserver",
     ports   => [
