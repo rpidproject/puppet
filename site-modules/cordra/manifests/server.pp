@@ -10,6 +10,8 @@ class cordra::server {
   $admin_idx = lookup('handle::config.server.admin_idx')
   $site_handle = lookup('site::handle_prefix')
   $handle_admin_id = "${$admin_idx}/${site_handle}"
+  $cordra_data_mount = '/data'
+  $handle_run_dir = "${docker_run_dir}/handle"
 
   file { [
     $cordra_run_dir,
@@ -63,7 +65,28 @@ class cordra::server {
         'assigned_prefix' => $assigned_prefix,
         'admin_handle'    => $handle_admin_id,
       }
-    )
+    ),
+  }
+
+  file { "${cordra_data_dir}/configure.cmd":
+    content => epp('cordra/configure.cmd.epp', 
+      {
+        'assigned_prefix'  => $assigned_prefix,
+        'handle_admin_id'  => $handle_admin_id,
+        'handle_admin_key' => "${cordra_data_mount}/admpriv.bin",
+      }
+    ),
+  }
+
+  file { "${cordra_data_dir}/configure.sh":
+    content => epp('cordra/configure.sh.epp', 
+      {
+        'handle_run_dir'    => $handle_run_dir,
+        'cordra_data_host'  => $cordra_data_dir,
+        'cordra_data_mount' => $cordra_data_mount,
+      }
+    ),
+    mode => "0755",
   }
 
   docker::run { 'rpid-cordra':

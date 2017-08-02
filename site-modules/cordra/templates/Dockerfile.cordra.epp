@@ -1,7 +1,6 @@
 <%- | String[1] $docker_base,
       String[1] $cordra_download_url,
       Hash[String, Type::PortNumber] $ports,
-      String[1] $cordra_user,
 | -%>
 FROM <%= $docker_base %>
 
@@ -12,17 +11,6 @@ LABEL org.label-schema.vendor="RPID" \
   org.label-schema.docker.schema-version="1.0"
 
 ADD ./ /cordra
-
-# Add cordra user and group and set ownership of server directory
-# and add ability to talk to local handle server directly
-RUN addgroup -S <%= $cordra_user %> \
- && adduser -S -g <%= $cordra_user %> -h /home/cordra <%= $cordra_user %> \
- && chown -R <%= $cordra_user %>:<%= $cordra_user %> /cordra \
- && chmod 755 /cordra/docker-entrypoint.sh \
- && mkdir /home/<%= $cordra_user %>/.handle \
- && cp /cordra/handle/siteinfo.json /home/<%= $cordra_user %>/.handle \
- && echo '*' > /home/<%= $cordra_user %>/.handle/local_nas
-
 
 WORKDIR /cordra
 
@@ -44,7 +32,8 @@ VOLUME /data
 
 EXPOSE <%= $ports['https'] %> <%= $ports['http'] %> <%= $ports['server'] %> <%= $ports['ssl'] %>
 
-# make sure we can run the entry point script
-USER <%= $cordra_user %>
-CMD /cordra/sw/bin/configure-unconfigured-cordra /data < /cordra/setup.cmd; \
-  /cordra/sw/bin/do-server /data
+RUN echo "#!/bin/sh" > /cordra/sw/bin/do-docker-configure.sh \
+  && echo "/cordra/sw/bin/configure-unconfigured-cordra /data < /data/configure.cmd" >> /cordra/sw/bin/do-docker-configure.sh \
+  && chmod 755 /cordra/sw/bin/do-docker-configure.sh
+
+CMD /cordra/sw/bin/do-server /data
