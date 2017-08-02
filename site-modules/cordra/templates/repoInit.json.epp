@@ -1,8 +1,9 @@
 <%- | String[1] $admin_password,
       String[1] $handle_prefix,
+      String[1] $handle_admin_id,
 | -%>
 {
   "adminPassword":"<%= $admin_password %>",
   "prefix":"<%= $handle_prefix %>",
-  "handleAdminIdentity":"300:0.NA/<%= $handle_prefix %>"
+  "handleAdminIdentity":$handle_admin_id,
 }

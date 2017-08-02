@@ -6,6 +6,10 @@ class cordra::server {
   $cordra_tag = lookup('cordra::cordra_tag', String)
 	$ports = lookup('cordra::config.ports', Hash, 'hash')
 	$hostports = lookup('cordra::config.host_ports', Hash, 'hash')
+  $assigned_prefix = lookup('cordra::config.server.assigned_prefix',String)
+  $admin_idx = lookup('handle::config.server.admin_idx')
+  $site_handle = lookup('site::handle_prefix')
+  $handle_admin_id = "${$admin_idx}/${site_handle}"
 
   file { [
     $cordra_run_dir,
@@ -18,8 +22,9 @@ class cordra::server {
   file { "${cordra_data_dir}/repoInit.json":
     content => epp('cordra/repoInit.json.epp', 
       {
-        'admin_password' => lookup('cordra::admin_password'),
-        'handle_prefix'  => lookup('site::handle_prefix'),
+        'admin_password'  => lookup('cordra::admin_password'),
+        'handle_prefix'   => $assigned_prefix,
+        'handle_admin_id' => $handle_admin_id,
       }
     ),
   }
@@ -55,12 +60,11 @@ class cordra::server {
   file { "${cordra_data_dir}/knowbots/config.dct":
     content => epp('cordra/knowbots.config.dct.epp', 
       {
-        'assigned_prefix' => lookup('site::handle_prefix'),
-        'admin_handle'    => lookup('site::handle_prefix'),
+        'assigned_prefix' => $assigned_prefix,
+        'admin_handle'    => $handle_admin_id,
       }
     )
   }
-
 
   docker::run { 'rpid-cordra':
     ensure => present,
@@ -72,6 +76,7 @@ class cordra::server {
       "${hostports['server']}:${ports['server']}",
       "${hostports['ssl']}:${ports['ssl']}",
     ],
+    require   => Docker::Image['rpid-cordra'],
   }
 
   firewall { '100 Allow https traffic for cordra':

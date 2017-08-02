@@ -5,6 +5,7 @@ class handle::server {
 	$config = lookup('handle::config.server', Hash, 'hash')
 	$ports = lookup('handle::config.ports', Hash, 'hash')
 	$hostports = lookup('handle::config.host_ports', Hash, 'hash')
+  $volume_mount = lookup('handle::volume_mount')
 
   file { $handle_run_dir:
     ensure => directory,
@@ -42,6 +43,7 @@ class handle::server {
 
   $handle_tag = lookup('handle::handle_tag')
   docker::run { 'rpid-handle':
+    ensure  => present,
     image   => "rpid-handle:${handle_tag}",
     volumes => "${handle_run_dir}:/handleserver",
     ports   => [
