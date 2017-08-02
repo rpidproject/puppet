@@ -14,8 +14,9 @@ class handle::server {
   file { "${handle_run_dir}/config.dct":
     content => epp('handle/config.dct.epp',
 		  {
-        'config' => $config,
-        'ports'  => $ports,
+        'config'                 => $config,
+        'ports'                  => $ports,
+        'cordra_assigned_prefix' => lookup('cordra::config.server.assigned_prefix'),
 			}
 		),
   }
