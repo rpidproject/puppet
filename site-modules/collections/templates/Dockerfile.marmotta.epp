@@ -1,0 +1,51 @@
+<%- | Type::PortNumber $postgres_port, 
+      String[1] $postgres_db, 
+      String[1] $postgres_user, 
+      String[1] $postgres_password, 
+      String[1] $docker_base,
+      String[1] $download_url,
+| -%>
+# Dockerfile for Apache Marmotta
+
+FROM <%= $docker_base %>
+LABEL org.label-schema.vendor="RPID" \
+  org.label-schema.url="https://github.com/apache/marmotta" \
+  org.label-schema.name="Marmotta" \
+  org.label-schema.version="1.0.0" \
+  org.label-schema.docker.schema-version="1.0"
+
+
+EXPOSE 8080
+
+WORKDIR /marmotta
+
+# Install required packages
+RUN apk add --update \
+  curl \
+  unzip \
+  && rm -rf /var/cache/apk/*
+
+# Download and unpack Marmotta distribution
+RUN curl -o /tmp/marmotta.zip <%= $download_url %> \
+  && unzip -d /tmp/marmotta /tmp/marmotta.zip \
+  && mv /tmp/marmotta/apache-marmotta-3.3.0/marmotta.war /usr/local/tomcat/webapps \
+  && rm /tmp/marmotta.zip \
+  && rm -r /tmp/marmotta
+
+# configuration
+ENV DB_NAME <%= $postgres_db %>
+ENV DB_USER <%= $postgres_user %>
+ENV DB_PASS <%= $postgres_password %>
+ENV WAR_PATH /marmotta/marmotta.war
+ENV CONF_PATH /marmotta/system-config.properties
+ENV SETENV_PATH /usr/local/tomcat/bin/setenv.sh
+
+
+# install the webapp
+RUN echo 'export JAVA_OPTS="-Xms1024m -Xmx1024m -XX:MaxPermSize=254m -Dmarmotta.home=/marmotta"' > $SETENV_PATH
+RUN echo "security.enabled = false" > $CONF_PATH
+RUN echo "database.type = postgres" >> $CONF_PATH
+RUN echo "database.url = jdbc:postgresql://postgres:<%= $postgres_port %>/$DB_NAME?prepareThreshold=3" >> $CONF_PATH
+RUN echo "database.user = $DB_USER" >> $CONF_PATH
+RUN echo "database.password = $DB_PASS" >> $CONF_PATH
+

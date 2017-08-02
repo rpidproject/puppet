@@ -1,0 +1,17 @@
+<%- | Type::PortNumber $marmotta_port,
+      Integer[1] $startup_timeout,
+      String[1] $docker_base,
+| -%>
+FROM <%= $docker_base %>
+LABEL org.label-schema.vendor="RPID" \
+  org.label-schema.url="https://github.com/RDACollectionsWG/perseids-manifold/" \
+  org.label-schema.name="Perseids Manifold Collections API" \
+  org.label-schema.version="1.0.0" \
+  org.label-schema.docker.schema-version="1.0"
+
+RUN apt-get update -y && apt-get install -y python3-pip python3-dev build-essential curl
+ADD ./ /app
+WORKDIR /app
+RUN ls -la
+RUN pip3 install -r requirements.txt
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
