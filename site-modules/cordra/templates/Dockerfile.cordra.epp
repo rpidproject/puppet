@@ -36,4 +36,13 @@ RUN echo "#!/bin/sh" > /cordra/sw/bin/do-docker-configure.sh \
   && echo "/cordra/sw/bin/configure-unconfigured-cordra /data < /data/configure.cmd" >> /cordra/sw/bin/do-docker-configure.sh \
   && chmod 755 /cordra/sw/bin/do-docker-configure.sh
 
-CMD /cordra/sw/bin/do-server /data
+CMD if [[ -f /data/privatekey ]]; then \
+      echo keys exist, skipping cordra server setup...; \
+    else \
+      echo No keys found, running cordra server setup...; \
+      echo "" > passphrase.tmp; \
+      /cordra/sw/bin/do-keygen -alg RSA -keysize 2048 /data/privatekey /data/publickey <passphrase.tmp; \
+      echo done.; \
+    fi ;\
+    echo Starting server...; \
+    /cordra/sw/bin/do-server /data
