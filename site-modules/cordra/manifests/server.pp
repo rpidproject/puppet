@@ -9,7 +9,7 @@ class cordra::server {
   $assigned_prefix = lookup('cordra::config.server.assigned_prefix',String)
   $admin_idx = lookup('handle::config.server.admin_idx')
   $site_handle = lookup('site::handle_prefix')
-  $handle_admin_id = "${$admin_idx}/${site_handle}"
+  $handle_admin_id = "${admin_idx}/${site_handle}"
   $cordra_data_mount = '/data'
   $handle_run_dir = "${docker_run_dir}/handle"
 
@@ -22,6 +22,7 @@ class cordra::server {
   }
 
   file { "${cordra_data_dir}/repoInit.json":
+    ensure => file,
     content => epp('cordra/repoInit.json.epp', 
       {
         'admin_password'  => lookup('cordra::admin_password'),
@@ -29,6 +30,7 @@ class cordra::server {
         'handle_admin_id' => $handle_admin_id,
       }
     ),
+    notify => Docker::Run['rpid-cordra'],
   }
 
   file { "${cordra_data_dir}/config.dct":
@@ -38,6 +40,7 @@ class cordra::server {
         'server' => lookup('cordra::config.server', Hash, 'hash'),
       }
     ),
+    notify => Docker::Run['rpid-cordra'],
   }
 
   file { "${cordra_data_dir}/password.dct":
@@ -45,7 +48,8 @@ class cordra::server {
       {
         'admin_password' => lookup('cordra::admin_password'),
       }
-    )
+    ),
+    notify => Docker::Run['rpid-cordra'],
   }
 
   file { "${cordra_data_dir}/serverinfo.xml":
@@ -56,7 +60,8 @@ class cordra::server {
         #'public_address' => lookup('cordra::config.server.public_address'),
         'port'           => lookup('cordra::config.ports.server'),
       }
-    )
+    ),
+    notify => Docker::Run['rpid-cordra'],
   }
 
   file { "${cordra_data_dir}/knowbots/config.dct":
@@ -66,6 +71,7 @@ class cordra::server {
         'admin_handle'    => $handle_admin_id,
       }
     ),
+    notify => Docker::Run['rpid-cordra'],
   }
 
   file { "${cordra_data_dir}/configure.cmd":
