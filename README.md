@@ -21,27 +21,28 @@ The default configuration settings will install all 4 RPID services on a single 
 ## Quick Start with Amazon Web Services (via AWS Console)
 
 1. Request a Handle Prefix from the Handle System Administrator
-2. Clone this repository
-3. Create an account on Amazon Web Services
-4. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
-5. Create an Open Security Group (firewall will be managed by puppet)
-6. Create an new EC2 instance and assign it the Elastic IP. 
+2. Fork this repository
+3. Clone your fork onto a local machine
+4. Create an account on Amazon Web Services
+5. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
+6. Create an Open Security Group (firewall will be managed by puppet)
+7. Create an new EC2 instance and assign it the Elastic IP. 
     > Recommended Instance Configuration
     > * Ubuntu 16:04 (ami-cd0f5cb6)
     > * t2 large (2 CPU/8GB RAM)
     > * 25GB root file system
     > * Open Security Group
-    > * keypair: create one named rpid and copy the rpid.pem to the root of your clone of the puppet repo
-7. Supply your prefix and Server IP Address in in data/common.yaml :
+    > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork
+8. Supply your prefix and Server IP Address in in data/common.yaml :
     ```
     site::handle_prefix: 'yourprefixhere'
     handle::config:
       server:
         public_address: '<your elastic ip address here>'
     ```
-8. run script/puppify <elastic ip> rpid
-9. scp a copy of /docker/run/handle/sitebndl.zip from the EC2 instance to your local machine and send it to the Handle System Administrator
-10. When notified that the Handle is registred, ssh to the EC2 instance and register your Cordra repository with your local handle server by running:
+9. run script/puppify <elastic ip> rpid
+10. scp a copy of /docker/run/handle/sitebndl.zip from the EC2 instance to your local machine and send it to the Handle System Administrator
+11. When notified that the Handle is registred, ssh to the EC2 instance and register your Cordra repository with your local handle server by running:
    ```/docker/run/cordra/configure.sh```
    
 To add Icinga monitoring:
