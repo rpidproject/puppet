@@ -25,8 +25,7 @@ RUN curl -o /tmp/cordra.zip <%= $cordra_download_url %> \
   && unzip -d /tmp/cordra /tmp/cordra.zip \
   && mv /tmp/cordra/cordra-*/* /cordra \
   && rm /tmp/cordra.zip \
-  && rm -r /tmp/cordra \
-  && cp -r /cordra/data/webapps-priority /data 
+  && rm -r /tmp/cordra 
 
 VOLUME /data
 
@@ -44,5 +43,7 @@ CMD if [[ -f /data/privatekey ]]; then \
       /cordra/sw/bin/do-keygen -alg RSA -keysize 2048 /data/privatekey /data/publickey <passphrase.tmp; \
       echo done.; \
     fi ;\
+    echo Copying webapps...;\
+    cp -r /cordra/data/webapps-priority /data; \
     echo Starting server...; \
     /cordra/sw/bin/do-server /data
