@@ -33,16 +33,17 @@ The default configuration settings will install all 4 RPID services on a single 
     > * 25GB root file system
     > * Open Security Group
     > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
-8. Supply your prefix and Server IP Address in in data/common.yaml :
+8. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address:
     ```
     site::handle_prefix: 'yourprefixhere'
     handle::config:
       server:
         public_address: '<your elastic ip address here>'
     ```
-9. run script/puppify <elastic ip> rpid
-10. scp a copy of /docker/run/handle/sitebndl.zip from the EC2 instance to your local machine and send it to the Handle System Administrator
-11. When notified that the Handle is registred, ssh to the EC2 instance and register your Cordra repository with your local handle server by running:
+9. commit the change and push it to GitHub
+10. run script/puppify <your forked github repo> <elastic ip> rpid
+11. scp a copy of /docker/run/handle/sitebndl.zip from the EC2 instance to your local machine and send it to the Handle System Administrator
+12. When notified that the Handle is registred, ssh to the EC2 instance and register your Cordra repository with your local handle server by running:
    ```/docker/run/cordra/configure.sh```
    
 To add Icinga monitoring:
