@@ -51,6 +51,27 @@ To add Icinga monitoring:
 1. Create a EC2 second instance in AWS (Recommended AMI: TBD). Use the same rpid.pem keypair as before.
 2. run script/puppify <instance ip> monitor
 
+## Bootstrap a non AWS server
+1. Follow steps 1-3 under AWS Quickstart to register your handle prefix and setup your fork and local clone of this repo
+2. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address:
+    ```
+    site::handle_prefix: 'yourprefixhere'
+    handle::config:
+      server:
+        public_address: '<your server ip address here>'
+    ```
+3. commit the change and push it to GitHub
+4. scp the bootstrap script to your server, under a user with sudo access
+    ```
+     scp scripts/bootstrap.sh user@host:/tmp
+     ```
+5. run the bootstrap script on your server, under a user with sudo access
+    ```
+    ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> rpid"
+    ```
+6. proceedwith steps 11-12 under AWS Quickstart to register your sitebndl.zip and your Cordra instance handle
+
+
 ## Node/Site Configuration
 
 ## Handle Service Configuration
