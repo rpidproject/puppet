@@ -10,7 +10,7 @@
   "http_port" = "<%= $ports['http'] %>"
   "listen_address" = "<%= $server['listen_address'] %>"
   "log_save_interval" = "<%= $server['log_save_interval'] %>"
-  "serviceid" = "<%= $server['assigned_prefix'] %>/repo"
+  "serviceid" = "<%= $server['assigned_prefix'] %>"
   "register_handles" = "<%= $server['register_handles'] %>"
   "log_accesses" = "<%= $server['log_accesses'] %>"
   "ssl_port" = "<%= $ports['ssl'] %>"

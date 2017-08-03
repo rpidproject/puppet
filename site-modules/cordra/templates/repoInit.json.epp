@@ -5,5 +5,5 @@
 {
   "adminPassword":"<%= $admin_password %>",
   "prefix":"<%= $handle_prefix %>",
-  "handleAdminIdentity":$handle_admin_id,
+  "handleAdminIdentity":"<%= $handle_admin_id %>"
 }
