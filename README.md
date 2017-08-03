@@ -75,6 +75,8 @@ Configuration variables are managed through Puppet Hiera settings.
 
 ## PIT Configuration
 
+## Icinga Configuration 
+
 ## Amazon Web Services Orchestration Configuration (Optional)
 
 
