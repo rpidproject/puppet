@@ -32,7 +32,7 @@ The default configuration settings will install all 4 RPID services on a single 
     > * t2 large (2 CPU/8GB RAM)
     > * 25GB root file system
     > * Open Security Group
-    > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork
+    > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
 8. Supply your prefix and Server IP Address in in data/common.yaml :
     ```
     site::handle_prefix: 'yourprefixhere'
