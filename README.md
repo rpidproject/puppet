@@ -16,25 +16,38 @@ The services can be deployed together on a single node or spread across multiple
 
 Configuration variables are managed through Puppet Hiera settings.
 
+The default configuration settings will install all 4 RPID services on a single Node, and the Icinga Monitoring instance on a separate node.  
+
 ## Quick Start with Amazon Web Services (via AWS Console)
 
-1. Clone this repository
-2. Create an account on Amazon Web Services
-3. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
-4. Create an new EC2 instance (Recommended AMI: TBD) and assign it the Elastic IP. In doing so, create a new keypair named rpid.pem and copy this key to the root directory of your local clone of the repository
-5. Request a Handle Prefix from the Handle System Administrator
-6. Supply your prefix and Server IP Address in in data/common.yaml :
+1. Request a Handle Prefix from the Handle System Administrator
+2. Clone this repository
+3. Create an account on Amazon Web Services
+4. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
+5. Create an Open Security Group (firewall will be managed by puppet)
+6. Create an new EC2 instance and assign it the Elastic IP. 
+    > Recommended Instance Configuration
+    > * Ubuntu 16:04 (ami-cd0f5cb6)
+    > * t2 large (2 CPU/8GB RAM)
+    > * 25GB root file system
+    > * Open Security Group
+    > * keypair: create one named rpid and copy the rpid.pem to the root of your clone of the puppet repo
+7. Supply your prefix and Server IP Address in in data/common.yaml :
     ```
     site::handle_prefix: 'yourprefixhere'
     handle::config:
       server:
         public_address: '<your elastic ip address here>'
     ```
-7. run script/puppify <elastic ip> rpid
-8. scp a copy of /docker/run/handle/sitebndl.zip from the EC2 instance to your local machine and send it to the Handle System Administrator
-9. When notified that the Handle is registred, ssh to the EC2 instance and register your Cordra repository with your local handle server by running:
+8. run script/puppify <elastic ip> rpid
+9. scp a copy of /docker/run/handle/sitebndl.zip from the EC2 instance to your local machine and send it to the Handle System Administrator
+10. When notified that the Handle is registred, ssh to the EC2 instance and register your Cordra repository with your local handle server by running:
    ```/docker/run/cordra/configure.sh```
    
+To add Icinga monitoring:
+
+1. Create a EC2 second instance in AWS (Recommended AMI: TBD). Use the same rpid.pem keypair as before.
+2. run script/puppify <instance ip> monitor
 
 ## Node/Site Configuration
 
