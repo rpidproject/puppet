@@ -5,6 +5,6 @@
 #!/bin/sh
 
 cp <%= $handle_run_dir %>/admpriv.bin <%= $cordra_data_host %>
-docker exec rpid-cordra /cordra/sw/bin/do-docker-configure
+docker exec rpid-cordra /cordra/sw/bin/do-docker-configure.sh
 docker stop rpid-cordra
 
