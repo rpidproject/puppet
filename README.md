@@ -20,7 +20,11 @@ The default configuration settings will install all 4 RPID services on a single 
 
 ## Using the Puppet Repository
 
-### Personalize the Repository
+### Step 1: Prerequisites 
+1. Request a Handle Prefix from the Handle System Administrator
+2. At least one server on which to host the servers, whether cloud based on a provider like Amazon Web Services (AWS), a Vagrant box, or a locally hosted machine.  (See below under AWS Quickstart for instructions on how to get started with AWS.)
+
+### Step 2: Personalize the Repository
 1. Fork this repository
 2. Clone your fork onto a local machine
 3. Add the shell users their public keys to the `data/common.yaml` file
@@ -55,63 +59,64 @@ The default configuration settings will install all 4 RPID services on a single 
       - 'john'
       - 'yourloginname'
     ```
+4. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your Handle prefix and the IP Address for the server which will host the services
+    ```
+    site::handle_prefix: 'yourprefixhere'
+    handle::config:
+      server:
+        public_address: 'youripaddresshere'
+    ```
+5. Commit these changes to your local clone and push to GitHub.
 
+### Step 3: Bootstrap Your Server
 
-## Quick Start with Amazon Web Services (via AWS Console)
+### AWS: Quick Start with Amazon Web Services (via AWS Console)
 
-1. Request a Handle Prefix from the Handle System Administrator
-4. Create an account on Amazon Web Services
-5. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
-6. Create an Open Security Group (firewall will be managed by puppet)
-7. Create an new EC2 instance and assign it the Elastic IP. 
+1. Create an account on Amazon Web Services
+2. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
+3. Create an Open Security Group (firewall will be managed by puppet)
+4. Create an new EC2 instance and assign it the Elastic IP. 
     > Recommended Instance Configuration
     > * Ubuntu 16:04 (ami-cd0f5cb6)
     > * t2 large (2 CPU/8GB RAM)
     > * 25GB root file system
     > * Open Security Group
     > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
-8. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address:
-    ```
-    site::handle_prefix: 'yourprefixhere'
-    handle::config:
-      server:
-        public_address: '<your elastic ip address here>'
-    ```
-9. commit the change and push it to GitHub
-10. run script/puppify <your forked github repo> <elastic ip> rpid
-11. scp a copy of /docker/run/handle/sitebndl.zip from the EC2 instance to your local machine and send it to the Handle System Administrator
-12. When notified that the Handle is registred, ssh to the EC2 instance and register your Cordra repository with your local handle server by running:
-   ```/docker/run/cordra/configure.sh```
+5. Be sure to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
+6. run script/puppify <your forked github repo> <elastic ip> rpid
    
+### Local Server: Bootstrap a non AWS server
+5. Be usre to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
+6. scp the bootstrap script to your server, under a user with sudo access
+    ```
+     scp scripts/bootstrap.sh user@host:/tmp
+     ```
+7. run the bootstrap script on your server, under a user with sudo access
+    ```
+    ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> rpid"
+    ```
+    
+### Local Vagrant: Provision a Vagrant Virtual Box
+
+### Step 4: Register your Handle Server and Cordra DTR Instances
+1. scp a copy of /docker/run/handle/sitebndl.zip from bootstrapped server to your local machine and send it to the Handle System Administrator
+2. When notified that the Handle is registred, ssh to the bootstrapped server and register your Cordra repository with your local handle server by running:
+   ```/docker/run/cordra/configure.sh```
+
+## Advanced Configuration
+
+### Node/Site Configuration
+
+
+### Icinga Monitoring
+
+
 To add Icinga monitoring:
 
 1. Create a EC2 second instance in AWS (Recommended AMI: TBD). Use the same rpid.pem keypair as before.
 2. run script/puppify <instance ip> monitor
 
-## Bootstrap a non AWS server
-1. Follow steps 1-3 under AWS Quickstart to register your handle prefix and setup your fork and local clone of this repo
-2. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address:
-    ```
-    site::handle_prefix: 'yourprefixhere'
-    handle::config:
-      server:
-        public_address: '<your server ip address here>'
-    ```
-3. commit the change and push it to GitHub
-4. scp the bootstrap script to your server, under a user with sudo access
-    ```
-     scp scripts/bootstrap.sh user@host:/tmp
-     ```
-5. run the bootstrap script on your server, under a user with sudo access
-    ```
-    ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> rpid"
-    ```
-6. proceedwith steps 11-12 under AWS Quickstart to register your sitebndl.zip and your Cordra instance handle
-
-
-## Node/Site Configuration
-
-## Handle Service Configuration
+### Handle Service Configuration
 
 ```
   handle::handle_tag: 'latest'
@@ -142,7 +147,7 @@ To add Icinga monitoring:
   handle::docker_base: 'openjdk:8u131-jre-alpine'
 ```
 
-## DTR (Cordra) Configuration
+### DTR (Cordra) Configuration
 
 ```
   cordra::admin_password: 'dummy'
@@ -174,7 +179,7 @@ To add Icinga monitoring:
       ssl: 9001
 ```
 
-## Collections Configuration
+### Collections Configuration
 
 ```
   collections::manifold::docker_base: 'ubuntu:16.04'
@@ -195,12 +200,10 @@ To add Icinga monitoring:
   collections::postgres::tag: '9.4.12-alpine'
   ```
   
-## PIT Configuration
+### PIT Configuration
 
-## Icinga Configuration 
+### Using Encrypted Secrets 
 
-## Encrypted Secrets (Optional)
-
-## Amazon Web Services Orchestration Configuration (Optional)
+### Using Amazon Web Services Orchestration
 
 
