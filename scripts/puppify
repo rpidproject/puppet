@@ -1,7 +1,7 @@
 #!/bin/bash
-PUPPET_REPO="https://github.com/rpidproject/puppet.git"
+PUPPET_REPO=""
 IDENTITY="-i ../rpid.pem"
-KEYID="AD9793634FC0755D"
+KEYID=""
 if [ "$#" -lt 2 ]; then
   cat <<USAGE
 Usage: $0 TARGET HOSTNAME [BRANCH]
