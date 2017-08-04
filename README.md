@@ -84,7 +84,7 @@ The default configuration settings will install all 4 RPID services on a single 
     > * Open Security Group
     > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
 5. Be sure to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
-6. run script/puppify <your forked github repo> <elastic ip> rpid
+6. run `script/puppify <your forked github repo> <elastic ip> rpid`
    
 #### Local Server: Bootstrap a non AWS server
 5. Be usre to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
