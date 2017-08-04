@@ -70,7 +70,7 @@ The default configuration settings will install all 4 RPID services on a single 
 
 ### Step 3: Bootstrap Your Server
 
-### AWS: Quick Start with Amazon Web Services (via AWS Console)
+#### AWS: Quick Start with Amazon Web Services (via AWS Console)
 
 1. Create an account on Amazon Web Services
 2. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
@@ -85,7 +85,7 @@ The default configuration settings will install all 4 RPID services on a single 
 5. Be sure to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
 6. run script/puppify <your forked github repo> <elastic ip> rpid
    
-### Local Server: Bootstrap a non AWS server
+#### Local Server: Bootstrap a non AWS server
 5. Be usre to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
 6. scp the bootstrap script to your server, under a user with sudo access
     ```
@@ -96,12 +96,35 @@ The default configuration settings will install all 4 RPID services on a single 
     ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> rpid"
     ```
     
-### Local Vagrant: Provision a Vagrant Virtual Box
+#### Local Vagrant: Provision a Vagrant Virtual Box
 
 ### Step 4: Register your Handle Server and Cordra DTR Instances
 1. scp a copy of /docker/run/handle/sitebndl.zip from bootstrapped server to your local machine and send it to the Handle System Administrator
 2. When notified that the Handle is registred, ssh to the bootstrapped server and register your Cordra repository with your local handle server by running:
    ```/docker/run/cordra/configure.sh```
+
+### Step 5: Verify the Setup
+
+The default configuration should result in the following service endpoints:
+
+##### Handle Service
+Docker Container: rpid-handle
+Public Ports: 8080 (http) and 2641 (tcp and udp)
+Shared Data Volume: /docker/run/handle
+
+##### Cordra DTR Service
+Docker Container: rpid-cordra
+Public Ports: 80 (http), 443 (https), 9000 (tcp), 9001 (ssl)
+Shared Data Volume: /docker/run/cordra/data
+
+##### Collections Service
+Docker Containers: rpid-manifold, rpid-marmotta, rpid-postgres
+Ports: 80 (http), 443 (https), 9000 (tcp), 9001 (ssl)
+Shared Data Volume: /docker/run/collections
+Public Ports: 5000 (http) 
+
+#### PIT Service
+TBD
 
 ## Advanced Configuration
 
