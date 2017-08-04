@@ -102,6 +102,7 @@ The default configuration settings will install all 4 RPID services on a single 
 1. scp a copy of /docker/run/handle/sitebndl.zip from bootstrapped server to your local machine and send it to the Handle System Administrator
 2. When notified that the Handle is registred, ssh to the bootstrapped server and register your Cordra repository with your local handle server by running:
    ```/docker/run/cordra/configure.sh```
+3. If you want to be able to access the web-based Handle System admin interface, you will need to scp a copy of the admpriv.bin key to your local machine. This can be found on the bootstrapped server in /docker/run/handle.
 
 ### Step 5: Verify the Setup
 
