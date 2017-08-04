@@ -25,7 +25,7 @@
   docker::manage_kernel: false
   docker_run_dir: '/docker/run'
   docker_build_dir: '/docker/build'
-  site::handle_prefix: '12345'
+  site::handle_prefix: '20.500.12042'
   cordra::container_status: 'absent'
   cordra::admin_password: 'dummy'
   cordra::download_url: 'https://www.cordra.org/unconfiguredInstanceDownload'
