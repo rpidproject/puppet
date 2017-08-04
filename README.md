@@ -42,7 +42,7 @@ The default configuration settings will install all 4 RPID services on a single 
     ```
      users:
        'john':
-         comment: 'John Arundel'
+         comment: 'John Smith'
          uid: '1010'
          sshkeys:
            - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA3ATqENg+GWACa2BzeqTdGnJhNoBer8x6pfWkzNzeM8Zx7/2Tf2pl7kHdbsiTXEUawqzXZQtZzt/j3Oya+PZjcRpWNRzprSmd2UxEEPTqDw9LqY5S2B8og/NyzWaIYPsKoatcgC7VgYHplcTbzEhGu8BsoEVBGYu3IRy5RkAcZik= john@example.com'
