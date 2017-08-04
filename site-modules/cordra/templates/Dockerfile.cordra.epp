@@ -28,6 +28,7 @@ RUN curl -o /tmp/cordra.zip <%= $cordra_download_url %> \
   && rm -r /tmp/cordra 
 
 VOLUME /data
+VOLUME /handle
 
 EXPOSE <%= $ports['https'] %> <%= $ports['http'] %> <%= $ports['server'] %> <%= $ports['ssl'] %>
 
@@ -39,11 +40,12 @@ CMD if [[ -f /data/privatekey ]]; then \
       echo keys exist, skipping cordra server setup...; \
     else \
       echo No keys found, running cordra server setup...; \
-      echo "" > passphrase.tmp; \
-      /cordra/sw/bin/do-keygen -alg RSA -keysize 2048 /data/privatekey /data/publickey <passphrase.tmp; \
+      echo Copying webapps...;\
+      cp -r /cordra/data/webapps-priority /data; \
+      echo Configuring server..;\
+      cp /data/repoInit.json.settings /data/repoInit.json; \
+      /cordra/sw/bin/do-docker-configure.sh; \
       echo done.; \
     fi ;\
-    echo Copying webapps...;\
-    cp -r /cordra/data/webapps-priority /data; \
     echo Starting server...; \
     /cordra/sw/bin/do-server /data

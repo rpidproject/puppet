@@ -10,7 +10,6 @@ class cordra::server {
   $admin_idx = lookup('handle::config.server.admin_idx')
   $site_handle = lookup('site::handle_prefix')
   $handle_admin_id = "${admin_idx}/${site_handle}"
-  $cordra_data_mount = '/data'
   $handle_run_dir = "${docker_run_dir}/handle"
 
   file { [
@@ -21,7 +20,7 @@ class cordra::server {
     ensure => directory,
   }
 
-  file { "${cordra_data_dir}/repoInit.json":
+  file { "${cordra_data_dir}/repoInit.json.settings":
     ensure => file,
     content => epp('cordra/repoInit.json.epp', 
       {
@@ -30,7 +29,6 @@ class cordra::server {
         'handle_admin_id' => $handle_admin_id,
       }
     ),
-    notify => Docker::Run['rpid-cordra'],
   }
 
   file { "${cordra_data_dir}/config.dct":
@@ -61,7 +59,6 @@ class cordra::server {
         'port'           => lookup('cordra::config.ports.server'),
       }
     ),
-    notify => Docker::Run['rpid-cordra'],
   }
 
   file { "${cordra_data_dir}/knowbots/config.dct":
@@ -79,26 +76,15 @@ class cordra::server {
       {
         'assigned_prefix'  => $assigned_prefix,
         'handle_admin_id'  => $handle_admin_id,
-        'handle_admin_key' => "${cordra_data_mount}/admpriv.bin",
+        'handle_admin_key' => "/handle/admpriv.bin",
       }
     ),
-  }
-
-  file { "${cordra_data_dir}/configure.sh":
-    content => epp('cordra/configure.sh.epp', 
-      {
-        'handle_run_dir'    => $handle_run_dir,
-        'cordra_data_host'  => $cordra_data_dir,
-        'cordra_data_mount' => $cordra_data_mount,
-      }
-    ),
-    mode => "0755",
   }
 
   docker::run { 'rpid-cordra':
-    ensure => present,
+    ensure => lookup('cordra::container_status'),
     image   => "rpid-cordra:${cordra_tag}",
-    volumes => ["${cordra_data_dir}:/data"],
+    volumes => ["${cordra_data_dir}:/data", "${handle_run_dir}:/handle"],
     ports   => [ 
       "${hostports['https']}:${ports['https']}",
       "${hostports['http']}:${ports['http']}",
