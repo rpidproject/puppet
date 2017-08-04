@@ -59,12 +59,13 @@ The default configuration settings will install all 4 RPID services on a single 
       - 'john'
       - 'yourloginname'
     ```
-4. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your Handle prefix and the IP Address for the server which will host the services
+4. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your Handle prefix, the IP Address for the server which will host the services, and your Handle Admin's email address
     ```
     site::handle_prefix: 'yourprefixhere'
     handle::config:
       server:
         public_address: 'youripaddresshere'
+        admin_email: 'youremailhere'
     ```
 5. Commit these changes to your local clone and push to GitHub.
 
