@@ -18,11 +18,48 @@ Configuration variables are managed through Puppet Hiera settings.
 
 The default configuration settings will install all 4 RPID services on a single Node, and the Icinga Monitoring instance on a separate node.  
 
+## Using the Puppet Repository
+
+### Personalize the Repository
+1. Fork this repository
+2. Clone your fork onto a local machine
+3. Add the shell users their public keys to the `data/common.yaml` file
+    * In order to be able to ssh to the instances once they are setup, you need to add your user information to the configuration.  For each user you want to grant ssh access, supply the following in the `users` hash in the `data/common.yaml` file:
+    ```
+     users:
+      'yourloginname':
+        comment: 'yourfullname'
+        uid: 'youruuidnumber'
+        sshkeys:
+          - 'your public ssh rsa key'
+    ```
+    
+    e.g
+    ```
+     users:
+       'john':
+         comment: 'John Arundel'
+         uid: '1010'
+         sshkeys:
+           - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA3ATqENg+GWACa2BzeqTdGnJhNoBer8x6pfWkzNzeM8Zx7/2Tf2pl7kHdbsiTXEUawqzXZQtZzt/j3Oya+PZjcRpWNRzprSmd2UxEEPTqDw9LqY5S2B8og/NyzWaIYPsKoatcgC7VgYHplcTbzEhGu8BsoEVBGYu3IRy5RkAcZik= john@example.com'
+      ```
+    * and then add the login name to the `allow_users` array:
+    ```
+     allow_users:
+      - 'john'
+      - 'yourloginname'
+    ```
+    * if you want to grant sudo access, add the user to the `sudoers` array:
+    ```
+    sudoers:
+      - 'john'
+      - 'yourloginname'
+    ```
+
+
 ## Quick Start with Amazon Web Services (via AWS Console)
 
 1. Request a Handle Prefix from the Handle System Administrator
-2. Fork this repository
-3. Clone your fork onto a local machine
 4. Create an account on Amazon Web Services
 5. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
 6. Create an Open Security Group (firewall will be managed by puppet)
