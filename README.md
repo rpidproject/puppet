@@ -101,9 +101,12 @@ The default configuration settings will install all 4 RPID services on a single 
 
 ### Step 4: Register your Handle Server and Cordra DTR Instances
 1. scp a copy of /docker/run/handle/sitebndl.zip from bootstrapped server to your local machine and send it to the Handle System Administrator
-2. When notified that the Handle is registred, ssh to the bootstrapped server and register your Cordra repository with your local handle server by running:
-   ```/docker/run/cordra/configure.sh```
-3. If you want to be able to access the web-based Handle System admin interface, you will need to scp a copy of the admpriv.bin key to your local machine. This can be found on the bootstrapped server in /docker/run/handle.
+2. When notified that the Handle is registered you need to update your puppet configuration to start the Cordra Docker Container. This has to be done in a separate step once the Handle Service is available and registered so that Cordra can register itself with the Handle server upon setup.  Edit the `data/common.yaml` file and set `cordra::container_status` to 'present':
+    ```
+      cordra::container_status: 'present'
+    ```
+3. Commit the change and push to GitHub. The next time puppet runs on your server (within 10 minutes), the Cordra container will be started and configured.
+4. If you want to be able to access the web-based Handle System admin interface, you will need to scp a copy of the admpriv.bin key to your local machine. This can be found on the bootstrapped server in /docker/run/handle.
 
 ### Step 5: Verify the Setup
 
