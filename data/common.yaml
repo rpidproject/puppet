@@ -50,7 +50,7 @@
       log_save_interval: 'Monthly'
       dtr_prefix: '1'
       assigned_prefix: "%{lookup('site::handle_prefix')}/repo"
-      register_handles: 'yes'
+      register_handles: 'no'
     ports:
       https: 443
       http: 80
