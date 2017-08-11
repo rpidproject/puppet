@@ -48,4 +48,5 @@ CMD if [[ -f /data/privatekey ]]; then \
       echo done.; \
     fi ;\
     echo Starting server...; \
+    cp /data/repoInit.json.settings /data/repoInit.json; \
     /cordra/sw/bin/do-server /data
