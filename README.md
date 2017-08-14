@@ -129,7 +129,8 @@ Shared Data Volume: /docker/run/collections
 Public Ports: 5000 (http) 
 
 #### PIT Service
-TBD
+Docker Container: rpid-pit
+Public Ports: 8088 (http)
 
 ## Advanced Configuration
 
@@ -230,6 +231,20 @@ To add Icinga monitoring:
   
 ### PIT Configuration
 
+```
+  pit::docker_base: 'tomcat:7.0.79-jre8-alpine'
+  pit::tag: 'latest'
+  pit::repos: 'https://github.com/rpidproject/RDA-PRAGMA-Data-Service'
+  pit::revision: 'master'
+  pit::src_dir: 'pragmapit-ext'
+  pit::handle_host: "%{alias('handle::config.server.public_address')}"
+  pit::handle_port: "%{alias('handle::config.host_ports.http')}"
+  pit::handle_prefix: "%{alias('site::handle_prefix')}"
+  pit::cordra_host: "localhost"
+  pit::cordra_port: "%{alias('cordra::config.host_ports.http')}"
+  pit::cordra_prefix: "%{alias('cordra::config.server.dtr_prefix')}"
+  pit::host_port: 8088
+```
 ### Using Encrypted Secrets 
 
 ### Using Amazon Web Services Orchestration
