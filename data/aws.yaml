@@ -1,12 +1,12 @@
 ---
   aws::test_mode: true
-  aws::access_key: 'AKIAJNZXT7ANR3SEHETQ'
+  aws::access_key: ''
   aws::region: 'us-east-1'
   aws::az: 'us-east-1d'
   aws::subnet: 'rpid_subnet'
   aws::securitygroup: 'open'
   aws::ips:
-    build: '34.231.98.207'
+    build: ''
   aws::resources:
     'ec2_vpc':
       'rpid_vpc':
