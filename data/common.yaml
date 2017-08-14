@@ -104,6 +104,7 @@
   collections::postgres::password: 'postgreschangeme'
   collections::postgres::tag: '9.4.12-alpine'
   pit::docker_base: 'tomcat:7.0.79-jre8-alpine'
+  pit::tag: 'latest'
   pit::repos: 'https://github.com/rpidproject/RDA-PRAGMA-Data-Service'
   pit::revision: 'master'
   pit::src_dir: 'pragmapit-ext'
@@ -113,6 +114,7 @@
   pit::cordra_host: "localhost"
   pit::cordra_port: "%{alias('cordra::config.host_ports.http')}"
   pit::cordra_prefix: "%{alias('cordra::config.server.dtr_prefix')}"
+  pit::host_port: 8088
   firewall_drop: false
   icinga::version: '1.14.0'
   icinga::contact: 'sysadmin'

@@ -1,4 +1,4 @@
 # Be a PIT Server
 class role::pit {
-  #include profile::pit::server
+  include profile::pit::server
 }
