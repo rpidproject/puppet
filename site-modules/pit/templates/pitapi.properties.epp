@@ -1,0 +1,14 @@
+<%- | String[1] $handleBaseURI,
+      String[1] $handleAdminId,
+      String[1] $handlePrefix,
+      String[1] $cordraURL,
+      String[1] $cordraPrefix,
+| -%>
+pidsystem.handle.baseURI = <%= $handleBaseURI %>
+pidsystem.handle.userName = <%= $handleAdminId %>
+pidsystem.handle.userPassword = ''
+pidsystem.handle.generatorPrefix = <%= $handlePrefix %>
+pidsystem.handle.unsafeSSL = true
+
+typeregistry.baseURI = <%= $cordraURL %>
+typeregistry.identifierPrefix = <%= $cordraPrefix %>

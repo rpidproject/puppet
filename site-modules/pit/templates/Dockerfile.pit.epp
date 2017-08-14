@@ -1,0 +1,35 @@
+<%- | String[1] $docker_base,
+      String[1] $src_dir,
+| -%>
+# Dockerfile for Apache Marmotta
+
+FROM <%= $docker_base %>
+LABEL org.label-schema.vendor="RPID" \
+  org.label-schema.url="https://github.com/rpidproject/RDA-PRAGMA-Data-Service" \
+  org.label-schema.name="RDA PIT API -RPID EXT" \
+  org.label-schema.version="1.0.0" \
+  org.label-schema.docker.schema-version="1.0"
+
+
+EXPOSE 8080
+
+ADD ./ /src
+
+WORKDIR /src
+
+# Install required packages
+RUN apk add --update \
+  curl \
+  unzip \
+  openjdk8 \
+  maven \
+  && rm -rf /var/cache/apk/*
+
+# Build and install
+WORKDIR /src/<%= $src_dir %>
+RUN mkdir /usr/local/rda \
+  && cp /src/pitapi.properties /usr/local/rda \
+  && mvn clean install -Dmaven.test.skip=true \
+  && cp /src/<%= $src_dir %>/target/pragmapit-ext-0.2.war /usr/local/tomcat/webapps
+
+

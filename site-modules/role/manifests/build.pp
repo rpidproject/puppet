@@ -3,4 +3,5 @@ class role::build {
   include profile::handle::build
   include profile::cordra::build
   include profile::collections::build
+  include profile::pit::build
 }
