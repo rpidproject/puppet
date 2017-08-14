@@ -4,3 +4,4 @@
     - role::handle
     - role::cordra
     - role::collections
+    - role::pit
