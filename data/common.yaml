@@ -32,7 +32,9 @@
   docker::manage_kernel: false
   docker_run_dir: '/docker/run'
   docker_build_dir: '/docker/build'
+  site::ip_address: '34.231.98.207'
   site::handle_prefix: '20.500.12042'
+  site::admin_email: 'balmas@gmail.com'
   cordra::container_status: 'absent'
   cordra::admin_password: 'dummy'
   cordra::download_url: 'https://www.cordra.org/unconfiguredInstanceDownload'
@@ -71,7 +73,7 @@
       public_address: "%{alias('aws::ips.build')}"
       assigned_prefix: "%{alias('site::handle_prefix')}"
       admin_idx: "300:0.NA"
-      admin_email: 'bridget.almas@tufts.edu'
+      admin_email: "%{alias('site::admin_email')}"
       admin_org_name: 'RPID'
       log_rotation_frequency: 'Monthly'
       template_delimiter: '|'
@@ -121,10 +123,5 @@
   icinga::key_contact: 'emergency'
   monitor_ips:
     - 172.31.69.42
-  monitor_hosts:
-    collections: 'http://34.231.98.207:5000'
-    handle: ''
-    cordra: ''
-    pit: ''
   pnp4nagios_url_base: 'http://downloads.sourceforge.net/project/pnp4nagios/PNP-0.6/'
   pnp4nagios_version: '0.6.25'
