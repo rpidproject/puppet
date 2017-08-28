@@ -6,14 +6,14 @@ defaults:
   data_hash: yaml_data
 
 hierarchy:
-  - name: "AWS resources"
-    path: "aws.yaml"
   - name: 'Per-node data'
     path: "nodes/%{facts.hostname}.yaml"
-  - name: "Per-datacenter secret data (encrypted)"
+  - name: "Per site secret data (encrypted)"
     lookup_key: eyaml_lookup_key
     path: "secret.eyaml"
     options:
       gpg_gnupghome: '/root/.gnupg'
+  - name: "Per site unecrypted data"
+    path: "site.yaml"
   - name: "Common defaults"
     path: "common.yaml"

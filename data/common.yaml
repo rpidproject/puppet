@@ -9,27 +9,10 @@
     - profile::timezone
     - profile::users
     - profile::vim
-  users:
-    'admin':
-      comment: 'Admin User'
-      uid: '1010'
-      sshkeys:
-        - 'ssh-rsa dummyrsakpublickey admin@example.org'
-  allow_users:
-    - 'admin'
-    - 'vagrant'
-  sudoers:
-    - 'admin'
-    - 'vagrant'
-  slack_webhook_url: ''
   docker::manage_kernel: false
   docker_run_dir: '/docker/run'
   docker_build_dir: '/docker/build'
-  site::handle_prefix: '12345'
-  site::ip_address: ''
-  site::admin_email: 'admin@example.org'
   cordra::container_status: 'absent'
-  cordra::admin_password: 'dummy'
   cordra::download_url: 'https://www.cordra.org/unconfiguredInstanceDownload'
   cordra::docker_base: 'openjdk:8u131-jre-alpine'
   cordra::cordra_tag: 'latest'
@@ -114,7 +97,5 @@
   icinga::version: '1.14.0'
   icinga::contact: 'sysadmin'
   icinga::key_contact: 'emergency'
-  monitor_ips:
-    - 127.0.0.1
   pnp4nagios_url_base: 'http://downloads.sourceforge.net/project/pnp4nagios/PNP-0.6/'
   pnp4nagios_version: '0.6.25'

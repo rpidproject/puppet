@@ -1,0 +1,20 @@
+---
+  users:
+    'admin':
+      comment: 'Admin User'
+      uid: '1010'
+      sshkeys:
+        - 'ssh-rsa publickeyhere admin@example.org'
+  allow_users:
+    - 'admin'
+    - 'vagrant'
+  sudoers:
+    - 'admin'
+    - 'vagrant'
+  site::handle_prefix: '12345'
+  site::ip_address: ''
+  site::admin_email: 'admin@example.org'
+  slack_webhook_url: ''
+  cordra::admin_password: 'dummy'
+  monitor_ips:
+    - 127.0.0.1
