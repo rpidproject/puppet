@@ -1,0 +1,14 @@
+<%- | 
+  String[1] $collections_host,
+  String[1] $handle_host,
+  String[1] $cordra_host,
+  String[1] $pit_host,
+| %>
+define service {
+  host_name           virtual
+  service_description api
+  check_command       check_web_response!<%= $collections_host %>!"/features"!dummy:dummy!collectionPidProviderType!5!10
+  use                 every_hour
+}
+
+
