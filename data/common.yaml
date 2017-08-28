@@ -46,7 +46,7 @@
       multiprimary: false
       servername: 'RPID AWS Handle Server'
       listen_address: '0.0.0.0' 
-      public_address: ''
+      public_address: "%{alias('site::ip_address')}"
       assigned_prefix: "%{alias('site::handle_prefix')}"
       admin_idx: "300:0.NA"
       admin_email: "%{alias('site::admin_email')}"
