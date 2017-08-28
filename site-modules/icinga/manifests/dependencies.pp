@@ -1,6 +1,7 @@
 # Required stuff for Icinga server
 class icinga::dependencies {
   include icinga::target
+  include profile::slacksay
 
   package {['libgd-dev',
             'libdbi-dev',
@@ -10,7 +11,10 @@ class icinga::dependencies {
     ensure => installed,
   }
 
-  ensure_packages(['build-essential'])
+  ensure_packages([
+    'build-essential',
+    'mailutils',
+  ])
 
   # Allows check_nrpe to be run with multiple arguments
   file { '/etc/nagios-plugins/config/check_nrpe.cfg':

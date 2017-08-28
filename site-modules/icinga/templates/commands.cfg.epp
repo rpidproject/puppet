@@ -24,7 +24,7 @@ define command{
 
 define command{
         command_name    check_web_response
-        command_line    $USER1$/check_http -H $ARG1$ -u $ARG2$ -a $ARG3$ -s $ARG4$ -w $ARG5$ -c $ARG6$ -t 30
+        command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -u $ARG3$ -a $ARG4$ -s $ARG5$ -w $ARG6$ -c $ARG7$ -t 30
 }
 
 define command{
@@ -39,7 +39,7 @@ define command{
 
 define command{
         command_name    check_https_response
-        command_line    $USER1$/check_http -S -H $ARG1$ -u $ARG2$ -a $ARG3$ -s $ARG4$ -w $ARG5$ -c $ARG6$ -t 30
+        command_line    $USER1$/check_http -S -H $ARG1$ -p $ARG2 -u $ARG3$ -a $ARG4$ -s $ARG5$ -w $ARG6$ -c $ARG7$ -t 30
 }
 
 define command{

@@ -1,0 +1,36 @@
+<%- | 
+  String[1] $rpid_host,
+  Type::PortNumber $collections_port,
+  Type::PortNumber $handle_port,
+  String[1] $handle_auth,
+  Type::PortNumber $cordra_port,
+  String[1] $cordra_auth,
+  Type::PortNumber $pit_port,
+| %>
+define service {
+  host_name           virtual
+  service_description collections api
+  check_command       check_web_response!<%= $rpid_host %>!<%= $collections_port %>!"/features/"!dummy:dummy!collectionPidProviderType!5!10
+  use                 every_5_mins
+}
+
+define service {
+  host_name           virtual
+  service_description handle api
+  check_command       check_web_response!<%= $rpid_host %>!<%= $handle_port %>!"/api/prefixes"!<%= $handle_auth %>!responseCode!5!10
+  use                 every_5_mins
+}
+
+define service {
+  host_name           virtual
+  service_description cordra
+  check_command       check_web_response!<%= $rpid_host %>!<%= $cordra_port %>!"/objects?query=type=object"!<%= $cordra_auth %>!results!5!10
+  use                 every_5_mins
+}
+
+define service {
+  host_name           virtual
+  service_description pit
+  check_command       check_web_response!<%= $rpid_host %>!<%= $pit_port %>!"/pragmapit-ext-0.2/pitapi/ping"!dummy:dummy!Hello!5!10
+  use                 every_5_mins
+}
