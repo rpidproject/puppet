@@ -14,6 +14,7 @@ class collections::server {
   $postgres_user = lookup('collections::postgres::user')
   $postgres_password = lookup('collections::postgres::password')
   $postgres_db = lookup('collections::postgres::db')
+  $manifold_startup_timeout = lookup('collections::manifold::startup_timeout')
 
   file { $collections_run_dir:
     ensure => directory,
@@ -49,7 +50,7 @@ class collections::server {
     env     => [ "COLLECTIONS_API_SETTINGS=compose.cfg"],
     links   => [ "rpid-marmotta:marmotta" ] ,
     require => [ Docker::Run['rpid-marmotta'], Docker::Image['rpid-manifold'] ],
-    command => "/app/wait-for-it.sh -h http://marmotta:${marmotta_host_port}/marmotta -t 60 -- python3 run.py" 
+    command => "/app/wait-for-it.sh -h http://marmotta:${marmotta_host_port}/marmotta -t ${manifold_startup_timeout} -- gunicorn -c gunicorn.py run:app" 
   }
 
   firewall { '100 Allow web traffic for collections':

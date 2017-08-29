@@ -50,6 +50,15 @@ class collections::build {
     notify  => Docker::Image['rpid-manifold'],
   } 
 
+  file { "${manifold_build_dir}/gunicorn.py":
+    content     => epp('collections/gunicorn.py.epp', {
+      port      => lookup('collections::manifold::container_port'),
+      workers   => lookup('collections::manifold::gunicorn.workers'), 
+      backlog   => lookup('collections::manifold::gunicorn.backlog'),
+      timeout   => lookup('collections::manifold::gunicorn.timeout'),
+      keepalive => lookup('collections::manifold::gunicorn.keepalive'),
+    }),
+  }
 
   docker::image { 'rpid-manifold':
     ensure     => latest,

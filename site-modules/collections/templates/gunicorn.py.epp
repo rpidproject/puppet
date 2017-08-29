@@ -1,0 +1,11 @@
+<%- | Type::PortNumber $port,
+      Integer[1] $backlog,
+      Integer[1] $workers,
+      Integer[1] $timeout,
+      Integer[1] $keepalive,
+| -%>
+bind='0.0.0.0:<%= $port %>'
+backlog=<%= $backlog %>
+workers=<%= $workers %>
+timeout=<%= $timeout %>
+keepalive=<%= $keepalive %>

@@ -72,6 +72,11 @@
   collections::manifold::container_port: 5000
   collections::manifold::tag: 'latest'
   collections::manifold::startup_timeout: 60
+  collections::manifold::gunicorn:
+    timeout: 600
+    workers: 4
+    backlog: 2048
+    keepalive: 2
   collections::marmotta::host_port: 8080
   collections::marmotta::docker_base: 'tomcat:7.0.79-jre8-alpine'
   collections::marmotta::download_url: 'http://mirrors.gigenet.com/apache/marmotta/3.3.0/apache-marmotta-3.3.0-webapp.zip'
