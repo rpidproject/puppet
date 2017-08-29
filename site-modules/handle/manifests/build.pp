@@ -21,11 +21,20 @@ class handle::build {
         'handle_admin_id'     => $admin_id,
       }
     ),
-    notify  => Docker::Image['rpid-handle'],
+    notify  => Exec['remove-handle-image'],
+  }
+
+  exec { 'remove-handle-image':
+      command     => "docker rmi -f rpid-handle",
+      path        => ['/bin', '/usr/bin'],
+      refreshonly => true,
+      timeout     => 0,
+      notify      => Docker::Image['rpid-handle'],
   }
 
   docker::image { 'rpid-handle':
-    ensure     => latest,
+    ensure     => present,
     docker_dir => $handle_build_dir,
+    notify     => Docker::Run['rpid-handle'],
   }
 }

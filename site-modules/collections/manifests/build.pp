@@ -23,6 +23,7 @@ class collections::build {
     revision => lookup('collections::manifold::revision'),
     provider => git,
     source   => lookup('collections::manifold::repos'),
+    notify  => Exec['remove-manifold-image'],
   } 
 
   file { "${manifold_build_dir}/Dockerfile":
@@ -33,13 +34,13 @@ class collections::build {
         'startup_timeout' => lookup('collections::manifold::startup_timeout'),
       }
     ),
-    notify  => Docker::Image['rpid-manifold'],
+    notify  => Exec['remove-manifold-image'],
   }
    
   file { "${manifold_build_dir}/docker-entrypoint.sh":
     source => 'puppet:///modules/collections/docker-entrypoint.sh',
     require => Vcsrepo[$manifold_build_dir],
-    notify  => Docker::Image['rpid-manifold'],
+    notify  => Exec['remove-manifold-image'],
   }   
 
   file { "${manifold_build_dir}/compose.cfg":
@@ -47,7 +48,7 @@ class collections::build {
       'marmotta_url' => "http://marmotta:${marmotta_port}/marmotta"
     }),
     require => Vcsrepo[$manifold_build_dir],
-    notify  => Docker::Image['rpid-manifold'],
+    notify  => Exec['remove-manifold-image'],
   } 
 
   file { "${manifold_build_dir}/gunicorn.py":
@@ -58,11 +59,22 @@ class collections::build {
       timeout   => lookup('collections::manifold::gunicorn.timeout'),
       keepalive => lookup('collections::manifold::gunicorn.keepalive'),
     }),
+    notify  => Exec['remove-manifold-image'],
   }
 
+  exec { 'remove-manifold-image':
+      command     => "docker rmi -f rpid-manifold",
+      path        => ['/bin', '/usr/bin'],
+      refreshonly => true,
+      timeout     => 0,
+      notify      => Docker::Image['rpid-manifold'],
+  }
+
+
   docker::image { 'rpid-manifold':
-    ensure     => latest,
+    ensure     => present,
     docker_dir => $manifold_build_dir,
+    notify     => Docker::Run['rpid-manifold'],
   }
 
   file { "${marmotta_build_dir}/Dockerfile":
@@ -76,12 +88,21 @@ class collections::build {
         'postgres_db'       => lookup('collections::postgres::db'),
       }
     ),
-    notify  => Docker::Image['rpid-marmotta'],
+    notify  => Exec['remove-marmotta-image'],
   }
 
+  exec { 'remove-marmotta-image':
+      command     => "docker rmi -f rpid-marmotta",
+      path        => ['/bin', '/usr/bin'],
+      refreshonly => true,
+      timeout     => 0,
+      notify      => Docker::Image['rpid-marmotta'],
+  }
+  
   docker::image { 'rpid-marmotta':
-    ensure       => latest,
-    docker_dir   => $marmotta_build_dir,
+    ensure     => present,
+    docker_dir => $marmotta_build_dir,
+    notify     => Docker::Run['rpid-marmotta'],
   }
 
 }

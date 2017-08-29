@@ -21,6 +21,7 @@ class pit::build {
     revision => lookup('pit::revision'),
     provider => git,
     source   => lookup('pit::repos'),
+    notify  => Exec['remove-pit-image'],
   } 
 
   file { "${pit_build_dir}/Dockerfile":
@@ -30,7 +31,7 @@ class pit::build {
         'src_dir'     => lookup('pit::src_dir'),
       }
     ),
-    notify  => Docker::Image['rpid-pit'],
+    notify  => Exec['remove-pit-image'],
   }
 
   file { "${pit_build_dir}/pitapi.properties":
@@ -43,13 +44,22 @@ class pit::build {
 
     }),
     require => Vcsrepo[$pit_build_dir],
-    notify  => Docker::Image['rpid-pit'],
+    notify  => Exec['remove-pit-image'],
   } 
 
+  exec { 'remove-pit-image':
+      command     => "docker rmi -f rpid-pit",
+      path        => ['/bin', '/usr/bin'],
+      refreshonly => true,
+      timeout     => 0,
+      notify      => Docker::Image['rpid-pit'],
+  }
+  
 
   docker::image { 'rpid-pit':
-    ensure     => latest,
+    ensure     => present,
     docker_dir => $pit_build_dir,
+    notify     => Docker::Run['rpid-pit'],
   }
 
 }

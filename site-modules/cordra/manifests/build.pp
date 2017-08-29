@@ -16,11 +16,20 @@ class cordra::build {
         'cordra_download_url' => lookup('cordra::download_url'),
       }
     ),
-    notify => Docker::Image['rpid-cordra'],
+    notify => Exec['remove-cordra-image'],
   }
 
+  exec { 'remove-cordra-image':
+      command     => "docker rmi -f rpid-cordra",
+      path        => ['/bin', '/usr/bin'],
+      refreshonly => true,
+      timeout     => 0,
+      notify      => Docker::Image['rpid-cordra'],
+  }
+  
   docker::image { 'rpid-cordra':
-    ensure     => latest,
-    docker_dir => $cordra_build_dir,
+    ensure      => present,
+    docker_dir  => $cordra_build_dir,
+    notify      => Docker::Run['rpid-cordra'],
   }
 }
