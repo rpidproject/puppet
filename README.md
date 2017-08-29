@@ -87,30 +87,43 @@ The default configuration settings will install all 4 RPID services on a single 
 #### AWS: Quick Start with Amazon Web Services (via AWS Console)
 
 1. Create an account on Amazon Web Services
-2. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
+2. Create two Elastic IP Addresses (you will need a fixed IP address in order to run the Handle Service and one for your Monitor server) 
 3. Create an Open Security Group (firewall will be managed by puppet)
-4. Create an new EC2 instance and assign it the Elastic IP. 
+4. Create an new EC2 instance and assign it the first Elastic IP. 
     > Recommended Instance Configuration
     > * Ubuntu 16:04 (ami-cd0f5cb6)
     > * t2 large (2 CPU/8GB RAM)
     > * 25GB root file system
     > * Open Security Group
     > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
-5. Be sure to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
-6. run `script/puppify <your forked github repo> <elastic ip> rpid`
+5. Create an new EC2 instance and assign it the second Elastic IP. 
+    > Recommended Instance Configuration
+    > * Ubuntu 16:04 (ami-cd0f5cb6)
+    > * t2 micro 
+    > * Open Security Group
+    > * keypair: create one named rpid and copy the rpid.pem to the __parent directory__ of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
+6. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
+6. run `script/puppify <your forked github repo> rpid.pem <elastic ip> rpid` to setup the main RPID testbed server
+7. run `script/puppify <your forked github repo> rpid.pem <elastic ip> monitor` to setup the monitoring server
    
 #### Local Server: Bootstrap a non AWS server
-5. Be sure to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
+5. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
 6. scp the bootstrap script to your server, under a user with sudo access
     ```
      scp scripts/bootstrap.sh user@host:/tmp
      ```
-7. run the bootstrap script on your server, under a user with sudo access
+7. run the bootstrap script on your server, under a user with sudo access to setup the main RPID testbed server
     ```
     ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> rpid"
     ```
+8. run the bootstrap script on your server, under a user with sudo access to setup the main RPID monitor server
+    ```
+    ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> monitor"
+    ```
     
 #### Local Vagrant: Provision a Vagrant Virtual Box
+
+TODO 
 
 ### Step 4: Register your Handle Server and Cordra DTR Instances
 1. scp a copy of /docker/run/handle/sitebndl.zip from bootstrapped server to your local machine and send it to the Handle System Administrator
@@ -151,12 +164,6 @@ Public Ports: 8088 (http)
 
 
 ### Icinga Monitoring
-
-
-To add Icinga monitoring:
-
-1. Create a EC2 second instance in AWS (Recommended AMI: TBD). Use the same rpid.pem keypair as before.
-2. run script/puppify <instance ip> monitor
 
 ### Handle Service Configuration
 
@@ -260,6 +267,6 @@ To add Icinga monitoring:
 ```
 ### Using Encrypted Secrets 
 
-### Using Amazon Web Services Orchestration
+TODO 
 
 
