@@ -24,6 +24,7 @@ The default configuration settings will install all 4 RPID services on a single 
 1. Request a Handle Prefix from the Handle System Administrator
 2. At least one server on which to host the servers, whether cloud based on a provider like Amazon Web Services (AWS), a Vagrant box, or a locally hosted machine.  (See below under AWS Quickstart for instructions on how to get started with AWS.)
 
+
 ### Step 2: Personalize the Repository
 1. Fork this repository
 2. Clone your fork onto a local machine
@@ -60,7 +61,7 @@ The default configuration settings will install all 4 RPID services on a single 
           - 'john'
           - 'yourloginname'
         ```
-    2. Supply your Handle prefix, the IP Address for the server which will host the services, and your Handle Admin's email address
+    2. Supply your Handle prefix, the IP Address for the server which will host the services, and your Handle Admin's email address (in order to supply the IP Address you will may to follow "Bootstrap" steps below).
         ```
         site::handle_prefix: 'yourprefixhere'
         site::id_address: 'your ip address here'
@@ -70,7 +71,7 @@ The default configuration settings will install all 4 RPID services on a single 
         ```
         cordra:admin_password: 'your cordra admin password'
         ```
-    4. Add the ip address for your monitoring server:
+    4. Add the ip address for your monitoring server ((in order to supply the IP Address you will may to follow "Bootstrap" steps below)
         ```
         monitor_ips:
          - your.monitor.ip.address.here
@@ -99,7 +100,7 @@ The default configuration settings will install all 4 RPID services on a single 
 6. run `script/puppify <your forked github repo> <elastic ip> rpid`
    
 #### Local Server: Bootstrap a non AWS server
-5. Be usre to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
+5. Be sure to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
 6. scp the bootstrap script to your server, under a user with sudo access
     ```
      scp scripts/bootstrap.sh user@host:/tmp
