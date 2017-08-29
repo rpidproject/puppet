@@ -2,9 +2,8 @@
 if [ "$#" -lt 2 ]; then
   cat <<USAGE
 Usage: $0 PUPPET_REPO SSH_KEY TARGET HOSTNAME [GPGKEY]
-Install Puppet on the node TARGET (IP address or DNS name) and run 
-the bootstrap process. Set the hostname to HOSTNAME, and optionally use 
-the control repo branch BRANCH.
+Install Puppet from PUPPET_REPO using SSH_KEY on the node TARGET (IP address or DNS name) and run 
+the bootstrap process. Set the hostname to HOSTNAME. Optionally add decryption key GPGKEY.
 USAGE
   exit 1
 fi
