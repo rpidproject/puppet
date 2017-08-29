@@ -27,8 +27,9 @@ class pit::build {
   file { "${pit_build_dir}/Dockerfile":
     content => epp('pit/Dockerfile.pit.epp',
       {
-        'docker_base' => lookup('pit::docker_base'),
-        'src_dir'     => lookup('pit::src_dir'),
+        'docker_base'      => lookup('pit::docker_base'),
+        'src_dir'          => lookup('pit::src_dir'),
+        'application_name' => lookup('pit::application_name'),
       }
     ),
     notify  => Exec['remove-pit-image'],

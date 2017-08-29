@@ -1,5 +1,6 @@
 <%- | String[1] $docker_base,
       String[1] $src_dir,
+      String[1] $application_name,
 | -%>
 # Dockerfile for Apache Marmotta
 
@@ -30,6 +31,6 @@ WORKDIR /src/<%= $src_dir %>
 RUN mkdir /usr/local/rda \
   && cp /src/pitapi.properties /usr/local/rda \
   && mvn clean install -Dmaven.test.skip=true \
-  && cp /src/<%= $src_dir %>/target/pragmapit-ext-0.2.war /usr/local/tomcat/webapps
+  && cp /src/<%= $src_dir %>/target/<%= $application_name %>.war /usr/local/tomcat/webapps
 
 

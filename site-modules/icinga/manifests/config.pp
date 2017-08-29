@@ -82,6 +82,7 @@ class icinga::config {
         cordra_port      => lookup('cordra::config.host_ports.http'),
         cordra_auth      => "admin:${cordra_password}",
         pit_port         => lookup('pit::host_port'),
+        pit_application  => lookup('pit::application_name'),
       }
     ),
     require => File['/usr/local/icinga/etc'],

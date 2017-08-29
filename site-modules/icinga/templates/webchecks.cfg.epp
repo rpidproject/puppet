@@ -6,6 +6,7 @@
   Type::PortNumber $cordra_port,
   String[1] $cordra_auth,
   Type::PortNumber $pit_port,
+  String[1] $pit_application,
 | %>
 define service {
   host_name           virtual
@@ -31,6 +32,6 @@ define service {
 define service {
   host_name           virtual
   service_description pit
-  check_command       check_web_response!<%= $rpid_host %>!<%= $pit_port %>!"/pragmapit-ext-0.2/pitapi/ping"!dummy:dummy!Hello!5!10
+  check_command       check_web_response!<%= $rpid_host %>!<%= $pit_port %>!"/<%= $pit_application %>/pitapi/ping"!dummy:dummy!Hello!5!10
   use                 every_5_mins
 }
