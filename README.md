@@ -27,47 +27,59 @@ The default configuration settings will install all 4 RPID services on a single 
 ### Step 2: Personalize the Repository
 1. Fork this repository
 2. Clone your fork onto a local machine
-3. Add the shell users their public keys to the `data/common.yaml` file
-    * In order to be able to ssh to the instances once they are setup, you need to add your user information to the configuration.  For each user you want to grant ssh access, supply the following in the `users` hash in the `data/common.yaml` file:
-    ```
-     users:
-      'yourloginname':
-        comment: 'yourfullname'
-        uid: 'youruuidnumber'
-        sshkeys:
-          - 'your public ssh rsa key'
-    ```
+3. Update the `data/site.yaml` file to use your site specific settings:
+    1. Add the shell users their public keys
+        * In order to be able to ssh to the instances once they are setup, you need to add your user information to the configuration.  For each user you want to grant ssh access, supply the following in the `users` hash in the `data/site.yaml` file:
+        ```
+         users:
+          'yourloginname':
+            comment: 'yourfullname'
+            uid: 'youruuidnumber'
+            sshkeys:
+              - 'your public ssh rsa key'
+        ```
     
-    e.g
-    ```
-     users:
-       'john':
-         comment: 'John Smith'
-         uid: '1010'
-         sshkeys:
-           - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA3ATqENg+GWACa2BzeqTdGnJhNoBer8x6pfWkzNzeM8Zx7/2Tf2pl7kHdbsiTXEUawqzXZQtZzt/j3Oya+PZjcRpWNRzprSmd2UxEEPTqDw9LqY5S2B8og/NyzWaIYPsKoatcgC7VgYHplcTbzEhGu8BsoEVBGYu3IRy5RkAcZik= john@example.com'
-      ```
-    * and then add the login name to the `allow_users` array:
-    ```
-     allow_users:
-      - 'john'
-      - 'yourloginname'
-    ```
-    * if you want to grant sudo access, add the user to the `sudoers` array:
-    ```
-    sudoers:
-      - 'john'
-      - 'yourloginname'
-    ```
-4. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your Handle prefix, the IP Address for the server which will host the services, and your Handle Admin's email address
-    ```
-    site::handle_prefix: 'yourprefixhere'
-    handle::config:
-      server:
-        public_address: 'youripaddresshere'
-        admin_email: 'youremailhere'
-    ```
-5. Commit these changes to your local clone and push to GitHub.
+        e.g
+        ```
+         users:
+           'john':
+             comment: 'John Smith'
+             uid: '1010'
+             sshkeys:
+               - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA3ATqENg+GWACa2BzeqTdGnJhNoBer8x6pfWkzNzeM8Zx7/2Tf2pl7kHdbsiTXEUawqzXZQtZzt/j3Oya+PZjcRpWNRzprSmd2UxEEPTqDw9LqY5S2B8og/NyzWaIYPsKoatcgC7VgYHplcTbzEhGu8BsoEVBGYu3IRy5RkAcZik= john@example.com'
+          ```
+        * and then add the login name to the `allow_users` array:
+        ```
+         allow_users:
+          - 'john'
+          - 'yourloginname'
+        ```
+        * if you want to grant sudo access, add the user to the `sudoers` array:
+        ```
+        sudoers:
+          - 'john'
+          - 'yourloginname'
+        ```
+    2. Supply your Handle prefix, the IP Address for the server which will host the services, and your Handle Admin's email address
+        ```
+        site::handle_prefix: 'yourprefixhere'
+        site::id_address: 'your ip address here'
+        site::admin_email: 'admin email here'
+        ```
+    3. Add a site-specific admin password for your Cordra instance:
+        ```
+        cordra:admin_password: 'your cordra admin password'
+        ```
+    4. Add the ip address for your monitoring server:
+        ```
+        monitor_ips:
+         - your.monitor.ip.address.here
+        ```
+    5. If you your Icinga Monitoring to push notifications to a Slack channel, add your slack webhook url:
+        ```
+        slack_webhook_url: 'https://hooks.slack.com/services/XXXXXXXXXXXXX'
+        ```
+4. Commit the updated `site.yaml` changes to your local clone and push to GitHub.
 
 ### Step 3: Bootstrap Your Server
 
