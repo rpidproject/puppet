@@ -24,80 +24,106 @@ The default configuration settings will install all 4 RPID services on a single 
 1. Request a Handle Prefix from the Handle System Administrator
 2. At least one server on which to host the servers, whether cloud based on a provider like Amazon Web Services (AWS), a Vagrant box, or a locally hosted machine.  (See below under AWS Quickstart for instructions on how to get started with AWS.)
 
+
 ### Step 2: Personalize the Repository
 1. Fork this repository
 2. Clone your fork onto a local machine
-3. Add the shell users their public keys to the `data/common.yaml` file
-    * In order to be able to ssh to the instances once they are setup, you need to add your user information to the configuration.  For each user you want to grant ssh access, supply the following in the `users` hash in the `data/common.yaml` file:
-    ```
-     users:
-      'yourloginname':
-        comment: 'yourfullname'
-        uid: 'youruuidnumber'
-        sshkeys:
-          - 'your public ssh rsa key'
-    ```
+3. Update the `data/site.yaml` file to use your site specific settings:
+    1. Add the shell users their public keys
+        * In order to be able to ssh to the instances once they are setup, you need to add your user information to the configuration.  For each user you want to grant ssh access, supply the following in the `users` hash in the `data/site.yaml` file:
+        ```
+         users:
+          'yourloginname':
+            comment: 'yourfullname'
+            uid: 'youruuidnumber'
+            sshkeys:
+              - 'your public ssh rsa key'
+        ```
     
-    e.g
-    ```
-     users:
-       'john':
-         comment: 'John Smith'
-         uid: '1010'
-         sshkeys:
-           - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA3ATqENg+GWACa2BzeqTdGnJhNoBer8x6pfWkzNzeM8Zx7/2Tf2pl7kHdbsiTXEUawqzXZQtZzt/j3Oya+PZjcRpWNRzprSmd2UxEEPTqDw9LqY5S2B8og/NyzWaIYPsKoatcgC7VgYHplcTbzEhGu8BsoEVBGYu3IRy5RkAcZik= john@example.com'
-      ```
-    * and then add the login name to the `allow_users` array:
-    ```
-     allow_users:
-      - 'john'
-      - 'yourloginname'
-    ```
-    * if you want to grant sudo access, add the user to the `sudoers` array:
-    ```
-    sudoers:
-      - 'john'
-      - 'yourloginname'
-    ```
-4. Edit the data/common.yaml in your cloned fork of the puppet repo to supply your Handle prefix, the IP Address for the server which will host the services, and your Handle Admin's email address
-    ```
-    site::handle_prefix: 'yourprefixhere'
-    handle::config:
-      server:
-        public_address: 'youripaddresshere'
-        admin_email: 'youremailhere'
-    ```
-5. Commit these changes to your local clone and push to GitHub.
+        e.g
+        ```
+         users:
+           'john':
+             comment: 'John Smith'
+             uid: '1010'
+             sshkeys:
+               - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA3ATqENg+GWACa2BzeqTdGnJhNoBer8x6pfWkzNzeM8Zx7/2Tf2pl7kHdbsiTXEUawqzXZQtZzt/j3Oya+PZjcRpWNRzprSmd2UxEEPTqDw9LqY5S2B8og/NyzWaIYPsKoatcgC7VgYHplcTbzEhGu8BsoEVBGYu3IRy5RkAcZik= john@example.com'
+          ```
+        * and then add the login name to the `allow_users` array:
+        ```
+         allow_users:
+          - 'john'
+          - 'yourloginname'
+        ```
+        * if you want to grant sudo access, add the user to the `sudoers` array:
+        ```
+        sudoers:
+          - 'john'
+          - 'yourloginname'
+        ```
+    2. Supply your Handle prefix, the IP Address for the server which will host the services, and your Handle Admin's email address (in order to supply the IP Address you will may to follow "Bootstrap" steps below).
+        ```
+        site::handle_prefix: 'yourprefixhere'
+        site::id_address: 'your ip address here'
+        site::admin_email: 'admin email here'
+        ```
+    3. Add a site-specific admin password for your Cordra instance:
+        ```
+        cordra:admin_password: 'your cordra admin password'
+        ```
+    4. Add the ip address for your monitoring server ((in order to supply the IP Address you will may to follow "Bootstrap" steps below)
+        ```
+        monitor_ips:
+         - your.monitor.ip.address.here
+        ```
+    5. If you your Icinga Monitoring to push notifications to a Slack channel, add your slack webhook url:
+        ```
+        slack_webhook_url: 'https://hooks.slack.com/services/XXXXXXXXXXXXX'
+        ```
+4. Commit the updated `site.yaml` changes to your local clone and push to GitHub.
 
 ### Step 3: Bootstrap Your Server
 
 #### AWS: Quick Start with Amazon Web Services (via AWS Console)
 
 1. Create an account on Amazon Web Services
-2. Create an Elastic IP Address (you will need a fixed IP address in order to run the Handle Service) 
+2. Create two Elastic IP Addresses (you will need a fixed IP address in order to run the Handle Service and one for your Monitor server) 
 3. Create an Open Security Group (firewall will be managed by puppet)
-4. Create an new EC2 instance and assign it the Elastic IP. 
+4. Create an new EC2 instance and assign it the first Elastic IP. 
     > Recommended Instance Configuration
     > * Ubuntu 16:04 (ami-cd0f5cb6)
     > * t2 large (2 CPU/8GB RAM)
     > * 25GB root file system
     > * Open Security Group
     > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
-5. Be sure to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
-6. run `script/puppify <your forked github repo> <elastic ip> rpid`
+5. Create an new EC2 instance and assign it the second Elastic IP. 
+    > Recommended Instance Configuration
+    > * Ubuntu 16:04 (ami-cd0f5cb6)
+    > * t2 micro 
+    > * Open Security Group
+    > * keypair: create one named rpid and copy the rpid.pem to the __parent directory__ of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
+6. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
+6. run `script/puppify <your forked github repo> rpid.pem <elastic ip> rpid` to setup the main RPID testbed server
+7. run `script/puppify <your forked github repo> rpid.pem <elastic ip> monitor` to setup the monitoring server
    
 #### Local Server: Bootstrap a non AWS server
-5. Be usre to edit the data/common.yaml in your cloned fork of the puppet repo to supply your prefix and Server IP Address and commit and push these changes to GitHub (see step 4 under "Step 2 Personalize the Repository" above)
+5. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
 6. scp the bootstrap script to your server, under a user with sudo access
     ```
      scp scripts/bootstrap.sh user@host:/tmp
      ```
-7. run the bootstrap script on your server, under a user with sudo access
+7. run the bootstrap script on your server, under a user with sudo access to setup the main RPID testbed server
     ```
     ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> rpid"
     ```
+8. run the bootstrap script on your server, under a user with sudo access to setup the main RPID monitor server
+    ```
+    ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> monitor"
+    ```
     
 #### Local Vagrant: Provision a Vagrant Virtual Box
+
+TODO 
 
 ### Step 4: Register your Handle Server and Cordra DTR Instances
 1. scp a copy of /docker/run/handle/sitebndl.zip from bootstrapped server to your local machine and send it to the Handle System Administrator
@@ -138,12 +164,6 @@ Public Ports: 8088 (http)
 
 
 ### Icinga Monitoring
-
-
-To add Icinga monitoring:
-
-1. Create a EC2 second instance in AWS (Recommended AMI: TBD). Use the same rpid.pem keypair as before.
-2. run script/puppify <instance ip> monitor
 
 ### Handle Service Configuration
 
@@ -247,6 +267,6 @@ To add Icinga monitoring:
 ```
 ### Using Encrypted Secrets 
 
-### Using Amazon Web Services Orchestration
+TODO 
 
 
