@@ -18,3 +18,4 @@
   cordra::admin_password: 'dummy'
   monitor_ips:
     - 127.0.0.1
+  handle::local_admin_password: 'dummy'
