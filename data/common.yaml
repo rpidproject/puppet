@@ -65,6 +65,7 @@
   handle::download_url: 'http://www.handle.net/hnr-source/hsj-8.1.1.tar.gz'
   handle::user: 'handle'
   handle::docker_base: 'openjdk:8u131-jre-alpine'
+  handle::local_admin_handle: 'localadmin1'
   collections::manifold::docker_base: 'ubuntu:16.04'
   collections::manifold::repos: 'https://github.com/RDACollectionsWG/perseids-manifold'
   collections::manifold::revision: 'master'

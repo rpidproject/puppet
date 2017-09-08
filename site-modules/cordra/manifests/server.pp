@@ -11,6 +11,7 @@ class cordra::server {
   $site_handle = lookup('site::handle_prefix')
   $handle_admin_id = "${admin_idx}/${site_handle}"
   $handle_run_dir = "${docker_run_dir}/handle"
+  $status = lookup('cordra::container_status')
 
   file { [
     $cordra_run_dir,
@@ -82,7 +83,7 @@ class cordra::server {
   }
 
   docker::run { 'rpid-cordra':
-    ensure => lookup('cordra::container_status'),
+    ensure => $status,
     image   => "rpid-cordra:${cordra_tag}",
     volumes => ["${cordra_data_dir}:/data", "${handle_run_dir}:/handle"],
     ports   => [ 
@@ -91,7 +92,23 @@ class cordra::server {
       "${hostports['server']}:${ports['server']}",
       "${hostports['ssl']}:${ports['ssl']}",
     ],
-    require   => Docker::Image['rpid-cordra'],
+    require => [Docker::Image['rpid-cordra'],Docker::Run['rpid-handle']],
+    notify  => Exec['create-local-admin-handle'],
+  }
+
+  if $status == 'present' {
+    exec { 'create-local-admin-handle':
+      command     => 'docker exec rpid-handle /handle/bin/hdl-genericbatch /handle/admin_batchfile',
+      path        => ['/bin', '/usr/bin'],
+      refreshonly => true,
+      timeout     => 0,
+      require     => Docker::Run['rpid-handle']
+    }
+  } else {
+    exec { 'create-local-admin-handle':
+      command     => "echo cordra is absent - no handle creation",
+      path        => ['/bin', '/usr/bin'],
+    }
   }
 
   firewall { '100 Allow https traffic for cordra':

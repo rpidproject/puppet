@@ -10,7 +10,8 @@ class pit::build {
   $cordra_prefix = lookup('pit::cordra_prefix')
   $admin_idx = lookup('handle::config.server.admin_idx')
   $site_handle = lookup('site::handle_prefix')
-  $handle_admin_id = "${admin_idx}/${site_handle}"
+  $local_admin = lookup('handle::local_admin_handle')
+  $handle_admin_id = "300:${site_handle}/$local_admin"
 
   file { $pit_build_dir:
     ensure => directory,
@@ -36,10 +37,11 @@ class pit::build {
   }
 
   file { "${pit_build_dir}/pitapi.properties":
-    content => epp('pit/pitapi.properties.epp', {
+    content            => epp('pit/pitapi.properties.epp', {
       'handleBaseURI'  => "http://${handle_host}:${handle_port}",
       'handleAdminId'  => $handle_admin_id,
       'handlePrefix'   => $handle_prefix,
+      'handlePassword' => lookup('handle::local_admin_password'),
       'cordraURL'      => "http://${cordra_host}:${cordra_port}",
       'cordraPrefix'   => "${handle_prefix}.${cordra_prefix}-",
 

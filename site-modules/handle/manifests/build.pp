@@ -5,9 +5,22 @@ class handle::build {
   $admin_idx = lookup('handle::config.server.admin_idx')
   $site_handle = lookup('site::handle_prefix')
   $admin_id = "${$admin_idx}/${site_handle}"
+  $prefix = lookup('site::handle_prefix')
 
   file { $handle_build_dir:
     ensure => directory,
+  }
+
+  file { "${handle_build_dir}/admin_batchfile":
+    content => epp('handle/admin_batchfile.epp',
+      {
+        'admin_id' => $admin_id,
+        'prefix'   => $prefix,
+        'handle'   => lookup('handle::local_admin_handle'),
+        'password' => lookup('handle::local_admin_password'), 
+      }
+    ),
+    notify  => Exec['remove-handle-image'],
   }
 
   file { "${handle_build_dir}/Dockerfile":
@@ -17,7 +30,7 @@ class handle::build {
         'handle_download_url' => lookup('handle::download_url'),
         'handle_user'         => lookup('handle::user'),
         'ports'               => lookup('handle::config.ports'),
-        'handle_prefix'       => lookup('site::handle_prefix'),
+        'handle_prefix'       => $prefix,
         'handle_admin_id'     => $admin_id,
       }
     ),

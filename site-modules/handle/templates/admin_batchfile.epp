@@ -1,0 +1,10 @@
+<%- | String[1] $handle,
+      String[1] $prefix,
+      String[1] $password,
+      String[1] $admin_id,
+| -%>
+AUTHENTICATE PUBKEY:<%= $admin_id %>
+/handleserver/admpriv.bin
+CREATE <%= $prefix %>/<%= $handle%>
+100 HS_ADMIN 86400 1110 ADMIN 300:111111111111:<%= $admin_id %>
+300 HS_SECKEY 86400 1100 UTF8 <%= $password %> 

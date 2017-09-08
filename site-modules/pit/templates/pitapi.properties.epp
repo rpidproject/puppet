@@ -3,10 +3,11 @@
       String[1] $handlePrefix,
       String[1] $cordraURL,
       String[1] $cordraPrefix,
+      String[1] $handlePassword,
 | -%>
 pidsystem.handle.baseURI = <%= $handleBaseURI %>
 pidsystem.handle.userName = <%= $handleAdminId %>
-pidsystem.handle.userPassword = ''
+pidsystem.handle.userPassword = '<%= $handlePassword %>'
 pidsystem.handle.generatorPrefix = <%= $handlePrefix %>
 pidsystem.handle.unsafeSSL = true
 
