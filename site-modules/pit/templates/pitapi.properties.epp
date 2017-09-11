@@ -7,7 +7,7 @@
 | -%>
 pidsystem.handle.baseURI = <%= $handleBaseURI %>
 pidsystem.handle.userName = <%= $handleAdminId %>
-pidsystem.handle.userPassword = '<%= $handlePassword %>'
+pidsystem.handle.userPassword = <%= $handlePassword %>
 pidsystem.handle.generatorPrefix = <%= $handlePrefix %>
 pidsystem.handle.unsafeSSL = true
 

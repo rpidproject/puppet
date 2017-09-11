@@ -38,7 +38,7 @@ class pit::build {
 
   file { "${pit_build_dir}/pitapi.properties":
     content            => epp('pit/pitapi.properties.epp', {
-      'handleBaseURI'  => "http://${handle_host}:${handle_port}",
+      'handleBaseURI'  => "https://${handle_host}:${handle_port}",
       'handleAdminId'  => $handle_admin_id,
       'handlePrefix'   => $handle_prefix,
       'handlePassword' => lookup('handle::local_admin_password'),
