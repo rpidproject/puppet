@@ -132,6 +132,12 @@ The default configuration settings will install all 4 RPID services on a single 
 
 ### Step 5: Verify the Setup
 
+#### Puppet
+
+The puppet repository will be installed on the bootstrapped server in `/etc/puppetlabs/code/environments/production`.
+
+The run-puppet script is configured to run as a root cron job every 10 minutes.
+
 #### RPID Node
 
 The default configuration should result in the following service endpoints:
