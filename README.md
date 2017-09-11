@@ -139,23 +139,35 @@ TODO
 The default configuration should result in the following service endpoints:
 
 ##### Handle Service
+
 Docker Container: rpid-handle
+
 Public Ports: 8080 (http) and 2641 (tcp and udp)
+
 Shared Data Volume: /docker/run/handle
 
 ##### Cordra DTR Service
+
 Docker Container: rpid-cordra
+
 Public Ports: 80 (http), 443 (https), 9000 (tcp), 9001 (ssl)
+
 Shared Data Volume: /docker/run/cordra/data
 
 ##### Collections Service
+
 Docker Containers: rpid-manifold, rpid-marmotta, rpid-postgres
+
 Ports: 80 (http), 443 (https), 9000 (tcp), 9001 (ssl)
+
 Shared Data Volume: /docker/run/collections
+
 Public Ports: 5000 (http) 
 
 #### PIT Service
+
 Docker Container: rpid-pit
+
 Public Ports: 8088 (http)
 
 ## Advanced Configuration
