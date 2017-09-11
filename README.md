@@ -6,7 +6,7 @@ The Puppet Repository can be used to configure instances on Amazon Web Services,
 It will install and configure each of the 4 Test Bed Services:
 
 * Handle Server 
-* Data Type Repository ([Cordra Implementation](http://cordra.org)
+* Data Type Repository ([Cordra Implementation](http://cordra.org))
 * Persistent Identifier Types Service API ([RPID Extended Implementation](https://github.com/rpidproject/RDA-PRAGMA-Data-Service/tree/master/pragmapit-ext))
 * Collections Service API ([Perseds Manifold Implementation](https://github.com/rdACollectionsWG/perseids-manifold)
 
