@@ -127,7 +127,7 @@ TODO
 
 ### Step 4: Register your Handle Server and Cordra DTR Instances
 1. scp a copy of `/docker/run/handle/sitebndl.zip` from bootstrapped server to your local machine and send it to the Handle System Administrator
-2. When notified that the Handle is registered you need to update your puppet configuration to start the Cordra Docker Container. This has to be done in a separate step once the Handle Service is available and registered so that Cordra can register itself with the Handle server upon setup.  Edit the `data/common.yaml` file and set `cordra::container_status` to 'present':
+2. When notified that the Handle is registered you need to update your puppet configuration to start the Cordra Docker Container. This has to be done in a separate step once the Handle Service is available and registered so that Cordra can register itself with the Handle server upon setup.  Edit the `data/site.yaml` file and set `cordra::container_status` to 'present':
     ```
       cordra::container_status: 'present'
     ```
