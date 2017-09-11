@@ -1,6 +1,7 @@
 <%- | Hash $config,
       Hash $ports,
       String[1] $cordra_assigned_prefix,
+      String[1] $local_admin_handle,
 | -%>
 {
   "hdl_http_config" = {
@@ -41,6 +42,7 @@
     "server_admins" = (
       "300:0.NA/<%= $config['assigned_prefix'] %>"
       "300:<%= $cordra_assigned_prefix %>"
+      "<%= $local_admin_handle %>"
     )
 
     "replication_admins" = (

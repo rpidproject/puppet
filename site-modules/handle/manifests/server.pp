@@ -6,6 +6,8 @@ class handle::server {
 	$ports = lookup('handle::config.ports', Hash, 'hash')
 	$hostports = lookup('handle::config.host_ports', Hash, 'hash')
   $volume_mount = lookup('handle::volume_mount')
+  $local_admin = lookup('handle::local_admin_handle')
+  $prefix = lookup('handle::config.server.assigned_prefix')
 
   file { $handle_run_dir:
     ensure => directory,
@@ -17,8 +19,10 @@ class handle::server {
         'config'                 => $config,
         'ports'                  => $ports,
         'cordra_assigned_prefix' => lookup('cordra::config.server.assigned_prefix'),
+        'local_admin_handle'     => "300:${prefix}/${local_admin}",
 			}
 		),
+    notify => Docker::Run['rpid-handle'],
   }
 
   file { "${handle_run_dir}/contactdata.dct":
@@ -28,6 +32,7 @@ class handle::server {
         'admin_org_name' => $config['admin_org_name'],
       },
     ),
+    notify => Docker::Run['rpid-handle'],
   }
 
   file { "${handle_run_dir}/siteinfo.json.tmp":
@@ -40,6 +45,7 @@ class handle::server {
 				'ports'          => $ports,
       },
     ),
+    notify => Docker::Run['rpid-handle'],
   }
 
   $handle_tag = lookup('handle::handle_tag')
