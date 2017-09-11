@@ -29,7 +29,7 @@ The default configuration settings will install all 4 RPID services on a single 
 1. Fork this repository
 2. Clone your fork onto a local machine
 3. Update the `data/site.yaml` file to use your site specific settings:
-    1. Add the shell users their public keys
+    1. Add the shell users and their public keys
         * In order to be able to ssh to the instances once they are setup, you need to add your user information to the configuration.  For each user you want to grant ssh access, supply the following in the `users` hash in the `data/site.yaml` file:
         ```
          users:
