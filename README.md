@@ -107,24 +107,20 @@ The default configuration settings will install all 4 RPID services on a single 
 7. run `script/puppify <your forked github repo> rpid.pem <elastic ip> monitor` to setup the monitoring server
    
 #### Local Server: Bootstrap a non AWS server
-5. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
-6. scp the bootstrap script to your server, under a user with sudo access
+1. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
+2. scp the bootstrap script to your server, under a user with sudo access
     ```
      scp scripts/bootstrap.sh user@host:/tmp
      ```
-7. run the bootstrap script on your server, under a user with sudo access to setup the main RPID testbed server
+3. run the bootstrap script on your server, under a user with sudo access to setup the main RPID testbed server
     ```
     ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> rpid"
     ```
-8. run the bootstrap script on your server, under a user with sudo access to setup the main RPID monitor server
+4. run the bootstrap script on your server, under a user with sudo access to setup the main RPID monitor server
     ```
     ssh username@host "sudo bash /tmp/bootstrap.sh <url of your puppet repo clone> monitor"
     ```
     
-#### Local Vagrant: Provision a Vagrant Virtual Box
-
-TODO 
-
 ### Step 4: Register your Handle Server and Cordra DTR Instances
 1. scp a copy of `/docker/run/handle/sitebndl.zip` from bootstrapped server to your local machine and send it to the Handle System Administrator
 2. When notified that the Handle is registered you need to update your puppet configuration to start the Cordra Docker Container. This has to be done in a separate step once the Handle Service is available and registered so that Cordra can register itself with the Handle server upon setup.  Edit the `data/site.yaml` file and set `cordra::container_status` to 'present':
