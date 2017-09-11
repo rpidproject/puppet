@@ -82,6 +82,8 @@ The default configuration settings will install all 4 RPID services on a single 
         ```
 4. Commit the updated `site.yaml` changes to your local clone and push to GitHub.
 
+5. If you If you want to encrypt any information in the RPID configuration, such as service and handle passwords, etc., you can use the [hiera-eyaml](https://puppet.com/blog/encrypt-your-data-using-hiera-eyaml) gem to put encrypted data in the `data/secret.eyaml` file rather than in `data/site.yaml`.
+
 ### Step 3: Bootstrap Your Server
 
 #### AWS: Quick Start with Amazon Web Services (via AWS Console)
@@ -103,9 +105,9 @@ The default configuration settings will install all 4 RPID services on a single 
     > * Open Security Group
     > * use the keypair created in step 4
 6. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
-7. From the root of your cloned GitHub repo run `scripts/puppify <your forked github repo> <path/to/awskeyfile> <elastic ip> rpid` to setup the main RPID testbed server
-8. From the root of your cloned GitHub repo run `scripts/puppify <your forked github repo> <path/to/awskeyfile> <elastic ip> monitor` to setup the monitoring server
-   
+7. From the root of your cloned GitHub repo run `scripts/puppify <your forked github repo> <path/to/awskeyfile> <elastic ip> rpid [gpgkeyid]` to setup the main RPID testbed server. (If you are using encrypted secrets, your GPG key id should be passed as the optional last parameter to the puppify script.)
+8. From the root of your cloned GitHub repo run `scripts/puppify <your forked github repo> <path/to/awskeyfile> <elastic ip> monitor [gpgkeyid]` to setup the monitoring server. (If you are using encrypted secrets, your GPG key id should be passed as the optional last parameter to the puppify script.)
+
 #### Local Server: Bootstrap a non AWS server
 1. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
 2. scp the bootstrap script to your server, under a user with sudo access
@@ -189,5 +191,4 @@ The default RPID Puppet setup installs all 4 RPID services on a single node.  Sp
 Each RPID service offers different service-level configuration options.  These can be found in the `data/common.yaml` file, prefixed by the service groupname.  See the individual service documentation for details on how to use these settings.
 
 The default RPID testbed setup configures the Handle Service to operate as a primary site with multi-primary options disabled. Although the configuration settings for these options are provided in the puppet manifest, modifications to the puppet manifests may be required to fully deploy the Handle service in these alternative modes.
-
 
