@@ -138,6 +138,8 @@ The puppet repository will be installed on the bootstrapped server in `/etc/pupp
 
 The run-puppet script is configured to run as a root cron job every 10 minutes.
 
+If all expected services are not running immediately after bootstrapping, ssh to the node and run `papply` to verify that puppet runs to completion.
+
 #### RPID Node
 
 The default configuration should result in the following service endpoints:
