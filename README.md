@@ -1,16 +1,16 @@
 # RPID Puppet Repository
 
-The RPID Puppet Repository contains a suite of Puppet 4 manifests that can be used to standup an instance of the RPID Test Bed in an automated, repeatable fashion.
+The RPID Puppet Repository contains a suite of [Puppet 4](https://puppet.com/) manifests that can be used to standup an instance of the RPID Test Bed in an automated, repeatable fashion.
 
 The Puppet Repository can be used to configure instances on Amazon Web Services, on a Vagrant box, or physical machines.  
 It will install and configure each of the 4 Test Bed Services:
 
 * Handle Server 
-* Data Type Repository (Cordra Implementation)
-* Persistent Identifier Types Service API (RPID Extended Implementation)
-* Collections Service API (Perseds Manifold Implementation)
+* Data Type Repository ([Cordra Implementation](http://cordra.org)
+* Persistent Identifier Types Service API ([RPID Extended Implementation](https://github.com/rpidproject/RDA-PRAGMA-Data-Service/tree/master/pragmapit-ext))
+* Collections Service API ([Perseds Manifold Implementation](https://github.com/rdACollectionsWG/perseids-manifold)
 
-It also will install and configure Icina Monitoring services.
+It also will install and configure basic [Icinga](https://www.icinga.com/) Monitoring services.
 
 The services can be deployed together on a single node or spread across multiple nodes in a network.  The core RPID test bed services are all installed in Docker containers to isolate and minimize operating system dependencies.
 
