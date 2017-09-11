@@ -22,7 +22,7 @@ The default configuration settings will install all 4 RPID services on a single 
 
 ### Step 1: Prerequisites 
 1. Request a Handle Prefix from the Handle System Administrator
-2. At least one server on which to host the servers, whether cloud based on a provider like Amazon Web Services (AWS), a Vagrant box, or a locally hosted machine.  (See below under AWS Quickstart for instructions on how to get started with AWS.)
+2. At least one server on which to host the servers, whether cloud based on a provider like Amazon Web Services (AWS), or a locally hosted machine.  (See below under AWS Quickstart for instructions on how to get started with AWS.)
 
 
 ### Step 2: Personalize the Repository
