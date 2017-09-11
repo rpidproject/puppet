@@ -8,7 +8,7 @@ It will install and configure each of the 4 Test Bed Services:
 * [Handle Server 8.1](http://handle.net)
 * Data Type Repository ([Cordra Implementation 1.0.7](http://cordra.org))
 * Persistent Identifier Types Service API ([RPID Extended Implementation](https://github.com/rpidproject/RDA-PRAGMA-Data-Service/tree/master/pragmapit-ext))
-* Collections Service API ([Perseds Manifold Implementation 1.0.0](https://github.com/rdACollectionsWG/perseids-manifold)
+* Collections Service API ([Perseds Manifold Implementation 1.0.0](https://github.com/rdACollectionsWG/perseids-manifold))
 
 It also will install and configure basic [Icinga](https://www.icinga.com/) Monitoring services.
 
