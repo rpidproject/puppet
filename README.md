@@ -95,16 +95,16 @@ The default configuration settings will install all 4 RPID services on a single 
     > * t2 large (2 CPU/8GB RAM)
     > * 25GB root file system
     > * Open Security Group
-    > * keypair: create one named rpid and copy the rpid.pem to the parent directory of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
+    > * keypair: create a keypair and download the key file to your local filesystem, making sure the local copy is chmod'd 0600
 5. Create an new EC2 instance and assign it the second Elastic IP. 
     > Recommended Instance Configuration
     > * Ubuntu 16:04 (ami-cd0f5cb6)
     > * t2 micro 
     > * Open Security Group
-    > * keypair: create one named rpid and copy the rpid.pem to the __parent directory__ of your clone of the puppet repo fork (make sure the local copy is chmod'd 0600)
+    > * use the keypair created in step 4
 6. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
-6. run `script/puppify <your forked github repo> rpid.pem <elastic ip> rpid` to setup the main RPID testbed server
-7. run `script/puppify <your forked github repo> rpid.pem <elastic ip> monitor` to setup the monitoring server
+7. From the root of your cloned GitHub repo run `scripts/puppify <your forked github repo> <path/to/awskeyfile> <elastic ip> rpid` to setup the main RPID testbed server
+8. From the root of your cloned GitHub repo run `scripts/puppify <your forked github repo> <path/to/awskeyfile> <elastic ip> monitor` to setup the monitoring server
    
 #### Local Server: Bootstrap a non AWS server
 1. Be sure to edit the `data/site.yaml` in your cloned fork of the puppet repo to supply your prefix and Server IP Addresses and commit and push these changes to GitHub (see step 3 under "Step 2 Personalize the Repository" above)
